@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdalgarciaWeb 🌍 🍵</title>
+    <meta name="description" content="Portafolio Web de Adal García">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        :root {
+            /* Colores Gruvbox Light */
+            --gruvbox-bg: #fbf1c7;
+            --gruvbox-fg: #282828;
+            --gruvbox-yellow: #d79921;
+            --gruvbox-orange: #d65d0e;
+            --gruvbox-green: #689d6a;
+            --gruvbox-blue: #458588;
+            --gruvbox-gray: #928374;
+            --gruvbox-card: rgba(191, 175, 135, 0.3);
+        }
+
+        [data-bs-theme="dark"] {
+            /* Colores Gruvbox Dark */
+            --gruvbox-bg: #282828;
+            --gruvbox-fg: #ebdbb2;
+            --gruvbox-yellow: #fabd2f;
+            --gruvbox-orange: #fe8019;
+            --gruvbox-green: #8ec07c;
+            --gruvbox-blue: #83a598;
+            --gruvbox-gray: #928374;
+            --gruvbox-card: rgba(235, 219, 178, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--gruvbox-bg);
+            color: var(--gruvbox-fg);
+            font-size: 16px;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Navbar mejorado */
+        .main-nav {
+            backdrop-filter: blur(20px);
+            background-color: var(--gruvbox-card);
+            border-bottom: 2px solid var(--gruvbox-yellow);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--gruvbox-yellow) !important;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            color: var(--gruvbox-orange) !important;
+            transform: scale(1.05);
+        }
+
+        .nav-link {
+            color: var(--gruvbox-fg) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gruvbox-yellow);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        .nav-link:hover {
+            background-color: var(--gruvbox-card);
+            color: var(--gruvbox-yellow) !important;
+        }
+
+        /* Main content */
+        main {
+            padding-top: 100px;
+            padding-bottom: 80px;
+            min-height: 100vh;
+        }
+
+        /* Avatar mejorado */
+        .avatar-container {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--gruvbox-yellow);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .avatar-container::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(45deg, var(--gruvbox-yellow), var(--gruvbox-orange), var(--gruvbox-green));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .avatar-container:hover::before {
+            opacity: 1;
+        }
+
+        .avatar-container:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Cards estilo terminal */
+        .custom-card {
+            background: var(--gruvbox-card);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--gruvbox-gray);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Barra superior estilo ventana terminal */
+        .terminal-header {
+            background: linear-gradient(180deg, rgba(80, 73, 69, 0.8), rgba(60, 56, 54, 0.8));
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--gruvbox-gray);
+        }
+
+        [data-bs-theme="light"] .terminal-header {
+            background: linear-gradient(180deg, rgba(189, 174, 147, 0.8), rgba(168, 153, 132, 0.8));
+        }
+
+        /* Botones de ventana terminal */
+        .terminal-buttons {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+        }
+
+        .terminal-button.close {
+            background: #cc241d;
+        }
+
+        .terminal-button.minimize {
+            background: #d79921;
+        }
+
+        .terminal-button.maximize {
+            background: #689d6a;
+        }
+
+        [data-bs-theme="light"] .terminal-button.close {
+            background: #fb4934;
+        }
+
+        [data-bs-theme="light"] .terminal-button.minimize {
+            background: #fabd2f;
+        }
+
+        [data-bs-theme="light"] .terminal-button.maximize {
+            background: #8ec07c;
+        }
+
+        .terminal-title {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--gruvbox-fg);
+            opacity: 0.9;
+        }
+
+        /* Contenido de la card */
+        .card-body-terminal {
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-bs-theme="light"] .card-body-terminal {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .custom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            border-color: var(--gruvbox-yellow);
+        }
+
+        /* Prompt estilo terminal */
+        .terminal-prompt {
+            color: var(--gruvbox-green);
+            font-weight: bold;
+        }
+
+        .terminal-prompt::before {
+            content: '$ ';
+            color: var(--gruvbox-yellow);
+        }
+
+        .card-header-custom {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gruvbox-yellow);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .card-header-custom i {
+            font-size: 1.5rem;
+        }
+
+        /* Cursor parpadeante */
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background: var(--gruvbox-yellow);
+            margin-left: 2px;
+            animation: blink 1s infinite;
+        }
+
+        /* Lista estilo terminal */
+        .terminal-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .terminal-list li::before {
+            content: '▸ ';
+            color: var(--gruvbox-yellow);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* Video container mejorado */
+        .video-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .video-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        /* Botón de tema mejorado */
+        .theme-toggle {
+            background: var(--gruvbox-yellow);
+            color: var(--gruvbox-bg);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+            background: var(--gruvbox-orange);
+        }
+
+        /* Intro section */
+        .intro-section {
+            background: var(--gruvbox-card);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            border: 2px solid var(--gruvbox-yellow);
+        }
+
+        /* Social buttons mejorados */
+        .social-btn {
+            background: transparent;
+            border: 2px solid var(--gruvbox-gray);
+            color: var(--gruvbox-fg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .social-btn:hover {
+            background: var(--gruvbox-yellow);
+            border-color: var(--gruvbox-yellow);
+            color: var(--gruvbox-bg);
+            transform: translateX(5px);
+        }
+
+        .social-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* Bio timeline */
+        .bio-item {
+            padding-left: 3rem;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .bio-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--gruvbox-yellow);
+        }
+
+        .bio-item::after {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0.5rem;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: var(--gruvbox-orange);
+            border: 3px solid var(--gruvbox-bg);
+        }
+
+        .bio-year {
+            font-weight: 700;
+            color: var(--gruvbox-yellow);
+            font-size: 1.1rem;
+        }
+
+        /* Footer mejorado */
+        footer {
+            backdrop-filter: blur(20px);
+            background-color: var(--gruvbox-card);
+            border-top: 2px solid var(--gruvbox-yellow);
+            padding: 1rem 0;
+        }
+
+        /* Scrollbar personalizado */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gruvbox-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gruvbox-yellow);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gruvbox-orange);
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .avatar-container {
+                width: 120px;
+                height: 120px;
+            }
+
+            .card-header-custom {
+                font-size: 1.25rem;
+            }
+
+            main {
+                padding-top: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG Icons -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="sun" viewBox="0 0 16 16">
+            <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
+        </symbol>
+        <symbol id="moon" viewBox="0 0 16 16">
+            <path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278"/>
+        </symbol>
+    </svg>
+
+    <!-- Navbar -->
+    <header class="main-nav fixed-top">
+        <nav class="navbar navbar-expand-lg container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-cup-hot-fill"></i>
+                Adal Michael García
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#trabajos">Trabajos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#bio">Bio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contacto">Contacto</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                            <svg class="bi" width="24" height="24" fill="currentColor">
+                                <use href="#sun" id="themeIcon"></use>
+                            </svg>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <!-- Video Section -->
+                <section class="video-container mb-4 animate-fade-in">
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400" 
+                         alt="Coffee Cup" 
+                         class="img-fluid">
+                </section>
+
+                <!-- Intro -->
+                <section class="intro-section animate-fade-in">
+                    <p class="mb-0 fs-5">
+                        Apasionado a la tecnología, con muchas ganas de seguir aprendiendo
+                    </p>
+                </section>
+
+                <!-- Profile Section -->
+                <section class="d-flex flex-column flex-md-row align-items-center justify-content-between mb-5 animate-fade-in">
+                    <div class="text-center text-md-start mb-4 mb-md-0">
+                        <h1 class="display-5 fw-bold mb-2">Adal Michael García</h1>
+                        <p class="fs-5 text-muted mb-0">Desarrollador / Administrador de sistemas</p>
+                    </div>
+                    <div class="avatar-container">
+                        <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=300" 
+                             alt="Adal García">
+                    </div>
+                </section>
+
+                <!-- Trabajos Card -->
+                <article id="trabajos" class="custom-card animate-fade-in">
+                    <div class="terminal-header">
+                        <div class="terminal-buttons">
+                            <span class="terminal-button close"></span>
+                            <span class="terminal-button minimize"></span>
+                            <span class="terminal-button maximize"></span>
+                        </div>
+                        <span class="terminal-title">adalgarcia@portfolio: ~/trabajos</span>
+                    </div>
+                    <div class="card-body-terminal">
+                        <div class="card-header-custom">
+                            <span class="terminal-prompt">cat</span> trabajos.txt
+                            <span class="terminal-cursor"></span>
+                        </div>
+                        <h4 class="fw-bold mb-3" style="color: var(--gruvbox-orange);">
+                            → Ingeniero Informático
+                        </h4>
+                        <p class="mb-3">
+                            Experto en administración de sistemas con más de 12 años de experiencia. 
+                            A lo largo de mi carrera, he desarrollado una amplia gama de soluciones informáticas, incluyendo:
+                        </p>
+                        <ul class="terminal-list">
+                            <li class="mb-2"><strong>Reportes de ventas</strong> que optimizan el análisis y la toma de decisiones</li>
+                            <li class="mb-2"><strong>Herramientas de consulta de datos</strong> que facilitan el acceso y la manipulación de información</li>
+                            <li class="mb-2"><strong>Blogs</strong> que comparten mi conocimiento y experiencia con la comunidad</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <!-- Bio Card -->
+                <article id="bio" class="custom-card animate-fade-in">
+                    <div class="terminal-header">
+                        <div class="terminal-buttons">
+                            <span class="terminal-button close"></span>
+                            <span class="terminal-button minimize"></span>
+                            <span class="terminal-button maximize"></span>
+                        </div>
+                        <span class="terminal-title">adalgarcia@portfolio: ~/bio</span>
+                    </div>
+                    <div class="card-body-terminal">
+                        <div class="card-header-custom">
+                            <span class="terminal-prompt">timeline</span> --show-all
+                            <span class="terminal-cursor"></span>
+                        </div>
+                        <div class="bio-item">
+                            <span class="bio-year">[1983]</span>
+                            <p class="mb-0">Nací en David, Provincia de Chiriquí, Panamá</p>
+                        </div>
+                        <div class="bio-item">
+                            <span class="bio-year">[2011]</span>
+                            <p class="mb-0">Completé mis estudios de Ingeniería en Sistemas Computacionales en la Universidad Latina de Panamá</p>
+                        </div>
+                        <div class="bio-item">
+                            <span class="bio-year">[2012-2025]</span>
+                            <p class="mb-0">Inicio labores en Almacén Franklin Jurado</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Pasatiempos Card -->
+                <article class="custom-card animate-fade-in">
+                    <div class="terminal-header">
+                        <div class="terminal-buttons">
+                            <span class="terminal-button close"></span>
+                            <span class="terminal-button minimize"></span>
+                            <span class="terminal-button maximize"></span>
+                        </div>
+                        <span class="terminal-title">adalgarcia@portfolio: ~/hobbies</span>
+                    </div>
+                    <div class="card-body-terminal">
+                        <div class="card-header-custom">
+                            <span class="terminal-prompt">ls</span> -la hobbies/
+                            <span class="terminal-cursor"></span>
+                        </div>
+                        <p class="mb-0">
+                            Electrónica, IoT, Juegos de video, Música, y más
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Contacto Card -->
+                <article id="contacto" class="custom-card animate-fade-in">
+                    <div class="terminal-header">
+                        <div class="terminal-buttons">
+                            <span class="terminal-button close"></span>
+                            <span class="terminal-button minimize"></span>
+                            <span class="terminal-button maximize"></span>
+                        </div>
+                        <span class="terminal-title">adalgarcia@portfolio: ~/contact</span>
+                    </div>
+                    <div class="card-body-terminal">
+                        <div class="card-header-custom">
+                            <span class="terminal-prompt">cat</span> social-links.json
+                            <span class="terminal-cursor"></span>
+                        </div>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="https://github.com/aodaru" class="social-btn">
+                                <i class="bi bi-github"></i>
+                                @aodaru
+                            </a>
+                            <a href="https://twitter.com/aodaru" class="social-btn">
+                                <i class="bi bi-twitter-x"></i>
+                                @aodaru
+                            </a>
+                            <a href="https://www.instagram.com/aodarug/" class="social-btn">
+                                <i class="bi bi-instagram"></i>
+                                @aodarug
+                            </a>
+                            <a href="https://www.facebook.com/adalg1" class="social-btn">
+                                <i class="bi bi-facebook"></i>
+                                @adalg1
+                            </a>
+                            <a href="https://www.linkedin.com/in/adal-garcia-471889197/" class="social-btn">
+                                <i class="bi bi-linkedin"></i>
+                                @adalgarcia
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="fixed-bottom text-center">
+        <small>© Adal Michael García 2025</small>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-bs-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            const icon = theme === 'dark' ? '#sun' : '#moon';
+            themeIcon.setAttribute('href', icon);
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

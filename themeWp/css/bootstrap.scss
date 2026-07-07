@@ -1,0 +1,304 @@
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: "Meslo";
+  src:
+    url("../fonts/MesloLG-M-Regular.ttf") format("truetype"),
+    url("../fonts/MesloLG-M-Bold.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Mononoki";
+  font-style: normal;
+  font-weight: 200;
+  src:
+    url("../fonts/Mononoki-Regular.ttf") format("truetype"),
+    url("../fonts/Mononoki-Bold.ttf") format("truetype");
+  font-variant-ligatures: none;
+  font-display: swap;
+}
+
+// Required functions import
+@import "../node_modules/bootstrap/scss/_functions";
+
+// Required imports
+@import "../node_modules/bootstrap/scss/variables";
+// @import "bootstrap/scss/variables-dark";
+@import "./variable-dark.scss";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+
+// Optional components
+@import "../node_modules/bootstrap/scss/_utilities";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/type";
+@import "../node_modules/bootstrap/scss/containers";
+@import "../node_modules/bootstrap/scss/images";
+@import "../node_modules/bootstrap/scss/nav";
+@import "../node_modules/bootstrap/scss/accordion";
+@import "../node_modules/bootstrap/scss/alert";
+@import "../node_modules/bootstrap/scss/badge";
+@import "../node_modules/bootstrap/scss/breadcrumb";
+@import "../node_modules/bootstrap/scss/button-group";
+@import "../node_modules/bootstrap/scss/buttons";
+@import "../node_modules/bootstrap/scss/card";
+@import "../node_modules/bootstrap/scss/carousel";
+@import "../node_modules/bootstrap/scss/close";
+@import "../node_modules/bootstrap/scss/dropdown";
+@import "../node_modules/bootstrap/scss/forms";
+@import "../node_modules/bootstrap/scss/grid";
+@import "../node_modules/bootstrap/scss/list-group";
+@import "../node_modules/bootstrap/scss/modal";
+@import "../node_modules/bootstrap/scss/navbar";
+@import "../node_modules/bootstrap/scss/offcanvas";
+@import "../node_modules/bootstrap/scss/pagination";
+@import "../node_modules/bootstrap/scss/placeholders";
+@import "../node_modules/bootstrap/scss/popover";
+@import "../node_modules/bootstrap/scss/progress";
+@import "../node_modules/bootstrap/scss/spinners";
+@import "../node_modules/bootstrap/scss/tables";
+@import "../node_modules/bootstrap/scss/toasts";
+@import "../node_modules/bootstrap/scss/tooltip";
+@import "../node_modules/bootstrap/scss/transitions";
+
+// Optional helpers
+@import "../node_modules/bootstrap/scss/helpers";
+
+// Optional utilities
+@import "../node_modules/bootstrap/scss/utilities/api";
+
+@import url("https://www.nerdfonts.com/assets/css/webfont.css");
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+@import "./gruvbox.scss";
+
+$font-default: "Mononoki";
+
+$enable-negative-margins: true;
+
+body {
+  font-size: 18px;
+}
+
+.bootstrapIcons {
+  font-family: "Bootstrap-icons";
+  font-size: 18px;
+}
+
+.font-site {
+  font-family: $font-default;
+}
+
+.main-nav {
+  background-color: rgba(var(--bs-secondary-bg-rgb), 0.5);
+}
+
+main {
+  padding-top: 2em;
+}
+
+.bg-gb-filter {
+  backdrop-filter: blur(10px);
+}
+
+.imgCoffeeContainer {
+  margin: auto;
+  width: 75%;
+  position: relative;
+}
+
+.imgCoffee {
+  width: 100%;
+  border-radius: 10px 10px 10px 10px;
+}
+
+.navbar {
+  // --bs-navbar-padding-x: 0;
+  // --bs-navbar-padding-y: 0.5rem;
+  // --bs-navbar-color: rgba(var(--bs-emphasis-color-rgb), 0.65);
+  // --bs-navbar-hover-color: rgba(var(--bs-emphasis-color-rgb), 0.8);
+  // --bs-navbar-disabled-color: rgba(var(--bs-emphasis-color-rgb), 0.3);
+  // --bs-navbar-active-color: rgba(var(--bs-emphasis-color-rgb), 1);
+  // --bs-navbar-brand-padding-y: 0.3125rem;
+  // --bs-navbar-brand-margin-end: 1rem;
+  // --bs-navbar-brand-font-size: 1.875rem;
+  // --bs-navbar-brand-color: rgba(var(--bs-emphasis-color-rgb), 1);
+  // --bs-navbar-brand-hover-color: rgba(var(--bs-emphasis-color-rgb), 1);
+  // --bs-navbar-nav-link-padding-x: 0.5rem;
+  // --bs-navbar-toggler-padding-y: 0.25rem;
+  // --bs-navbar-toggler-padding-x: 0.75rem;
+  // --bs-navbar-toggler-font-size: 1.25rem;
+  // --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  // --bs-navbar-toggler-border-color: rgba(var(--bs-primary-rgb), 0.15);
+  // --bs-navbar-toggler-border-radius: var(--bs-border-radius);
+  --bs-navbar-toggler-focus-width: 0.15rem;
+  // --bs-navbar-toggler-transition: box-shadow 0.15s ease-in-out;
+  // position: relative;
+  // display: flex;
+  // flex-wrap: wrap;
+  // align-items: center;
+  // justify-content: space-between;
+  // padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);
+}
+
+.bi {
+  width: 1em;
+  height: 1em;
+  fill: currentcolor;
+}
+
+.switchButtonMode {
+  background-color: var(--bs-switch-mode-button);
+  color: var(--bs-dark-text-emphasis);
+  transition: all 500ms;
+}
+
+.cardHeader {
+  font-size: 20px;
+  margin-bottom: 0.1em;
+  text-decoration-line: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 4px;
+  text-decoration-color: var(--bs-gray);
+  transition: all 200ms;
+}
+
+.cardHeader:hover {
+  color: var(--bs-gray-200) !important;
+}
+
+.color-modes {
+  .dropdown-menu {
+    padding: 0.25rem;
+
+    li + li {
+      margin-top: 0.125rem;
+    }
+  }
+
+  .dropdown-item {
+    @include border-radius(0.25rem);
+  }
+
+  .active {
+    font-weight: 600;
+
+    .bi {
+      display: block !important; // stylelint-disable-line declaration-no-important
+    }
+  }
+}
+
+.ql-container {
+  height: 8rem;
+  border-bottom-right-radius: var(--bs-border-radius);
+  border-bottom-left-radius: var(--bs-border-radius);
+  color: var(--bs-dark);
+}
+
+.ql-formats button:hover .ql-stroke {
+  color: var(--bs-primary) !important;
+  stroke: var(--bs-primary) !important;
+}
+
+.ql-snow.ql-toolbar button:hover .ql-fill {
+  fill: var(--bs-primary) !important;
+}
+
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke {
+  color: var(--bs-primary) !important;
+  stroke: var(--bs-primary) !important;
+}
+
+#avatarContainer {
+  width: 8rem;
+  height: 8rem;
+}
+
+#avatar {
+  width: 8rem;
+  height: 8rem;
+  transform: scale(1.4);
+}
+
+.proySec {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.propSec > li {
+  list-style: none;
+  margin-bottom: 0.5em;
+}
+
+.propSec > a {
+  color: #d65e0e;
+  transition: all, 500ms;
+}
+
+.propSec > a:hover {
+  color: #d65e0e;
+  text-decoration: underline;
+}
+
+.propProy {
+  padding: 2px 5px 2px 5px;
+  background-color: rgba(215, 154, 33, 0.7);
+  border-radius: 2px;
+  font-size: 1em;
+  font-weight: 900;
+}
+
+.stacks {
+  font-size: 1.2em;
+}
+
+.markdownClass img {
+  width: 100%;
+}
+
+/* Estilo de la barra de desplazamiento para que coincida con el tema del terminal */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  // background: #282828; /* Gruvbox dark-hard */
+  border: 4.5px solid var(--bs-body-bg); /* Gruvbox dark green */
+  background-color: var(--bs-body-color);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--bs-primary); /* Gruvbox dark green */
+  border-radius: 30px; /* No rounded corners */
+  border: 1px solid var(--bs-secondary); /* Gruvbox dark-medium */
+  z-index: 10;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #b8bb26; /* Gruvbox green on hover */
+}
+
+// Configuracion de las card estilo terminal
+/* Estilo para los campos de entrada de texto y áreas de texto con doble borde separado */
+.tBorder {
+  border: 2px solid #98971a; /* Gruvbox dark green outer border */
+  border-radius: 0; /* No rounded corners */
+  outline: none; /* Elimina el contorno predeterminado al enfocar */
+  /* Simula el segundo borde con un box-shadow inset, con un offset para el espacio */
+  box-shadow:
+    inset 0 0 0 1px #b8bb26,
+    /* Inner border (Gruvbox green) */ inset 0 0 0 4px #3c3836; /* Gap (same as input background) */
+}
+.tBorder:focus {
+  border-color: #b8bb26; /* Gruvbox green on focus */
+  box-shadow:
+    inset 0 0 0 1px #98971a,
+    /* Darker inner border on focus */ inset 0 0 0 4px #3c3836; /* Gap (same as input background) */
+}
+
+@media print {
+  .no-print,
+  .no-print * {
+    display: none !important;
+  }
+}

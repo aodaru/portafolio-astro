@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://teapartydev.com/sitemap-index.xml

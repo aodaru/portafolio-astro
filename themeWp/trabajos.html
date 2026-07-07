@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="font-site">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      style="display: none"
+      width="16"
+      height="16"
+      fill="currentColor"
+      class="bi bi-moon-fill"
+      viewBox="0 0 16 16"
+    >
+      <!-- svg de la luna -->
+      <symbol id="moon-fill" viewBox="0 0 16 16">
+        <path
+          d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278"
+        />
+      </symbol>
+      <symbol id="sun" viewBox="0 0 16 16">
+        <path
+          d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"
+        />
+      </symbol>
+    </svg>
+
+    <!-- inicio del header -->
+    <header
+      class="bg-gb-filter fixed-top main-nav d-flex justify-content-center align-items-center no-print"
+    >
+      <nav class="navbar navbar-expand-lg col-md-7">
+        <div class="container-fluid">
+          <a
+            class="ms-2 navbar-brand fs-5"
+            style="--bs-link-hover-color-rgb: 25, 135, 84"
+            href="index.html"
+          >
+            <i class="nf nf-md-tea icon-link icon-link-hover"></i>
+            <span class="fw-bold">
+              Adal Michael
+              <!-- García -->
+            </span>
+            <span class="fw-bold"> García </span>
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="trabajos.html"> Trabajos </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="blog.html"> Blog </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link active d-inline-flex align-items-center"
+                  aria-current="page"
+                  href="https://github.com/aodaru"
+                >
+                  <i class="nf nf-fa-github icon-link icon-link-hover me-1"></i>
+                  Repo
+                </a>
+              </li>
+            </ul>
+            <div class="d-flex">
+              <button
+                id="bd-theme"
+                class="switchButtonMode me-2 py-1 px-2 rounded-3 border-0"
+                type="button"
+                aria-label="themeModeButton"
+                data-bs-theme-value="light"
+              >
+                <svg class="bi my-1 theme-icon-active">
+                  <use href="#sun"></use>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <!-- fin de header -->
+
+    <main class="container-fluid col-10 col-md-5 mt-5">
+      <section class="mt-3">
+        <h3>Portafolios de trabajos</h3>
+        <section
+          class="row row-cols-1 row-cols-md-2 gx-2 gx-md-4 mt-3 justify-content-center"
+        >
+          <article class="col card-article">
+            <a
+              class="link-info link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-opacity-75-hover"
+              href="#"
+            >
+              <div class="card border-0">
+                <div
+                  class="d-flex align-items-center justify-content-center post-image w-100"
+                >
+                  <img
+                    src="https://placehold.co/400"
+                    class="card-img-top img-thumbnail border-0 rounded-4"
+                    style="width: 160px; height: 160px"
+                    alt="Test"
+                  />
+                </div>
+                <div class="card-body row row-col-1 w-100 mx-auto text-center">
+                  <h5
+                    class="card-title link-info link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-opacity-75-hover"
+                  >
+                    Trabajo 1
+                  </h5>
+                  <div>Trabajo de prueba 1</div>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="col card-article">
+            <a
+              class="link-info link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-opacity-75-hover"
+              href="#"
+            >
+              <div class="card border-0">
+                <div
+                  class="d-flex align-items-center justify-content-center post-image w-100"
+                >
+                  <img
+                    src="https://placehold.co/400"
+                    class="card-img-top img-thumbnail border-0 rounded-4"
+                    style="width: 160px; height: 160px"
+                    alt="Test"
+                  />
+                </div>
+                <div class="card-body row row-col-1 w-100 mx-auto text-center">
+                  <h5
+                    class="card-title link-info link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-opacity-75-hover"
+                  >
+                    Trabajo 2
+                  </h5>
+                  <div>Trabajo de prueba 2</div>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="col card-article">
+            <a
+              class="link-info link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-opacity-75-hover"
+              href="#"
+            >
+              <div class="card border-0">
+                <div
+                  class="d-flex align-items-center justify-content-center post-image w-100"
+                >
+                  <img
+                    src="https://placehold.co/400"
+                    class="card-img-top img-thumbnail border-0 rounded-4"
+                    style="width: 160px; height: 160px"
+                    alt="Test"
+                  />
+                </div>
+                <div class="card-body row row-col-1 w-100 mx-auto text-center">
+                  <h5
+                    class="card-title link-info link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-opacity-75-hover"
+                  >
+                    Trabajo 3
+                  </h5>
+                  <div>Trabajo de prueba 3</div>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="col card-article">
+            <a
+              class="link-info link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-opacity-75-hover"
+              href="#"
+            >
+              <div class="card border-0">
+                <div
+                  class="d-flex align-items-center justify-content-center post-image w-100"
+                >
+                  <img
+                    src="https://placehold.co/400"
+                    class="card-img-top img-thumbnail border-0 rounded-4"
+                    style="width: 160px; height: 160px"
+                    alt="Test"
+                  />
+                </div>
+                <div class="card-body row row-col-1 w-100 mx-auto text-center">
+                  <h5
+                    class="card-title link-info link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-opacity-75-hover"
+                  >
+                    Trabajo 3
+                  </h5>
+                  <div>Trabajo de prueba 3</div>
+                </div>
+              </div>
+            </a>
+          </article>
+        </section>
+      </section>
+    </main>
+    <!-- inicio footer -->
+    <footer
+      class="bg-gb-filter d-flex justify-content-center align-items-center mt-md-2 py-md-2"
+    >
+      &copy; Adal Michael García&nbsp;<span id="currentYear"></span>
+    </footer>
+    <!-- fin foooter -->
+    <!-- inicio script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var currentYear = new Date().getFullYear();
+        document.getElementById("currentYear").textContent = "- " + currentYear;
+      });
+    </script>
+    <script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="node_modules/bootstrap/js/dist/alert.js"></script>
+    <script src="node_modules/bootstrap/js/dist/button.js"></script>
+    <script src="node_modules/bootstrap/js/dist/carousel.js"></script>
+    <script src="node_modules/bootstrap/js/dist/collapse.js"></script>
+    <script src="node_modules/bootstrap/js/dist/dropdown.js"></script>
+    <script src="node_modules/bootstrap/js/dist/modal.js"></script>
+    <script src="node_modules/bootstrap/js/dist/offcanvas.js"></script>
+    <script src="node_modules/bootstrap/js/dist/popover.js"></script>
+    <script src="node_modules/bootstrap/js/dist/scrollspy.js"></script>
+    <script src="node_modules/bootstrap/js/dist/tab.js"></script>
+    <script src="node_modules/bootstrap/js/dist/toast.js"></script>
+    <script src="node_modules/bootstrap/js/dist/tooltip.js"></script>
+    <script src="js/themeMode.js"></script>
+    <!-- fin script -->
+  </body>
+</html>
