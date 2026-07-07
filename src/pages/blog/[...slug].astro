@@ -1,0 +1,206 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getCollection, getEntry, render } from 'astro:content'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog')
+  return posts
+    .filter((post) => !post.data.draft)
+    .map((post) => ({
+      params: { slug: post.id },
+      props: { id: post.id },
+    }))
+}
+
+const { id } = Astro.props
+const post = await getEntry('blog', id)
+const { Content } = await render(post)
+---
+
+<BaseLayout
+  title={`${post.data.title} — Blog — Teapartydev`}
+  description={post.data.description}
+>
+  <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
+    <a
+      href="/blog"
+      class="inline-flex items-center gap-1 mb-6 no-underline transition-all duration-300 hover:opacity-80"
+      style="color: var(--gruvbox-blue);"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+      </svg>
+      Volver al blog
+    </a>
+
+    <article>
+      <header class="mb-8">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
+            {new Date(post.data.date).toLocaleDateString('es-ES', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </span>
+        </div>
+        <h1 class="text-3xl font-bold mb-4" style="color: var(--gruvbox-yellow); font-family: 'Courier New', monospace;">
+          {post.data.title}
+        </h1>
+        {post.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mb-4">
+            {post.data.tags.map((tag) => (
+              <a
+                href={`/blog/tags/${tag}`}
+                class="text-xs px-2 py-1 rounded no-underline transition-all duration-300 hover:opacity-80"
+                style="background: var(--gruvbox-card); color: var(--gruvbox-blue); border: 1px solid var(--gruvbox-blue);"
+              >
+                #{tag}
+              </a>
+            ))}
+          </div>
+        )}
+      </header>
+
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="terminal-dot close"></span>
+            <span class="terminal-dot minimize"></span>
+            <span class="terminal-dot maximize"></span>
+          </div>
+          <span class="terminal-title">adalgarcia@portfolio: ~/blog/{post.id}</span>
+        </div>
+        <div class="terminal-body prose-styles">
+          <Content />
+        </div>
+      </div>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .prose-styles {
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+
+  .prose-styles :global(h2) {
+    color: var(--gruvbox-yellow);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .prose-styles :global(h3) {
+    color: var(--gruvbox-orange);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .prose-styles :global(p) {
+    margin-bottom: 1rem;
+    color: var(--gruvbox-fg);
+  }
+
+  .prose-styles :global(ul) {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1rem;
+  }
+
+  .prose-styles :global(ul li) {
+    margin-bottom: 0.25rem;
+  }
+
+  .prose-styles :global(ul li::before) {
+    content: '▸ ';
+    color: var(--gruvbox-yellow);
+    font-weight: bold;
+  }
+
+  .prose-styles :global(ol) {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose-styles :global(ol li) {
+    margin-bottom: 0.25rem;
+  }
+
+  .prose-styles :global(strong) {
+    color: var(--gruvbox-yellow);
+  }
+
+  .prose-styles :global(code) {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: var(--gruvbox-green);
+  }
+
+  .prose-styles :global(pre) {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    border: 1px solid var(--gruvbox-gray);
+  }
+
+  .prose-styles :global(pre code) {
+    background: none;
+    padding: 0;
+    color: var(--gruvbox-fg);
+  }
+
+  .prose-styles :global(img) {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 1rem 0;
+    border: 2px solid var(--gruvbox-gray);
+  }
+
+  .prose-styles :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+  }
+
+  .prose-styles :global(th) {
+    text-align: left;
+    padding: 0.5rem;
+    border-bottom: 2px solid var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow);
+    font-weight: 700;
+  }
+
+  .prose-styles :global(td) {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--gruvbox-gray);
+  }
+
+  .prose-styles :global(a) {
+    color: var(--gruvbox-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .prose-styles :global(blockquote) {
+    border-left: 4px solid var(--gruvbox-yellow);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    opacity: 0.85;
+    font-style: italic;
+  }
+
+  .prose-styles :global(hr) {
+    border: none;
+    border-top: 2px solid var(--gruvbox-gray);
+    margin: 2rem 0;
+  }
+</style>

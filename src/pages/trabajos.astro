@@ -1,8 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
+
+const allProjects = await getCollection('projects')
+const projects = allProjects
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 ---
 
-<BaseLayout title="Trabajos — Teapartydev" description="Portafolio de proyectos de Adal Michael García">
+<BaseLayout
+  title="Trabajos — Teapartydev"
+  description="Portafolio de proyectos de Adal Michael García"
+>
   <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
     <h1 class="text-3xl font-bold mb-8" style="font-family: 'Courier New', monospace;">
       <span style="color: var(--gruvbox-green); font-weight: bold;">$</span>
@@ -10,24 +19,66 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       <span class="terminal-cursor"></span>
     </h1>
 
-    {Array.from({ length: 4 }).map((_, i) => (
-      <div class="terminal-card" style={`animation: fadeInUp 0.6s ease-out ${i * 0.12}s both;`}>
+    {projects.length === 0 && (
+      <div class="terminal-card">
         <div class="terminal-header">
           <div class="terminal-dots">
             <span class="terminal-dot close"></span>
             <span class="terminal-dot minimize"></span>
             <span class="terminal-dot maximize"></span>
           </div>
-          <span class="terminal-title">adalgarcia@portfolio: ~/proyectos/project-{i + 1}</span>
+          <span class="terminal-title">adalgarcia@portfolio: ~/proyectos</span>
         </div>
         <div class="terminal-body">
-          <div class="flex items-center gap-2 mb-4 select-none">
-            <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">Próximamente</span>
-          </div>
-          <h2 class="text-xl font-bold mb-2" style="color: var(--gruvbox-orange);">Proyecto en construcción</h2>
-          <p class="opacity-75">Aquí se mostrarán los detalles del proyecto cuando esté disponible.</p>
+          <p class="opacity-75">No hay proyectos publicados todavía.</p>
         </div>
       </div>
+    )}
+
+    {projects.map((project, i) => (
+      <a
+        href={`/trabajos/${project.id}`}
+        class="block no-underline"
+        style={`animation: fadeInUp 0.6s ease-out ${i * 0.15}s both;`}
+      >
+        <article class="terminal-card cursor-pointer">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="terminal-dot close"></span>
+              <span class="terminal-dot minimize"></span>
+              <span class="terminal-dot maximize"></span>
+            </div>
+            <span class="terminal-title">adalgarcia@portfolio: ~/proyectos/{project.id}</span>
+          </div>
+          <div class="terminal-body">
+            <div class="flex items-center gap-2 mb-4 select-none">
+              <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
+                {new Date(project.data.date).toLocaleDateString('es-ES', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </span>
+            </div>
+            <h2 class="text-xl font-bold mb-2" style="color: var(--gruvbox-orange);">
+              {project.data.title}
+            </h2>
+            <p class="opacity-75 mb-3">{project.data.description}</p>
+            {project.data.tags.length > 0 && (
+              <div class="flex flex-wrap gap-2">
+                {project.data.tags.map((tag) => (
+                  <span
+                    class="text-xs px-2 py-1 rounded"
+                    style="background: var(--gruvbox-card); color: var(--gruvbox-blue); border: 1px solid var(--gruvbox-blue);"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </article>
+      </a>
     ))}
   </div>
 </BaseLayout>
