@@ -1,10 +1,12 @@
 FROM node:22-alpine AS build
 
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY pnpm-lock.yaml package.json pnpm-workspace.yaml .npmrc ./
+RUN pnpm install --frozen-lockfile
 COPY . .
-RUN npm run build
+RUN pnpm astro build
 
 FROM nginx:alpine
 
