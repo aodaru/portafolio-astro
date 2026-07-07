@@ -1,9 +1,9 @@
 FROM node:22-alpine AS build
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN npm install -g pnpm@11.10.0
 
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
+COPY pnpm-lock.yaml package.json ./
 RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm build
