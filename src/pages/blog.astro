@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="Blog — Teapartydev" description="Artículos y tutoriales de Adal Michael García">
+  <section class="max-w-4xl mx-auto px-4 py-20">
+    <h1 class="text-3xl font-bold mb-8">Blog</h1>
+    <div class="grid gap-6 sm:grid-cols-2">
+      {Array.from({ length: 3 }).map(() => (
+        <article class="rounded-xl border border-border bg-bg-secondary p-6">
+          <div class="w-full h-40 rounded-lg bg-bg-tertiary mb-4" />
+          <p class="text-xs text-text-muted uppercase tracking-wide mb-2">Próximamente</p>
+          <h2 class="text-lg font-semibold mb-2">Artículo en construcción</h2>
+          <p class="text-sm text-text-muted">Este espacio estará dedicado a artículos sobre desarrollo web, tecnología y más.</p>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

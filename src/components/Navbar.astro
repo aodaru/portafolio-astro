@@ -1,0 +1,86 @@
+---
+const currentPath = Astro.url.pathname
+
+const links = [
+  { href: '/', label: 'Inicio' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/trabajos', label: 'Trabajos' },
+  { href: '/contacto', label: 'Contacto' },
+]
+---
+
+<header class="fixed top-0 inset-x-0 z-50 bg-nav backdrop-blur-md border-b border-border">
+  <nav class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 font-bold text-lg hover:text-accent transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M17.5 3.5c2 2 2 5.5 0 7.5l-5 5-5-5c-2-2-2-5.5 0-7.5s5.5-2 7.5 0Z"/>
+        <path d="M12 3v14"/>
+        <path d="M7 17h10"/>
+        <path d="M10 21h4"/>
+      </svg>
+      Adal Michael García
+    </a>
+
+    <button class="mobile-toggle md:hidden p-2 text-text hover:text-accent transition-colors" aria-label="Menú de navegación" type="button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+
+    <div class="nav-menu hidden md:flex items-center gap-1">
+      {links.map(({ href, label }) => (
+        <a
+          href={href}
+          class={`
+            px-3 py-2 rounded-lg text-sm font-medium transition-colors
+            ${currentPath === href
+              ? 'text-accent bg-accent/10'
+              : 'text-text-muted hover:text-text hover:bg-bg-secondary'
+            }
+          `}
+        >
+          {label}
+        </a>
+      ))}
+
+      <button class="theme-toggle ml-2 p-2 rounded-lg text-text-muted hover:text-text hover:bg-bg-secondary transition-colors" aria-label="Cambiar tema" type="button">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="moon-icon hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.querySelector('.mobile-toggle')
+  const menu = document.querySelector('.nav-menu')
+
+  toggle?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden')
+    menu?.classList.toggle('flex')
+    menu?.classList.toggle('flex-col')
+    menu?.classList.toggle('absolute')
+    menu?.classList.toggle('top-16')
+    menu?.classList.toggle('inset-x-4')
+    menu?.classList.toggle('p-4')
+    menu?.classList.toggle('rounded-xl')
+    menu?.classList.toggle('bg-bg')
+    menu?.classList.toggle('border')
+    menu?.classList.toggle('border-border')
+    menu?.classList.toggle('shadow-lg')
+  })
+</script>
