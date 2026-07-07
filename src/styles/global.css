@@ -1,35 +1,457 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #fafaf9;
-  --color-bg-secondary: #f5f5f4;
-  --color-bg-tertiary: #e7e5e4;
-  --color-text: #1c1917;
-  --color-text-muted: #57534e;
-  --color-accent: #d97706;
-  --color-accent-hover: #b45309;
-  --color-border: #e7e5e4;
-  --color-nav: rgba(250, 250, 249, 0.8);
+  --font-site: "Mononoki", "MesloLG", "Courier New", monospace;
+  --font-terminal: "Courier New", monospace;
+}
+
+@font-face {
+  font-family: "Mononoki";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/Mononoki-Regular.ttf") format("truetype");
+  font-variant-ligatures: none;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Mononoki";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/Mononoki-Bold.ttf") format("truetype");
+  font-variant-ligatures: none;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MesloLG";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/MesloLG-M-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MesloLG";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/MesloLG-M-Bold.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  --gruvbox-bg: #fbf1c7;
+  --gruvbox-fg: #282828;
+  --gruvbox-yellow: #d79921;
+  --gruvbox-orange: #d65d0e;
+  --gruvbox-green: #689d6a;
+  --gruvbox-blue: #458588;
+  --gruvbox-gray: #928374;
+  --gruvbox-card: rgba(191, 175, 135, 0.3);
+  --gruvbox-header-from: rgba(189, 174, 147, 0.8);
+  --gruvbox-header-to: rgba(168, 153, 132, 0.8);
+  --gruvbox-close: #fb4934;
+  --gruvbox-minimize: #fabd2f;
+  --gruvbox-maximize: #8ec07c;
 }
 
 [data-theme="dark"] {
-  --color-bg: #0c0a09;
-  --color-bg-secondary: #1c1917;
-  --color-bg-tertiary: #292524;
-  --color-text: #fafaf9;
-  --color-text-muted: #a8a29e;
-  --color-accent: #fbbf24;
-  --color-accent-hover: #f59e0b;
-  --color-border: #292524;
-  --color-nav: rgba(12, 10, 9, 0.8);
+  --gruvbox-bg: #282828;
+  --gruvbox-fg: #ebdbb2;
+  --gruvbox-yellow: #fabd2f;
+  --gruvbox-orange: #fe8019;
+  --gruvbox-green: #8ec07c;
+  --gruvbox-blue: #83a598;
+  --gruvbox-gray: #928374;
+  --gruvbox-card: rgba(235, 219, 178, 0.05);
+  --gruvbox-header-from: rgba(80, 73, 69, 0.8);
+  --gruvbox-header-to: rgba(60, 56, 54, 0.8);
+  --gruvbox-close: #cc241d;
+  --gruvbox-minimize: #d79921;
+  --gruvbox-maximize: #689d6a;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* ===== Base ===== */
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  transition: background-color 0.3s, color 0.3s;
+  font-family: "Mononoki", "MesloLG", "Courier New", monospace;
+  background-color: var(--gruvbox-bg);
+  color: var(--gruvbox-fg);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ===== Scrollbar ===== */
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gruvbox-bg);
+  border: 2px solid var(--gruvbox-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gruvbox-yellow);
+  border-radius: 6px;
+  border: 2px solid var(--gruvbox-gray);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b8bb26;
+}
+
+/* ===== Animations ===== */
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Navbar ===== */
+
+.gruvbox-nav {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background-color: var(--gruvbox-card);
+  border-bottom: 2px solid var(--gruvbox-yellow);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gruvbox-nav .nav-logo {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--gruvbox-yellow);
+  transition: all 0.3s ease;
+}
+
+.gruvbox-nav .nav-logo:hover {
+  color: var(--gruvbox-orange);
+  transform: scale(1.05);
+}
+
+.gruvbox-nav .nav-link {
+  color: var(--gruvbox-fg);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  font-family: "Mononoki", "MesloLG", "Courier New", monospace;
+}
+
+.gruvbox-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--gruvbox-yellow);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.gruvbox-nav .nav-link:hover::after {
+  width: 80%;
+}
+
+.gruvbox-nav .nav-link:hover,
+.gruvbox-nav .nav-link.active {
+  background-color: var(--gruvbox-card);
+  color: var(--gruvbox-yellow);
+}
+
+.gruvbox-nav .nav-link.active::after {
+  width: 80%;
+}
+
+/* ===== Theme Toggle ===== */
+
+.theme-toggle {
+  background: var(--gruvbox-yellow);
+  color: var(--gruvbox-bg);
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle:hover {
+  transform: rotate(180deg) scale(1.1);
+  background: var(--gruvbox-orange);
+}
+
+/* ===== Terminal Cards ===== */
+
+.terminal-card {
+  background: var(--gruvbox-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid var(--gruvbox-gray);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.terminal-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border-color: var(--gruvbox-yellow);
+}
+
+/* Terminal window header bar */
+.terminal-header {
+  background: linear-gradient(180deg, var(--gruvbox-header-from), var(--gruvbox-header-to));
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--gruvbox-gray);
+}
+
+.terminal-dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  display: inline-block;
+}
+
+.terminal-dot.close {
+  background: var(--gruvbox-close);
+}
+
+.terminal-dot.minimize {
+  background: var(--gruvbox-minimize);
+}
+
+.terminal-dot.maximize {
+  background: var(--gruvbox-maximize);
+}
+
+.terminal-title {
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+  color: var(--gruvbox-fg);
+  opacity: 0.9;
+}
+
+/* Terminal card body */
+.terminal-body {
+  padding: 1.5rem;
+  font-family: "Courier New", monospace;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .terminal-body {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Terminal command header inside body */
+.terminal-command {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--gruvbox-yellow);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "Courier New", monospace;
+}
+
+/* ===== Terminal Prompt ===== */
+
+.terminal-prompt {
+  color: var(--gruvbox-green);
+  font-weight: bold;
+}
+
+.terminal-prompt::before {
+  content: '$ ';
+  color: var(--gruvbox-yellow);
+}
+
+/* ===== Blinking Cursor ===== */
+
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.2em;
+  background: var(--gruvbox-yellow);
+  margin-left: 2px;
+  animation: blink 1s infinite;
+  vertical-align: text-bottom;
+}
+
+/* ===== Terminal List ===== */
+
+.terminal-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.terminal-list li::before {
+  content: '▸ ';
+  color: var(--gruvbox-yellow);
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+/* ===== Bio Timeline ===== */
+
+.bio-item {
+  padding-left: 3rem;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.bio-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--gruvbox-yellow);
+}
+
+.bio-item::after {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 0.5rem;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--gruvbox-orange);
+  border: 3px solid var(--gruvbox-bg);
+}
+
+.bio-year {
+  font-weight: 700;
+  color: var(--gruvbox-yellow);
+  font-size: 1.1rem;
+}
+
+/* ===== Avatar ===== */
+
+.avatar-ring {
+  border: 4px solid var(--gruvbox-yellow);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-ring::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(45deg, var(--gruvbox-yellow), var(--gruvbox-orange), var(--gruvbox-green));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.avatar-ring:hover::before {
+  opacity: 1;
+}
+
+.avatar-ring:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* ===== Social Buttons ===== */
+
+.social-btn {
+  background: transparent;
+  border: 2px solid var(--gruvbox-gray);
+  color: var(--gruvbox-fg);
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-weight: 500;
+  width: 100%;
+}
+
+.social-btn:hover {
+  background: var(--gruvbox-yellow);
+  border-color: var(--gruvbox-yellow);
+  color: var(--gruvbox-bg);
+  transform: translateX(5px);
+}
+
+/* ===== Intro Section ===== */
+
+.intro-card {
+  background: var(--gruvbox-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border: 2px solid var(--gruvbox-yellow);
+}
+
+/* ===== Footer ===== */
+
+.gruvbox-footer {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background-color: var(--gruvbox-card);
+  border-top: 2px solid var(--gruvbox-yellow);
+}
+
+/* ===== Animations ===== */
+
+.animate-fade-in {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 768px) {
+  .avatar-ring {
+    width: 120px !important;
+    height: 120px !important;
+  }
+
+  .terminal-command {
+    font-size: 1.25rem;
+  }
 }
