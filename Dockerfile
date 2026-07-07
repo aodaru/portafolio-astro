@@ -3,10 +3,10 @@ FROM node:22-alpine AS build
 RUN npm install -g pnpm@11.10.0
 
 WORKDIR /app
-COPY pnpm-lock.yaml package.json ./
-RUN pnpm install --frozen-lockfile
+COPY pnpm-lock.yaml package.json .npmrc ./
+RUN pnpm install --frozen-lockfile --store-dir /tmp/pnpm-store
 COPY . .
-RUN pnpm build
+RUN pnpm build --store-dir /tmp/pnpm-store
 
 FROM nginx:alpine
 
