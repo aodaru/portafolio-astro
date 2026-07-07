@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import bio from '../data/bio.json'
 ---
 
 <BaseLayout title="Teapartydev — Inicio" description="Portafolio personal de Adal Michael García">
@@ -41,7 +42,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       </div>
     </div>
 
-    <!-- Placeholder terminal cards -->
+    <!-- Trabajos -->
     <div class="terminal-card">
       <div class="terminal-header">
         <div class="terminal-dots">
@@ -56,10 +57,66 @@ import BaseLayout from '../layouts/BaseLayout.astro'
           <span class="terminal-prompt">cat</span> trabajos.txt
           <span class="terminal-cursor"></span>
         </div>
-        <p class="opacity-75">Próximamente — proyectos y trabajos destacados.</p>
+        <h4 class="fw-bold mb-3" style="color: var(--gruvbox-orange);">
+          → {bio.role}
+        </h4>
+        <p class="mb-3">
+          {bio.summary}
+        </p>
+        <ul class="terminal-list">
+          {bio.highlights.map((item) => (
+            <li class="mb-2">{item}</li>
+          ))}
+        </ul>
       </div>
     </div>
 
+    <!-- Bio / Timeline -->
+    <div class="terminal-card">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <span class="terminal-dot close"></span>
+          <span class="terminal-dot minimize"></span>
+          <span class="terminal-dot maximize"></span>
+        </div>
+        <span class="terminal-title">adalgarcia@portfolio: ~/bio</span>
+      </div>
+      <div class="terminal-body">
+        <div class="terminal-command">
+          <span class="terminal-prompt">timeline</span> --show-all
+          <span class="terminal-cursor"></span>
+        </div>
+        {bio.timeline.map((entry) => (
+          <div class="bio-item">
+            <span class="bio-year">[{entry.year}]</span>
+            <p class="mb-0">{entry.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Pasatiempos -->
+    <div class="terminal-card">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <span class="terminal-dot close"></span>
+          <span class="terminal-dot minimize"></span>
+          <span class="terminal-dot maximize"></span>
+        </div>
+        <span class="terminal-title">adalgarcia@portfolio: ~/hobbies</span>
+      </div>
+      <div class="terminal-body">
+        <div class="terminal-command">
+          <span class="terminal-prompt">ls</span> -la hobbies/
+          <span class="terminal-cursor"></span>
+        </div>
+        <p class="mb-0">
+          {bio.hobbies.join(', ')}
+        </p>
+      </div>
+    </div>
+
+    <!-- Blog placeholder -->
     <div class="terminal-card">
       <div class="terminal-header">
         <div class="terminal-dots">
@@ -78,6 +135,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       </div>
     </div>
 
+    <!-- Contacto -->
     <div class="terminal-card">
       <div class="terminal-header">
         <div class="terminal-dots">
