@@ -63,7 +63,7 @@
   --gruvbox-green: #8ec07c;
   --gruvbox-blue: #83a598;
   --gruvbox-gray: #928374;
-  --gruvbox-card: rgba(235, 219, 178, 0.05);
+  --gruvbox-card: rgba(235, 219, 178, 0.12);
   --gruvbox-header-from: rgba(80, 73, 69, 0.8);
   --gruvbox-header-to: rgba(60, 56, 54, 0.8);
   --gruvbox-close: #cc241d;
@@ -124,6 +124,7 @@ body {
 .gruvbox-nav {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  background-color: var(--gruvbox-card);
   border-bottom: 2px solid var(--gruvbox-yellow);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -174,6 +175,14 @@ body {
 
 .gruvbox-nav .nav-link.active::after {
   width: 80%;
+}
+
+/* ===== Mobile Menu ===== */
+
+.gruvbox-nav .nav-menu.absolute {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background-color: var(--gruvbox-card);
 }
 
 /* ===== Theme Toggle ===== */
