@@ -12,11 +12,7 @@ const links = [
 <header class="gruvbox-nav fixed top-0 inset-x-0 z-50">
   <nav class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
     <a href="/" class="nav-logo flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-        <path d="M3 2.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-11z"/>
-        <path d="M7.354 5.646a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708l1.646 1.647V1.5a.5.5 0 0 1 1 0v3.793l1.646-1.647a.5.5 0 0 1 .708.708l-2 2z"/>
-        <path d="M4.5 1a.5.5 0 0 0-.5.5v2.5h1V2h6v9H5v-1H4v2.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5v-11a.5.5 0 0 0-.5-.5h-7z"/>
-      </svg>
+      <span class="nf nf-md-tea text-xl" aria-hidden="true"></span>
       Adal Michael García
     </a>
 
@@ -37,6 +33,17 @@ const links = [
           {label}
         </a>
       ))}
+
+      <a
+        href="https://github.com/aodaru"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="nav-link inline-flex items-center gap-1"
+        aria-label="GitHub"
+      >
+        <span class="nf nf-fa-github"></span>
+        <span class="hidden sm:inline">Repo</span>
+      </a>
 
       <button class="theme-toggle ml-2" aria-label="Cambiar tema" type="button">
         <svg class="bi" width="24" height="24" fill="currentColor">

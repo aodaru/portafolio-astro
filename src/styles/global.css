@@ -124,7 +124,6 @@ body {
 .gruvbox-nav {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  background-color: var(--gruvbox-card);
   border-bottom: 2px solid var(--gruvbox-yellow);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
