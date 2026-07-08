@@ -48,26 +48,44 @@
 ## Fase 4: Colecciones de Contenido
 **Blog posts y proyectos desde Markdown**
 
-- [ ] Blog: crear 2-3 posts de ejemplo en `src/content/blog/es/`
-- [ ] Proyectos: crear 2-3 proyectos de ejemplo en `src/content/projects/`
-- [ ] Frontmatter con: title, date, description, tags, image, draft
-- [ ] Página `/blog` con listado de posts (tarjetas, paginación básica)
-- [ ] Página `/blog/[slug]` con layout de post individual
-- [ ] Tags: taxonomía simple, páginas por tag (`/blog/tags/[tag]`)
+- [x] Blog: crear 2-3 posts de ejemplo en `src/content/blog/es/`
+- [x] Frontmatter con: title, date, description, tags, image, draft
+- [x] Página `/blog` con listado de posts (tarjetas, paginación básica)
+- [x] Página `/blog/[slug]` con layout de post individual
+- [x] Tags: taxonomía simple, páginas por tag (`/blog/tags/[tag]`)
 
-**Entregable**: Blog funcional con markdown, listado y detalle.
+- [x] Proyectos: crear 1-2 proyectos de ejemplo adicionales en `src/content/projects/`
+- [x] Paginación: implementar rutas `/blog/page/[n]` para navegar entre páginas
+
+**Entregable**: Blog funcional con markdown, listado, detalle y paginación completa.
 
 ---
 
 ## Fase 5: Página de Proyectos / Trabajos
 **Galería de trabajos destacados**
 
-- [ ] Página `/trabajos` (o `/projects`) con grid de proyectos
-- [ ] Cada proyecto: thumbnail, título, descripción corta, tags, enlace
-- [ ] Página individual de proyecto (`/trabajos/[slug]`)
+- [x] Página `/trabajos` (o `/projects`) con grid de proyectos
+- [x] Cada proyecto: thumbnail, título, descripción corta, tags, enlace
+- [x] Página individual de proyecto (`/trabajos/[slug]`)
+
+**Pendiente como siguiente tarea:**
 - [ ] Migrar datos de `themeWp/trabajos.html` y `themeWp/Works/`
 
 **Entregable**: Sección de portafolio completa.
+
+---
+
+## Fase 5B: Exploración de Diseños de Home
+**Múltiples variantes de página de inicio para estudiar diseños**
+
+- [ ] Crear ruta `/inicio1` con diseño alternativo (e.g. tarjetas, minimalista)
+- [ ] Crear ruta `/inicio2` con diseño alternativo (e.g. landing moderno, hero grande)
+- [ ] Crear ruta `/inicio3` con diseño alternativo (e.g. dashboard / grid estilo portafolio)
+- [ ] Mantener la home actual (`/`) intacta como referencia
+- [ ] Cada variante debe compartir el mismo contenido (bio.json) pero con layout y CSS distintos
+- [ ] (Opcional) Enlace desde la barra de navegación para switchear entre variantes en desarrollo
+
+**Entregable**: 3 páginas de inicio alternativas navegables, sin afectar la home actual.
 
 ---
 

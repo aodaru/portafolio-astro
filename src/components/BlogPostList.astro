@@ -1,0 +1,123 @@
+---
+export interface Props {
+  posts: import('astro:content').CollectionEntry<'blog'>[]
+  currentPage: number
+  totalPages: number
+}
+
+const { posts, currentPage, totalPages } = Astro.props
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+}
+
+function pageUrl(n: number): string {
+  return n === 1 ? '/blog' : `/blog/page/${n}`
+}
+---
+
+<div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
+  <h1 class="text-3xl font-bold mb-8" style="font-family: 'Courier New', monospace;">
+    <span style="color: var(--gruvbox-green); font-weight: bold;">$</span>
+    <span style="color: var(--gruvbox-yellow); margin-left: 0.5rem;">cat</span> posts.txt
+    <span class="terminal-cursor"></span>
+  </h1>
+
+  {posts.length === 0 && (
+    <div class="terminal-card">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <span class="terminal-dot close"></span>
+          <span class="terminal-dot minimize"></span>
+          <span class="terminal-dot maximize"></span>
+        </div>
+        <span class="terminal-title">adalgarcia@portfolio: ~/blog</span>
+      </div>
+      <div class="terminal-body">
+        <p class="opacity-75">No hay artículos publicados todavía.</p>
+      </div>
+    </div>
+  )}
+
+  {posts.map((post, i) => (
+    <a
+      href={`/blog/${post.id}`}
+      class="block no-underline"
+      style={`animation: fadeInUp 0.6s ease-out ${i * 0.12}s both;`}
+    >
+      <article class="terminal-card cursor-pointer">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="terminal-dot close"></span>
+            <span class="terminal-dot minimize"></span>
+            <span class="terminal-dot maximize"></span>
+          </div>
+          <span class="terminal-title">adalgarcia@portfolio: ~/blog/{post.id}</span>
+        </div>
+        <div class="terminal-body">
+          <div class="flex items-center gap-2 mb-4 select-none">
+            <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
+              {formatDate(post.data.date)}
+            </span>
+          </div>
+          <h2 class="text-xl font-bold mb-2" style="color: var(--gruvbox-yellow);">
+            {post.data.title}
+          </h2>
+          <p class="opacity-75 mb-3">{post.data.description}</p>
+          {post.data.tags.length > 0 && (
+            <div class="flex flex-wrap gap-2">
+              {post.data.tags.map((tag) => (
+                <span
+                  class="text-xs px-2 py-1 rounded"
+                  style="background: var(--gruvbox-card); color: var(--gruvbox-blue); border: 1px solid var(--gruvbox-blue);"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </article>
+    </a>
+  ))}
+
+  {totalPages > 1 && (
+    <div class="flex justify-center gap-4 mt-8">
+      {currentPage > 1 && (
+        <a
+          href={pageUrl(currentPage - 1)}
+          class="px-4 py-2 rounded border no-underline transition-all duration-300"
+          style="border-color: var(--gruvbox-gray); color: var(--gruvbox-fg);"
+        >
+          ← Anterior
+        </a>
+      )}
+      <span class="px-4 py-2 opacity-75">
+        {currentPage} / {totalPages}
+      </span>
+      {currentPage < totalPages && (
+        <a
+          href={pageUrl(currentPage + 1)}
+          class="px-4 py-2 rounded border no-underline transition-all duration-300"
+          style="border-color: var(--gruvbox-gray); color: var(--gruvbox-fg);"
+        >
+          Siguiente →
+        </a>
+      )}
+    </div>
+  )}
+
+  <div class="mt-8 text-center">
+    <a
+      href="/blog/tags"
+      class="inline-block px-4 py-2 rounded border no-underline transition-all duration-300 hover:border-[var(--gruvbox-yellow)]"
+      style="border-color: var(--gruvbox-gray); color: var(--gruvbox-fg);"
+    >
+      Ver todos los tags #
+    </a>
+  </div>
+</div>
