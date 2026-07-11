@@ -1,0 +1,597 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import TazaAscii from '../components/TazaAscii.astro'
+import bio from '../data/bio.json'
+---
+
+<BaseLayout title="Teapartydev — Inicio 7" description="Variante taza video de fondo — Adal Michael García">
+  <div class="inicio7">
+    <!-- Hero: taza como video de fondo, texto encima -->
+    <section class="hero7">
+      <div class="hero7-bg" aria-hidden="true">
+        <video autoplay muted loop playsinline class="hero7-video" data-taza-play>
+          <source src="/img/taza-cafe-compressed.webm" type="video/webm" />
+        </video>
+        <div class="hero7-overlay"></div>
+      </div>
+
+      <div class="hero7-grid">
+        <div class="hero7-text">
+          <div class="hero7-eyebrow">— Hello, I'm a {bio.role} based in Panamá</div>
+
+          <h1 class="hero7-title">
+            <span class="hero7-line">Adal</span>
+            <span class="hero7-line hero7-line-accent">Michael</span>
+            <span class="hero7-line">García</span>
+          </h1>
+
+          <p class="hero7-sub">
+            I build <em>digital systems</em> that respect the operator.
+            Reporting tools, data layers, and the kind of small software
+            that makes teams faster.
+          </p>
+
+          <div class="hero7-cta">
+            <a href="/trabajos" class="hero7-btn hero7-btn-primary">
+              View my work
+              <span class="hero7-btn-arrow">→</span>
+            </a>
+            <a href="/contacto" class="hero7-btn hero7-btn-ghost">Get in touch</a>
+          </div>
+
+          <div class="hero7-meta">
+            <span><span class="hero7-meta-key">role</span> engineer / sysadmin</span>
+            <span><span class="hero7-meta-key">since</span> 2012</span>
+            <span><span class="hero7-meta-key">based</span> Chiriquí, PA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero7-taza-badge">
+        <span class="hero7-cup-icon">☕</span>
+        <span>currently brewing</span>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="sec7" data-reveal>
+      <div class="sec7-label">— 01 / About</div>
+      <div class="sec7-content">
+        <h2 class="sec7-h2">A decade of keeping things running.</h2>
+        <p class="sec7-p">
+          I've spent the last 12+ years in the trenches of system administration — building
+          reporting tools, data query layers, and small pieces of software that make teams
+          faster. I care about reliability, clarity, and tools that respect the operator.
+        </p>
+        <a href="/blog" class="sec7-link">Read my notes →</a>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="sec7" data-reveal>
+      <div class="sec7-label">— 02 / Selected work</div>
+      <div class="sec7-content">
+        <h2 class="sec7-h2">Recent projects</h2>
+        <p class="sec7-p sec7-p-sm">A few things I've built and shipped recently.</p>
+
+        <div class="proj7-grid">
+          <a href="/trabajos" class="proj7-card">
+            <span class="proj7-num">01</span>
+            <h3 class="proj7-title">Intranet & reporting</h3>
+            <p class="proj7-desc">Sales reporting, dashboards, and internal tools for fast decision-making.</p>
+            <span class="proj7-arrow">→</span>
+          </a>
+
+          <a href="/trabajos" class="proj7-card">
+            <span class="proj7-num">02</span>
+            <h3 class="proj7-title">Web platforms</h3>
+            <p class="proj7-desc">Custom websites and content systems tailored to small business needs.</p>
+            <span class="proj7-arrow">→</span>
+          </a>
+
+          <a href="/trabajos" class="proj7-card">
+            <span class="proj7-num">03</span>
+            <h3 class="proj7-title">This portfolio</h3>
+            <p class="proj7-desc">A static site built with Astro + GruvBox, replacing a WordPress theme.</p>
+            <span class="proj7-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hobbies -->
+    <section class="sec7" data-reveal>
+      <div class="sec7-label">— 03 / Things I like</div>
+      <div class="sec7-content">
+        <h2 class="sec7-h2">Beyond the terminal</h2>
+        <p class="sec7-p">
+          When I'm not shipping code, you'll find me tinkering with electronics, IoT projects,
+          and way too many video games.
+        </p>
+        <div class="hobby7-grid">
+          {bio.hobbies.map((hobby) => (
+            <span class="hobby7-chip">{hobby}</span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="sec7 sec7-cta" data-reveal>
+      <div class="cta7">
+        <h2 class="cta7-h2">Have something in mind?</h2>
+        <p class="cta7-p">Let's talk about systems, tools, or a new project.</p>
+        <div class="cta7-actions">
+          <a href="mailto:hi@teapartydev.com" class="hero7-btn hero7-btn-primary">
+            Say hello
+            <span class="hero7-btn-arrow">→</span>
+          </a>
+          <div class="cta7-socials">
+            <a href="https://github.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta7-social">GitHub</a>
+            <a href="https://twitter.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta7-social">Twitter</a>
+            <a href="https://www.linkedin.com/in/adal-garcia-471889197/" target="_blank" rel="noopener noreferrer" class="cta7-social">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .inicio7 {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+  }
+
+  /* ================= HERO ================= */
+  .hero7 {
+    min-height: 92vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 6rem 0 4rem;
+    margin: 0 -1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    overflow: hidden;
+    border-radius: 0 0 16px 16px;
+  }
+
+  .hero7-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero7-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.45;
+  }
+
+  [data-theme="light"] .hero7-video {
+    opacity: 0.35;
+  }
+
+  .hero7-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at center, transparent 30%, var(--gruvbox-bg) 95%),
+      linear-gradient(180deg, transparent 0%, transparent 60%, var(--gruvbox-bg) 100%);
+  }
+
+  [data-theme="dark"] .hero7-overlay {
+    background:
+      radial-gradient(ellipse at center, transparent 30%, var(--gruvbox-bg) 95%),
+      linear-gradient(180deg, transparent 0%, transparent 60%, var(--gruvbox-bg) 100%);
+  }
+
+  .hero7-grid {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .hero7-text {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  }
+
+  .hero7-eyebrow {
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--gruvbox-gray);
+    margin-bottom: 2rem;
+  }
+
+  .hero7-title {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin: 0 0 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero7-line {
+    display: block;
+    color: var(--gruvbox-fg);
+  }
+
+  .hero7-line-accent {
+    color: var(--gruvbox-yellow);
+    font-style: italic;
+    font-weight: 400;
+    padding-left: 1.5rem;
+  }
+
+  .hero7-sub {
+    font-family: "MesloLG", monospace;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--gruvbox-fg);
+    margin: 0 0 2rem;
+    max-width: 50ch;
+  }
+
+  .hero7-sub em {
+    color: var(--gruvbox-orange);
+    font-style: italic;
+  }
+
+  .hero7-cta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero7-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 6px;
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .hero7-btn-primary {
+    background: var(--gruvbox-yellow);
+    color: var(--gruvbox-bg);
+    box-shadow: 0 6px 20px -8px var(--gruvbox-yellow);
+  }
+
+  .hero7-btn-primary:hover {
+    background: var(--gruvbox-orange);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -8px var(--gruvbox-orange);
+  }
+
+  .hero7-btn-arrow {
+    transition: transform 0.2s;
+  }
+
+  .hero7-btn:hover .hero7-btn-arrow {
+    transform: translateX(4px);
+  }
+
+  .hero7-btn-ghost {
+    background: var(--gruvbox-card);
+    color: var(--gruvbox-fg);
+    border: 1px solid var(--gruvbox-card);
+    backdrop-filter: blur(8px);
+  }
+
+  .hero7-btn-ghost:hover {
+    border-color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow);
+    transform: translateY(-2px);
+  }
+
+  .hero7-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    font-family: "MesloLG", monospace;
+    font-size: 0.85rem;
+    color: var(--gruvbox-fg);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gruvbox-card);
+  }
+
+  .hero7-meta-key {
+    color: var(--gruvbox-gray);
+    text-transform: lowercase;
+    margin-right: 0.4rem;
+  }
+
+  .hero7-taza-badge {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 999px;
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    color: var(--gruvbox-gray);
+    font-style: italic;
+    backdrop-filter: blur(12px);
+  }
+
+  .hero7-cup-icon {
+    color: var(--gruvbox-orange);
+  }
+
+  /* ================= SECTIONS ================= */
+  .sec7 {
+    padding: 5rem 0;
+    border-top: 1px solid var(--gruvbox-card);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sec7.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .sec7-label {
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--gruvbox-yellow);
+    margin-bottom: 1.5rem;
+  }
+
+  .sec7-h2 {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--gruvbox-fg);
+    margin: 0 0 1.25rem;
+    max-width: 22ch;
+  }
+
+  .sec7-p {
+    font-family: "MesloLG", monospace;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--gruvbox-fg);
+    margin: 0 0 1.5rem;
+    max-width: 60ch;
+  }
+
+  .sec7-p-sm {
+    color: var(--gruvbox-gray);
+    font-size: 0.95rem;
+  }
+
+  .sec7-link {
+    display: inline-block;
+    font-family: "MesloLG", monospace;
+    font-size: 0.95rem;
+    color: var(--gruvbox-yellow);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .sec7-link:hover {
+    color: var(--gruvbox-orange);
+    transform: translateX(4px);
+  }
+
+  /* Projects */
+  .proj7-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--gruvbox-card);
+  }
+
+  .proj7-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 2rem 0.5rem;
+    text-decoration: none;
+    color: var(--gruvbox-fg);
+    border-bottom: 1px solid var(--gruvbox-card);
+    transition: padding-left 0.3s, color 0.3s, background 0.3s;
+  }
+
+  .proj7-card:hover {
+    padding-left: 1.5rem;
+    color: var(--gruvbox-yellow);
+    background: var(--gruvbox-card);
+  }
+
+  .proj7-num {
+    font-family: "Mononoki", monospace;
+    font-size: 0.85rem;
+    color: var(--gruvbox-gray);
+    font-weight: 700;
+  }
+
+  .proj7-title {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin: 0 0 0.25rem;
+  }
+
+  .proj7-desc {
+    font-family: "MesloLG", monospace;
+    font-size: 0.9rem;
+    color: var(--gruvbox-gray);
+    margin: 0;
+  }
+
+  .proj7-card:hover .proj7-desc {
+    color: var(--gruvbox-fg);
+  }
+
+  .proj7-arrow {
+    font-size: 1.5rem;
+    color: var(--gruvbox-yellow);
+    transition: transform 0.3s;
+  }
+
+  .proj7-card:hover .proj7-arrow {
+    transform: translateX(8px);
+  }
+
+  /* Hobbies */
+  .hobby7-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .hobby7-chip {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 999px;
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    color: var(--gruvbox-blue);
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+
+  .hobby7-chip:hover {
+    border-color: var(--gruvbox-blue);
+    transform: translateY(-2px);
+  }
+
+  /* CTA */
+  .sec7-cta {
+    border-top: none;
+  }
+
+  .cta7 {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+  }
+
+  .cta7-h2 {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    color: var(--gruvbox-fg);
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .cta7-p {
+    font-family: "MesloLG", monospace;
+    font-size: 1rem;
+    color: var(--gruvbox-gray);
+    margin: 0 0 2rem;
+  }
+
+  .cta7-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .cta7-socials {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .cta7-social {
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    color: var(--gruvbox-fg);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .cta7-social:hover {
+    color: var(--gruvbox-yellow);
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sec7,
+    .hero7-text {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -80px 0px' }
+  );
+
+  document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+</script>
