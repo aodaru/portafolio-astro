@@ -4,132 +4,135 @@ import TazaAscii from '../components/TazaAscii.astro'
 import bio from '../data/bio.json'
 ---
 
-<BaseLayout title="Teapartydev — Inicio 7" description="Variante taza video de fondo — Adal Michael García">
-  <div class="inicio7">
-    <!-- Hero: taza como video de fondo, texto encima -->
-    <section class="hero7">
-      <div class="hero7-bg" aria-hidden="true">
-        <video autoplay muted loop playsinline class="hero7-video" data-taza-play>
+<BaseLayout title="Teapartydev — Inicio 7" description="Variante taza + tipografía con video de fondo — Adal Michael García">
+  <div class="inicio5">
+    <!-- Hero: texto grande izquierda, taza CSS derecha, video de fondo -->
+    <section class="hero5">
+      <div class="hero5-bg" aria-hidden="true">
+        <video autoplay muted loop playsinline class="hero5-video" data-taza-play>
           <source src="/img/taza-cafe-compressed.webm" type="video/webm" />
         </video>
-        <div class="hero7-overlay"></div>
+        <div class="hero5-overlay"></div>
       </div>
 
-      <div class="hero7-grid">
-        <div class="hero7-text">
-          <div class="hero7-eyebrow">— Hello, I'm a {bio.role} based in Panamá</div>
+      <div class="hero5-grid">
+        <div class="hero5-text">
+          <div class="hero5-eyebrow">— Hello, I'm a {bio.role} based in Panamá</div>
 
-          <h1 class="hero7-title">
-            <span class="hero7-line">Adal</span>
-            <span class="hero7-line hero7-line-accent">Michael</span>
-            <span class="hero7-line">García</span>
+          <h1 class="hero5-title">
+            <span class="hero5-line">Adal</span>
+            <span class="hero5-line hero5-line-accent">Michael</span>
+            <span class="hero5-line">García</span>
           </h1>
 
-          <p class="hero7-sub">
+          <p class="hero5-sub">
             I build <em>digital systems</em> that respect the operator.
             Reporting tools, data layers, and the kind of small software
             that makes teams faster.
           </p>
 
-          <div class="hero7-cta">
-            <a href="/trabajos" class="hero7-btn hero7-btn-primary">
+          <div class="hero5-cta">
+            <a href="/trabajos" class="hero5-btn hero5-btn-primary">
               View my work
-              <span class="hero7-btn-arrow">→</span>
+              <span class="hero5-btn-arrow">→</span>
             </a>
-            <a href="/contacto" class="hero7-btn hero7-btn-ghost">Get in touch</a>
+            <a href="/contacto" class="hero5-btn hero5-btn-ghost">Get in touch</a>
           </div>
 
-          <div class="hero7-meta">
-            <span><span class="hero7-meta-key">role</span> engineer / sysadmin</span>
-            <span><span class="hero7-meta-key">since</span> 2012</span>
-            <span><span class="hero7-meta-key">based</span> Chiriquí, PA</span>
+          <div class="hero5-meta">
+            <span><span class="hero5-meta-key">role</span> engineer / sysadmin</span>
+            <span><span class="hero5-meta-key">since</span> 2012</span>
+            <span><span class="hero5-meta-key">based</span> Chiriquí, PA</span>
           </div>
         </div>
-      </div>
 
-      <div class="hero7-taza-badge">
-        <span class="hero7-cup-icon">☕</span>
-        <span>currently brewing</span>
+        <aside class="hero5-taza-wrap">
+          <TazaAscii variant="css" size="lg" label="Taza de café humeante" class="hero5-taza" />
+          <div class="hero5-taza-caption">
+            <span class="hero5-cup-icon">☕</span>
+            <span>currently brewing</span>
+          </div>
+        </aside>
       </div>
     </section>
 
     <!-- About -->
-    <section class="sec7" data-reveal>
-      <div class="sec7-label">— 01 / About</div>
-      <div class="sec7-content">
-        <h2 class="sec7-h2">A decade of keeping things running.</h2>
-        <p class="sec7-p">
+    <section class="sec5" data-reveal>
+      <div class="sec5-label">— 01 / About</div>
+      <div class="sec5-content">
+        <h2 class="sec5-h2">A decade of keeping things running.</h2>
+        <p class="sec5-p">
           I've spent the last 12+ years in the trenches of system administration — building
           reporting tools, data query layers, and small pieces of software that make teams
           faster. I care about reliability, clarity, and tools that respect the operator.
         </p>
-        <a href="/blog" class="sec7-link">Read my notes →</a>
+        <a href="/blog" class="sec5-link">Read my notes →</a>
       </div>
     </section>
 
     <!-- Projects -->
-    <section class="sec7" data-reveal>
-      <div class="sec7-label">— 02 / Selected work</div>
-      <div class="sec7-content">
-        <h2 class="sec7-h2">Recent projects</h2>
-        <p class="sec7-p sec7-p-sm">A few things I've built and shipped recently.</p>
+    <section class="sec5" data-reveal>
+      <div class="sec5-label">— 02 / Selected work</div>
+      <div class="sec5-content">
+        <h2 class="sec5-h2">Recent projects</h2>
+        <p class="sec5-p sec5-p-sm">A few things I've built and shipped recently.</p>
 
-        <div class="proj7-grid">
-          <a href="/trabajos" class="proj7-card">
-            <span class="proj7-num">01</span>
-            <h3 class="proj7-title">Intranet & reporting</h3>
-            <p class="proj7-desc">Sales reporting, dashboards, and internal tools for fast decision-making.</p>
-            <span class="proj7-arrow">→</span>
+        <div class="proj5-grid">
+          <a href="/trabajos" class="proj5-card">
+            <span class="proj5-num">01</span>
+            <h3 class="proj5-title">Intranet & reporting</h3>
+            <p class="proj5-desc">Sales reporting, dashboards, and internal tools for fast decision-making.</p>
+            <span class="proj5-arrow">→</span>
           </a>
 
-          <a href="/trabajos" class="proj7-card">
-            <span class="proj7-num">02</span>
-            <h3 class="proj7-title">Web platforms</h3>
-            <p class="proj7-desc">Custom websites and content systems tailored to small business needs.</p>
-            <span class="proj7-arrow">→</span>
+          <a href="/trabajos" class="proj5-card">
+            <span class="proj5-num">02</span>
+            <h3 class="proj5-title">Web platforms</h3>
+            <p class="proj5-desc">Custom websites and content systems tailored to small business needs.</p>
+            <span class="proj5-arrow">→</span>
           </a>
 
-          <a href="/trabajos" class="proj7-card">
-            <span class="proj7-num">03</span>
-            <h3 class="proj7-title">This portfolio</h3>
-            <p class="proj7-desc">A static site built with Astro + GruvBox, replacing a WordPress theme.</p>
-            <span class="proj7-arrow">→</span>
+          <a href="/trabajos" class="proj5-card">
+            <span class="proj5-num">03</span>
+            <h3 class="proj5-title">This portfolio</h3>
+            <p class="proj5-desc">A static site built with Astro + GruvBox, replacing a WordPress theme.</p>
+            <span class="proj5-arrow">→</span>
           </a>
         </div>
       </div>
     </section>
 
     <!-- Hobbies -->
-    <section class="sec7" data-reveal>
-      <div class="sec7-label">— 03 / Things I like</div>
-      <div class="sec7-content">
-        <h2 class="sec7-h2">Beyond the terminal</h2>
-        <p class="sec7-p">
+    <section class="sec5" data-reveal>
+      <div class="sec5-label">— 03 / Things I like</div>
+      <div class="sec5-content">
+        <h2 class="sec5-h2">Beyond the terminal</h2>
+        <p class="sec5-p">
           When I'm not shipping code, you'll find me tinkering with electronics, IoT projects,
           and way too many video games.
         </p>
-        <div class="hobby7-grid">
+        <div class="hobby5-grid">
           {bio.hobbies.map((hobby) => (
-            <span class="hobby7-chip">{hobby}</span>
+            <span class="hobby5-chip">{hobby}</span>
           ))}
         </div>
       </div>
     </section>
 
     <!-- CTA -->
-    <section class="sec7 sec7-cta" data-reveal>
-      <div class="cta7">
-        <h2 class="cta7-h2">Have something in mind?</h2>
-        <p class="cta7-p">Let's talk about systems, tools, or a new project.</p>
-        <div class="cta7-actions">
-          <a href="mailto:hi@teapartydev.com" class="hero7-btn hero7-btn-primary">
+    <section class="sec5 sec5-cta" data-reveal>
+      <div class="cta5">
+        <h2 class="cta5-h2">Have something in mind?</h2>
+        <p class="cta5-p">Let's talk about systems, tools, or a new project.</p>
+        <div class="cta5-actions">
+          <a href="mailto:hi@teapartydev.com" class="hero5-btn hero5-btn-primary">
             Say hello
-            <span class="hero7-btn-arrow">→</span>
+            <span class="hero5-btn-arrow">→</span>
           </a>
-          <div class="cta7-socials">
-            <a href="https://github.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta7-social">GitHub</a>
-            <a href="https://twitter.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta7-social">Twitter</a>
-            <a href="https://www.linkedin.com/in/adal-garcia-471889197/" target="_blank" rel="noopener noreferrer" class="cta7-social">LinkedIn</a>
+          <div class="cta5-socials">
+            <a href="https://github.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta5-social">GitHub</a>
+            <a href="https://twitter.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta5-social">Twitter</a>
+            <a href="https://www.linkedin.com/in/adal-garcia-471889197/" target="_blank" rel="noopener noreferrer" class="cta5-social">LinkedIn</a>
           </div>
         </div>
       </div>
@@ -138,78 +141,71 @@ import bio from '../data/bio.json'
 </BaseLayout>
 
 <style>
-  .inicio7 {
+  .inicio5 {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0 1.5rem 6rem;
+    padding: 3rem 1.5rem 6rem;
   }
 
   /* ================= HERO ================= */
-  .hero7 {
-    min-height: 92vh;
-    position: relative;
+  .hero5 {
+    min-height: 80vh;
     display: flex;
     align-items: center;
-    padding: 6rem 0 4rem;
-    margin: 0 -1.5rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding: 4rem 0 6rem;
+    position: relative;
     overflow: hidden;
-    border-radius: 0 0 16px 16px;
   }
 
-  .hero7-bg {
+  .hero5-bg {
     position: absolute;
     inset: 0;
     z-index: 0;
     pointer-events: none;
   }
 
-  .hero7-video {
+  .hero5-video {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    opacity: 0.45;
+    opacity: 0.3;
   }
 
-  [data-theme="light"] .hero7-video {
-    opacity: 0.35;
+  [data-theme="light"] .hero5-video {
+    opacity: 0.22;
   }
 
-  .hero7-overlay {
+  .hero5-overlay {
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(ellipse at center, transparent 30%, var(--gruvbox-bg) 95%),
-      linear-gradient(180deg, transparent 0%, transparent 60%, var(--gruvbox-bg) 100%);
+    background: linear-gradient(180deg, transparent 0%, transparent 70%, var(--gruvbox-bg) 100%);
   }
 
-  [data-theme="dark"] .hero7-overlay {
-    background:
-      radial-gradient(ellipse at center, transparent 30%, var(--gruvbox-bg) 95%),
-      linear-gradient(180deg, transparent 0%, transparent 60%, var(--gruvbox-bg) 100%);
-  }
-
-  .hero7-grid {
+  .hero5-grid {
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
   }
 
-  .hero7-text {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  @media (min-width: 900px) {
+    .hero5-grid {
+      grid-template-columns: 1.4fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .hero5-text {
     animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
   }
 
-  .hero7-eyebrow {
+  .hero5-eyebrow {
     font-family: "MesloLG", monospace;
     font-size: 0.78rem;
     text-transform: uppercase;
@@ -218,7 +214,7 @@ import bio from '../data/bio.json'
     margin-bottom: 2rem;
   }
 
-  .hero7-title {
+  .hero5-title {
     font-family: "Mononoki", monospace;
     font-weight: 700;
     font-size: clamp(3rem, 8vw, 5.5rem);
@@ -229,19 +225,19 @@ import bio from '../data/bio.json'
     flex-direction: column;
   }
 
-  .hero7-line {
+  .hero5-line {
     display: block;
     color: var(--gruvbox-fg);
   }
 
-  .hero7-line-accent {
+  .hero5-line-accent {
     color: var(--gruvbox-yellow);
     font-style: italic;
     font-weight: 400;
     padding-left: 1.5rem;
   }
 
-  .hero7-sub {
+  .hero5-sub {
     font-family: "MesloLG", monospace;
     font-size: 1.05rem;
     line-height: 1.7;
@@ -250,20 +246,19 @@ import bio from '../data/bio.json'
     max-width: 50ch;
   }
 
-  .hero7-sub em {
+  .hero5-sub em {
     color: var(--gruvbox-orange);
     font-style: italic;
   }
 
-  .hero7-cta {
+  .hero5-cta {
     display: flex;
     gap: 0.75rem;
     flex-wrap: wrap;
-    justify-content: center;
     margin-bottom: 2.5rem;
   }
 
-  .hero7-btn {
+  .hero5-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -277,44 +272,42 @@ import bio from '../data/bio.json'
     cursor: pointer;
   }
 
-  .hero7-btn-primary {
+  .hero5-btn-primary {
     background: var(--gruvbox-yellow);
     color: var(--gruvbox-bg);
     box-shadow: 0 6px 20px -8px var(--gruvbox-yellow);
   }
 
-  .hero7-btn-primary:hover {
+  .hero5-btn-primary:hover {
     background: var(--gruvbox-orange);
     transform: translateY(-2px);
     box-shadow: 0 10px 24px -8px var(--gruvbox-orange);
   }
 
-  .hero7-btn-arrow {
+  .hero5-btn-arrow {
     transition: transform 0.2s;
   }
 
-  .hero7-btn:hover .hero7-btn-arrow {
+  .hero5-btn:hover .hero5-btn-arrow {
     transform: translateX(4px);
   }
 
-  .hero7-btn-ghost {
-    background: var(--gruvbox-card);
+  .hero5-btn-ghost {
+    background: transparent;
     color: var(--gruvbox-fg);
     border: 1px solid var(--gruvbox-card);
-    backdrop-filter: blur(8px);
   }
 
-  .hero7-btn-ghost:hover {
+  .hero5-btn-ghost:hover {
     border-color: var(--gruvbox-yellow);
     color: var(--gruvbox-yellow);
     transform: translateY(-2px);
   }
 
-  .hero7-meta {
+  .hero5-meta {
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
-    justify-content: center;
     font-family: "MesloLG", monospace;
     font-size: 0.85rem;
     color: var(--gruvbox-fg);
@@ -322,17 +315,26 @@ import bio from '../data/bio.json'
     border-top: 1px solid var(--gruvbox-card);
   }
 
-  .hero7-meta-key {
+  .hero5-meta-key {
     color: var(--gruvbox-gray);
     text-transform: lowercase;
     margin-right: 0.4rem;
   }
 
-  .hero7-taza-badge {
-    position: absolute;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    z-index: 2;
+  /* Taza */
+  .hero5-taza-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  }
+
+  .hero5-taza {
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
+  }
+
+  .hero5-taza-caption {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -344,15 +346,14 @@ import bio from '../data/bio.json'
     font-size: 0.78rem;
     color: var(--gruvbox-gray);
     font-style: italic;
-    backdrop-filter: blur(12px);
   }
 
-  .hero7-cup-icon {
+  .hero5-cup-icon {
     color: var(--gruvbox-orange);
   }
 
   /* ================= SECTIONS ================= */
-  .sec7 {
+  .sec5 {
     padding: 5rem 0;
     border-top: 1px solid var(--gruvbox-card);
     opacity: 0;
@@ -360,12 +361,12 @@ import bio from '../data/bio.json'
     transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .sec7.is-visible {
+  .sec5.is-visible {
     opacity: 1;
     transform: translateY(0);
   }
 
-  .sec7-label {
+  .sec5-label {
     font-family: "MesloLG", monospace;
     font-size: 0.78rem;
     text-transform: uppercase;
@@ -374,7 +375,7 @@ import bio from '../data/bio.json'
     margin-bottom: 1.5rem;
   }
 
-  .sec7-h2 {
+  .sec5-h2 {
     font-family: "Mononoki", monospace;
     font-weight: 700;
     font-size: clamp(1.8rem, 4vw, 2.6rem);
@@ -385,7 +386,7 @@ import bio from '../data/bio.json'
     max-width: 22ch;
   }
 
-  .sec7-p {
+  .sec5-p {
     font-family: "MesloLG", monospace;
     font-size: 1.05rem;
     line-height: 1.7;
@@ -394,12 +395,12 @@ import bio from '../data/bio.json'
     max-width: 60ch;
   }
 
-  .sec7-p-sm {
+  .sec5-p-sm {
     color: var(--gruvbox-gray);
     font-size: 0.95rem;
   }
 
-  .sec7-link {
+  .sec5-link {
     display: inline-block;
     font-family: "MesloLG", monospace;
     font-size: 0.95rem;
@@ -410,13 +411,13 @@ import bio from '../data/bio.json'
     transition: color 0.2s, transform 0.2s;
   }
 
-  .sec7-link:hover {
+  .sec5-link:hover {
     color: var(--gruvbox-orange);
     transform: translateX(4px);
   }
 
   /* Projects */
-  .proj7-grid {
+  .proj5-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 0;
@@ -424,7 +425,7 @@ import bio from '../data/bio.json'
     border-top: 1px solid var(--gruvbox-card);
   }
 
-  .proj7-card {
+  .proj5-card {
     position: relative;
     display: grid;
     grid-template-columns: 60px 1fr auto;
@@ -437,55 +438,55 @@ import bio from '../data/bio.json'
     transition: padding-left 0.3s, color 0.3s, background 0.3s;
   }
 
-  .proj7-card:hover {
+  .proj5-card:hover {
     padding-left: 1.5rem;
     color: var(--gruvbox-yellow);
     background: var(--gruvbox-card);
   }
 
-  .proj7-num {
+  .proj5-num {
     font-family: "Mononoki", monospace;
     font-size: 0.85rem;
     color: var(--gruvbox-gray);
     font-weight: 700;
   }
 
-  .proj7-title {
+  .proj5-title {
     font-family: "Mononoki", monospace;
     font-weight: 700;
     font-size: 1.4rem;
     margin: 0 0 0.25rem;
   }
 
-  .proj7-desc {
+  .proj5-desc {
     font-family: "MesloLG", monospace;
     font-size: 0.9rem;
     color: var(--gruvbox-gray);
     margin: 0;
   }
 
-  .proj7-card:hover .proj7-desc {
+  .proj5-card:hover .proj5-desc {
     color: var(--gruvbox-fg);
   }
 
-  .proj7-arrow {
+  .proj5-arrow {
     font-size: 1.5rem;
     color: var(--gruvbox-yellow);
     transition: transform 0.3s;
   }
 
-  .proj7-card:hover .proj7-arrow {
+  .proj5-card:hover .proj5-arrow {
     transform: translateX(8px);
   }
 
   /* Hobbies */
-  .hobby7-grid {
+  .hobby5-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 0.6rem;
   }
 
-  .hobby7-chip {
+  .hobby5-chip {
     display: inline-block;
     padding: 0.5rem 1rem;
     background: var(--gruvbox-card);
@@ -497,17 +498,17 @@ import bio from '../data/bio.json'
     transition: border-color 0.2s, color 0.2s, transform 0.2s;
   }
 
-  .hobby7-chip:hover {
+  .hobby5-chip:hover {
     border-color: var(--gruvbox-blue);
     transform: translateY(-2px);
   }
 
   /* CTA */
-  .sec7-cta {
+  .sec5-cta {
     border-top: none;
   }
 
-  .cta7 {
+  .cta5 {
     text-align: center;
     max-width: 600px;
     margin: 0 auto;
@@ -518,7 +519,7 @@ import bio from '../data/bio.json'
     backdrop-filter: blur(12px);
   }
 
-  .cta7-h2 {
+  .cta5-h2 {
     font-family: "Mononoki", monospace;
     font-weight: 700;
     font-size: clamp(1.8rem, 3.5vw, 2.4rem);
@@ -527,26 +528,26 @@ import bio from '../data/bio.json'
     letter-spacing: -0.02em;
   }
 
-  .cta7-p {
+  .cta5-p {
     font-family: "MesloLG", monospace;
     font-size: 1rem;
     color: var(--gruvbox-gray);
     margin: 0 0 2rem;
   }
 
-  .cta7-actions {
+  .cta5-actions {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
   }
 
-  .cta7-socials {
+  .cta5-socials {
     display: flex;
     gap: 1.5rem;
   }
 
-  .cta7-social {
+  .cta5-social {
     font-family: "MesloLG", monospace;
     font-size: 0.88rem;
     color: var(--gruvbox-fg);
@@ -554,7 +555,7 @@ import bio from '../data/bio.json'
     transition: color 0.2s;
   }
 
-  .cta7-social:hover {
+  .cta5-social:hover {
     color: var(--gruvbox-yellow);
   }
 
@@ -570,8 +571,9 @@ import bio from '../data/bio.json'
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .sec7,
-    .hero7-text {
+    .sec5,
+    .hero5-text,
+    .hero5-taza-wrap {
       animation: none !important;
       transition: none !important;
       opacity: 1 !important;
