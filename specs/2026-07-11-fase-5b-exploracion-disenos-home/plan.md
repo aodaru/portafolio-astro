@@ -81,18 +81,20 @@
 
 ## Grupo transversal
 
-- [ ] Añadir enlaces de navegación a las variantes en `Navbar.astro` (solo en dev, no producción)
+- [x] Añadir enlaces de navegación a las variantes en `Navbar.astro` (solo en dev, no producción)
   - Links: Inicio1, Inicio2, Inicio3 con icono distintivo
   - Visibles solo cuando `import.meta.env.DEV`
-- [ ] Verificar que `/` (home actual) sigue funcionando intacta
-- [ ] Validar `pnpm build` sin errores
-- [ ] Validar responsive en mobile/tablet/desktop
-- [ ] Validar dark/light mode en las 3 variantes
-- [ ] Documentar las 3 variantes en `requirements.md` con capturas/decisiones
+- [x] Verificar que `/` (home actual) sigue funcionando intacta
+- [x] Validar `pnpm build` sin errores (28 páginas)
+- [x] Validar responsive en mobile/tablet/desktop
+- [x] Validar dark/light mode en las 3 variantes
+- [x] Documentar las 3 variantes en `requirements.md` con capturas/decisiones
 
-## Entregable
+## Entregable 5B.1 ✅
 
 3 páginas accesibles en `/inicio1`, `/inicio2`, `/inicio3` con diseños distintos, cada una coherente con el tema GruvBox y con animaciones/efectos intencionados. Home actual intacta como referencia.
+
+**Implementado en commit `b0845a6`**.
 
 ---
 
@@ -143,14 +145,16 @@
 
 ### Validación iteración 5B.2
 
-- [ ] `pnpm astro check` sin errores
-- [ ] `pnpm build` completo, 31 páginas (+3)
-- [ ] Las 3 variantes usan la taza de forma distinta pero coherente
-- [ ] La variant CSS no debe tener layout shift (aspect-ratio definido)
-- [ ] `prefers-reduced-motion: reduce` desactiva animaciones de vapor/parallax
-- [ ] Dark/light mode funciona en las 3
-- [ ] Responsive mobile/tablet/desktop
+- [x] `pnpm astro check` sin errores (0 errors, 0 warnings)
+- [x] `pnpm build` completo, 31 páginas (+3)
+- [x] Las 3 variantes usan la taza de forma distinta pero coherente
+- [x] La variant CSS no debe tener layout shift (contenedor con `aspect-ratio` 1:1)
+- [x] `prefers-reduced-motion: reduce` desactiva animaciones de vapor/parallax
+- [x] Dark/light mode funciona en las 3
+- [x] Responsive mobile/tablet/desktop
 
-### Entregable 5B.2
+### Entregable 5B.2 ✅
 
 3 páginas nuevas en `/inicio4`, `/inicio5`, `/inicio6` con la taza integrada de 3 formas distintas manteniendo la base de inicio3. Home actual e inicio3 intactos. Componente reutilizable `TazaAscii.astro` con 3 variants para futuro uso.
+
+**Implementado en commit `c63d931`**.
