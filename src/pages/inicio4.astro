@@ -1,0 +1,652 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import TazaAscii from '../components/TazaAscii.astro'
+import bio from '../data/bio.json'
+---
+
+<BaseLayout title="Teapartydev — Inicio 4" description="Variante taza hero — Adal Michael García">
+  <div class="inicio4">
+    <!-- Hero: taza protagonista + texto -->
+    <section class="hero4">
+      <div class="hero4-bg" aria-hidden="true">
+        <div class="hero4-glow"></div>
+      </div>
+
+      <div class="hero4-grid">
+        <div class="hero4-taza-wrap">
+          <TazaAscii variant="webm" size="xl" label="Taza de café humeante — elemento principal" class="hero4-taza" />
+          <span class="hero4-caption">currently brewing</span>
+        </div>
+
+        <div class="hero4-text">
+          <div class="hero4-eyebrow">
+            <span class="hero4-dot"></span>
+            Available for new projects
+          </div>
+
+          <h1 class="hero4-title">
+            Hi, I'm <span class="hero4-name">Adal</span>.<br />
+            I build <span class="hero4-accent">systems</span> that last.
+          </h1>
+
+          <p class="hero4-sub">
+            {bio.role} based in Chiriquí, Panamá — {bio.summary}
+          </p>
+
+          <div class="hero4-cta">
+            <a href="/trabajos" class="hero4-btn hero4-btn-primary">
+              View my work
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+            <a href="/contacto" class="hero4-btn hero4-btn-ghost">Get in touch</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero4-scroll" aria-hidden="true">
+        <span>scroll</span>
+        <div class="hero4-scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="sec4" data-reveal>
+      <div class="sec4-grid">
+        <div class="sec4-label">01 — About</div>
+        <div class="sec4-content">
+          <h2 class="sec4-h2">A decade of keeping things running.</h2>
+          <p class="sec4-p">
+            I've spent the last 12+ years in the trenches of system administration — building
+            reporting tools, data query layers, and small pieces of software that make teams
+            faster. I care about reliability, clarity, and tools that respect the operator.
+          </p>
+          <a href="/blog" class="sec4-link">Read my notes →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="sec4 sec4-projects" data-reveal>
+      <div class="sec4-grid">
+        <div class="sec4-label">02 — Selected work</div>
+        <div class="sec4-content">
+          <h2 class="sec4-h2">Recent projects</h2>
+          <p class="sec4-p sec4-p-sm">A few things I've built and shipped recently.</p>
+        </div>
+      </div>
+
+      <div class="proj4-grid">
+        <a href="/trabajos" class="proj4-card">
+          <div class="proj4-icon" style="color: var(--gruvbox-yellow);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+          </div>
+          <h3 class="proj4-title">Intranet & reporting</h3>
+          <p class="proj4-desc">Sales reporting, dashboards, and internal tools for fast decision-making.</p>
+          <span class="proj4-arrow">→</span>
+        </a>
+
+        <a href="/trabajos" class="proj4-card">
+          <div class="proj4-icon" style="color: var(--gruvbox-blue);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+          </div>
+          <h3 class="proj4-title">Web platforms</h3>
+          <p class="proj4-desc">Custom websites and content systems tailored to small business needs.</p>
+          <span class="proj4-arrow">→</span>
+        </a>
+
+        <a href="/trabajos" class="proj4-card">
+          <div class="proj4-icon" style="color: var(--gruvbox-green);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 17l6-6-4-4M12 17l8-8"/><circle cx="20" cy="6" r="2"/></svg>
+          </div>
+          <h3 class="proj4-title">This portfolio</h3>
+          <p class="proj4-desc">A static site built with Astro + GruvBox, replacing a WordPress theme.</p>
+          <span class="proj4-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Hobbies -->
+    <section class="sec4" data-reveal>
+      <div class="sec4-grid">
+        <div class="sec4-label">03 — Things I like</div>
+        <div class="sec4-content">
+          <h2 class="sec4-h2">Beyond the terminal</h2>
+          <p class="sec4-p">
+            When I'm not shipping code, you'll find me tinkering with electronics, IoT projects,
+            and way too many video games.
+          </p>
+          <div class="hobby4-grid">
+            {bio.hobbies.map((hobby) => (
+              <span class="hobby4-chip">{hobby}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="sec4 sec4-cta" data-reveal>
+      <div class="cta4">
+        <h2 class="cta4-h2">Have something in mind?</h2>
+        <p class="cta4-p">Let's talk about systems, tools, or a new project.</p>
+        <div class="cta4-actions">
+          <a href="mailto:hi@teapartydev.com" class="hero4-btn hero4-btn-primary">
+            Say hello
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <div class="cta4-socials">
+            <a href="https://github.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta4-social">GitHub</a>
+            <a href="https://twitter.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta4-social">Twitter</a>
+            <a href="https://www.linkedin.com/in/adal-garcia-471889197/" target="_blank" rel="noopener noreferrer" class="cta4-social">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .inicio4 {
+    overflow-x: hidden;
+  }
+
+  /* ================= HERO ================= */
+  .hero4 {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+    padding: 6rem 1.5rem 4rem;
+    overflow: hidden;
+  }
+
+  .hero4-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero4-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: var(--gruvbox-yellow);
+    filter: blur(120px);
+    opacity: 0.2;
+    top: 50%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    animation: pulseGlow 8s ease-in-out infinite;
+  }
+
+  [data-theme="light"] .hero4-glow {
+    opacity: 0.15;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.2; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.3; }
+  }
+
+  .hero4-grid {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .hero4-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  /* Taza */
+  .hero4-taza-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+  }
+
+  .hero4-taza {
+    animation: float 5s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .hero4-caption {
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    color: var(--gruvbox-gray);
+    text-transform: lowercase;
+    letter-spacing: 0.15em;
+    font-style: italic;
+    opacity: 0.8;
+  }
+
+  /* Texto */
+  .hero4-text {
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+  }
+
+  .hero4-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 999px;
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    color: var(--gruvbox-fg);
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .hero4-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gruvbox-green);
+    box-shadow: 0 0 0 0 var(--gruvbox-green);
+    animation: pulse 2s ease-out infinite;
+  }
+
+  .hero4-title {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--gruvbox-fg);
+    margin: 0 0 1.25rem;
+  }
+
+  .hero4-name {
+    color: var(--gruvbox-yellow);
+  }
+
+  .hero4-accent {
+    color: var(--gruvbox-orange);
+    font-style: italic;
+  }
+
+  .hero4-sub {
+    font-family: "MesloLG", monospace;
+    font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+    line-height: 1.6;
+    color: var(--gruvbox-gray);
+    margin: 0 0 2rem;
+    max-width: 56ch;
+  }
+
+  .hero4-cta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .hero4-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 6px;
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .hero4-btn-primary {
+    background: var(--gruvbox-yellow);
+    color: var(--gruvbox-bg);
+    box-shadow: 0 6px 20px -8px var(--gruvbox-yellow);
+  }
+
+  .hero4-btn-primary:hover {
+    background: var(--gruvbox-orange);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -8px var(--gruvbox-orange);
+  }
+
+  .hero4-btn-ghost {
+    background: transparent;
+    color: var(--gruvbox-fg);
+    border: 1px solid var(--gruvbox-card);
+  }
+
+  .hero4-btn-ghost:hover {
+    border-color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow);
+    transform: translateY(-2px);
+  }
+
+  .hero4-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: "MesloLG", monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--gruvbox-gray);
+  }
+
+  .hero4-scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(180deg, var(--gruvbox-gray), transparent);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero4-scroll-line::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: var(--gruvbox-yellow);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollLine {
+    0% { top: -50%; }
+    100% { top: 100%; }
+  }
+
+  /* ================= SECTIONS ================= */
+  .sec4 {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 1.5rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sec4.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .sec4-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .sec4-grid {
+      grid-template-columns: 200px 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .sec4-label {
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gruvbox-yellow);
+    padding-top: 0.4rem;
+  }
+
+  .sec4-h2 {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--gruvbox-fg);
+    margin: 0 0 1rem;
+    max-width: 22ch;
+  }
+
+  .sec4-p {
+    font-family: "MesloLG", monospace;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--gruvbox-fg);
+    margin: 0 0 1.5rem;
+    max-width: 60ch;
+  }
+
+  .sec4-p-sm {
+    color: var(--gruvbox-gray);
+    font-size: 0.95rem;
+  }
+
+  .sec4-link {
+    display: inline-block;
+    font-family: "MesloLG", monospace;
+    font-size: 0.95rem;
+    color: var(--gruvbox-yellow);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .sec4-link:hover {
+    color: var(--gruvbox-orange);
+    transform: translateX(4px);
+  }
+
+  /* Projects */
+  .proj4-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .proj4-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .proj4-card {
+    position: relative;
+    display: block;
+    padding: 1.75rem 1.5rem 4rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 8px;
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, background 0.3s;
+    overflow: hidden;
+  }
+
+  .proj4-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--gruvbox-yellow);
+  }
+
+  .proj4-icon {
+    margin-bottom: 1.25rem;
+  }
+
+  .proj4-title {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--gruvbox-fg);
+    margin: 0 0 0.5rem;
+  }
+
+  .proj4-desc {
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--gruvbox-gray);
+    margin: 0;
+  }
+
+  .proj4-arrow {
+    position: absolute;
+    bottom: 1.25rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--gruvbox-yellow);
+    transition: transform 0.3s;
+  }
+
+  .proj4-card:hover .proj4-arrow {
+    transform: translate(4px, -4px);
+  }
+
+  /* Hobbies */
+  .hobby4-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .hobby4-chip {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 999px;
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    color: var(--gruvbox-blue);
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+
+  .hobby4-chip:hover {
+    border-color: var(--gruvbox-blue);
+    transform: translateY(-2px);
+  }
+
+  /* CTA */
+  .sec4-cta {
+    padding-bottom: 8rem;
+  }
+
+  .cta4 {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+  }
+
+  .cta4-h2 {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    color: var(--gruvbox-fg);
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .cta4-p {
+    font-family: "MesloLG", monospace;
+    font-size: 1rem;
+    color: var(--gruvbox-gray);
+    margin: 0 0 2rem;
+  }
+
+  .cta4-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .cta4-socials {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .cta4-social {
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    color: var(--gruvbox-fg);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .cta4-social:hover {
+    color: var(--gruvbox-yellow);
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 var(--gruvbox-green); }
+    70% { box-shadow: 0 0 0 10px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sec4,
+    .hero4-taza-wrap,
+    .hero4-text,
+    .hero4-taza,
+    .hero4-glow,
+    .hero4-scroll-line::after,
+    .hero4-dot {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -80px 0px' }
+  );
+
+  document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+</script>

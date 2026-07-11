@@ -93,3 +93,64 @@
 ## Entregable
 
 3 páginas accesibles en `/inicio1`, `/inicio2`, `/inicio3` con diseños distintos, cada una coherente con el tema GruvBox y con animaciones/efectos intencionados. Home actual intacta como referencia.
+
+---
+
+## Iteración 5B.2 — Taza como elemento central (3 enfoques)
+
+> Mantener `/` y `/inicio3` intactos. Crear `/inicio4`, `/inicio5`, `/inicio6` iterando sobre inicio3.
+
+### Contexto
+
+- La taza de café existe como GIF animado `TazaCafeASCII.gif` (2.1MB) y como WebM comprimido `taza-cafe-compressed.webm` (246KB) en `public/img/`.
+- Decisión: usar el WebM comprimido + reimplementar la taza como CSS/SVG ASCII real como bonus/alternativa.
+
+### Componente compartido: TazaAscii
+
+- [x] Crear `src/components/TazaAscii.astro` con 3 variants: `webm` | `css` | `svg`
+- [x] Props: `variant`, `size` (`sm`/`md`/`lg`/`xl`), `label`, `class`
+- [x] La variant `css` recrea una taza con caracteres ASCII + vapor animado
+- [x] La variant `svg` es taza inline con paths + texto animado simulando vapor
+- [x] Respeta `prefers-reduced-motion`
+
+### /inicio4 — Taza Hero
+
+- [x] Layout: taza XL a la izquierda, texto display a la derecha (50/50)
+- [x] Taza como variant `webm` con animación float sutil
+- [x] Caption "currently brewing" debajo de la taza
+- [x] Secciones siguientes (About, Projects, Hobbies, CTA) en 1 col compacta
+- [x] Glow animado de fondo centrado en la taza
+
+### /inicio5 — Taza + Tipografía
+
+- [x] Layout: 60/40 texto/taza estilo craftz editorial
+- [x] Taza como variant `css` (reimplementación ASCII real, 0KB de imagen)
+- [x] Tipografía display enorme con nombre apilado, "Michael" en italic yellow
+- [x] Animación fade-up al cargar
+- [x] Projects list estilo índice con números (01, 02, 03) + hover slide
+
+### /inicio6 — Taza Interactiva (scroll experience)
+
+- [x] Hero compacto: taza SVG centrada, texto arriba
+- [x] Parallax en scroll: la taza del hero se mueve más lenta que el contenido (`requestAnimationFrame`)
+- [x] Sección About con taza SVG sticky de fondo a la derecha (rotación sutil al scroll)
+- [x] CTA final con taza SVG que aparece con scale-in animation
+- [x] Respeta `prefers-reduced-motion` (sin parallax)
+
+### Navbar actualizado
+
+- [x] Array `devVariants` ahora incluye `i1`, `i2`, `i3`, `i4`, `i5`, `i6`
+
+### Validación iteración 5B.2
+
+- [ ] `pnpm astro check` sin errores
+- [ ] `pnpm build` completo, 31 páginas (+3)
+- [ ] Las 3 variantes usan la taza de forma distinta pero coherente
+- [ ] La variant CSS no debe tener layout shift (aspect-ratio definido)
+- [ ] `prefers-reduced-motion: reduce` desactiva animaciones de vapor/parallax
+- [ ] Dark/light mode funciona en las 3
+- [ ] Responsive mobile/tablet/desktop
+
+### Entregable 5B.2
+
+3 páginas nuevas en `/inicio4`, `/inicio5`, `/inicio6` con la taza integrada de 3 formas distintas manteniendo la base de inicio3. Home actual e inicio3 intactos. Componente reutilizable `TazaAscii.astro` con 3 variants para futuro uso.

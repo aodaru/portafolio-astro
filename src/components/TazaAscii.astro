@@ -1,0 +1,244 @@
+---
+/**
+ * TazaAscii.astro
+ * Componente reutilizable para mostrar la taza de café en 3 variantes:
+ * - webm: video WebM comprimido con loop (la más fiel al original)
+ * - css:  taza reconstruida con CSS grid + caracteres ASCII animados
+ * - svg:  taza como SVG inline con paths + texto animado (vapor)
+ *
+ * Props:
+ *   variant: 'webm' | 'css' | 'svg'  (default: 'webm')
+ *   size:    'sm' | 'md' | 'lg' | 'xl'  (default: 'md')
+ *   label:   string opcional (caption accesible)
+ *   class:   string opcional (clases extra al contenedor)
+ */
+
+export interface Props {
+  variant?: 'webm' | 'css' | 'svg'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
+  label?: string
+  class?: string
+}
+
+const { variant = 'webm', size = 'md', label = 'Taza de café humeante', class: className = '' } = Astro.props
+
+const sizeMap = {
+  sm: '160px',
+  md: '280px',
+  lg: '420px',
+  xl: '560px',
+}
+const dimension = sizeMap[size]
+---
+
+<div class={`taza taza-${variant} taza-size-${size} ${className}`} style={`--taza-size: ${dimension};`} role="img" aria-label={label}>
+  {variant === 'webm' && (
+    <video autoplay muted loop playsinline class="taza-media" data-taza-play>
+      <source src="/img/taza-cafe-compressed.webm" type="video/webm" />
+    </video>
+  )}
+
+  {variant === 'css' && (
+    <div class="taza-css" aria-hidden="true">
+      <div class="vapor vapor-1"></div>
+      <div class="vapor vapor-2"></div>
+      <div class="vapor vapor-3"></div>
+      <pre class="taza-art">
+{`       ╭───────────╮
+       │ ░▒▓█▓▒░   │
+       │ ░▒▓▓▓▒░   │
+   ┌───┴───────────┴───┐
+   │                   │
+   │      [ CAFÉ ]     │
+   │                   │
+   ╰─┬───────────────┬─╯
+     │               │
+     ╰───────────────╯`}
+      </pre>
+    </div>
+  )}
+
+  {variant === 'svg' && (
+    <svg class="taza-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="coffeeGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--gruvbox-orange)" />
+          <stop offset="100%" stop-color="var(--gruvbox-yellow)" />
+        </linearGradient>
+      </defs>
+
+      <text x="100" y="35" class="svg-steam svg-steam-1" text-anchor="middle">~ ~ ~</text>
+      <text x="100" y="25" class="svg-steam svg-steam-2" text-anchor="middle">° ° °</text>
+      <text x="100" y="50" class="svg-steam svg-steam-3" text-anchor="middle">~ ~</text>
+
+      <ellipse cx="100" cy="70" rx="55" ry="8" fill="url(#coffeeGrad)" />
+
+      <path d="M 45 70 Q 45 130 60 140 L 140 140 Q 155 130 155 70 Z"
+            fill="none" stroke="var(--gruvbox-fg)" stroke-width="2" />
+
+      <path d="M 155 90 Q 175 90 175 110 Q 175 125 155 125"
+            fill="none" stroke="var(--gruvbox-fg)" stroke-width="2" />
+
+      <ellipse cx="100" cy="145" rx="45" ry="4" fill="var(--gruvbox-fg)" opacity="0.3" />
+
+      <text x="100" y="115" class="svg-label" text-anchor="middle">CAFÉ</text>
+    </svg>
+  )}
+</div>
+
+<style>
+  .taza {
+    display: inline-block;
+    width: var(--taza-size);
+    height: var(--taza-size);
+    position: relative;
+    overflow: visible;
+  }
+
+  .taza-size-sm { --taza-size: 160px; }
+  .taza-size-md { --taza-size: 280px; }
+  .taza-size-lg { --taza-size: 420px; }
+  .taza-size-xl { --taza-size: 560px; }
+
+  /* ============== WEBM variant ============== */
+  .taza-webm .taza-media {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* ============== CSS variant ============== */
+  .taza-css {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .taza-art {
+    font-family: "Mononoki", monospace;
+    font-size: calc(var(--taza-size) / 12);
+    line-height: 1.1;
+    color: var(--gruvbox-fg);
+    margin: 0;
+    text-align: center;
+    white-space: pre;
+    user-select: none;
+  }
+
+  .taza-css .vapor {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 30%;
+    pointer-events: none;
+  }
+
+  .taza-css .vapor::before,
+  .taza-css .vapor::after {
+    content: "~ ~ ~";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Mononoki", monospace;
+    font-size: calc(var(--taza-size) / 18);
+    color: var(--gruvbox-gray);
+    opacity: 0;
+    white-space: nowrap;
+  }
+
+  .taza-css .vapor-1::before {
+    top: 10%;
+    animation: steam 3s ease-in-out infinite;
+  }
+  .taza-css .vapor-1::after {
+    top: 30%;
+    animation: steam 3s ease-in-out infinite 0.6s;
+  }
+
+  .taza-css .vapor-2::before {
+    top: 5%;
+    animation: steam 4s ease-in-out infinite 0.3s;
+    content: "° ° °";
+  }
+  .taza-css .vapor-2::after {
+    top: 25%;
+    animation: steam 4s ease-in-out infinite 1.2s;
+    content: "~ ~";
+  }
+
+  .taza-css .vapor-3::before {
+    top: 0;
+    animation: steam 3.5s ease-in-out infinite 0.9s;
+    content: "° ~ °";
+  }
+
+  @keyframes steam {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, 0);
+    }
+    30% {
+      opacity: 0.5;
+    }
+    70% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -30px);
+    }
+  }
+
+  /* ============== SVG variant ============== */
+  .taza-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .taza-svg .svg-steam {
+    font-family: "Mononoki", monospace;
+    font-size: 14px;
+    fill: var(--gruvbox-gray);
+    opacity: 0;
+  }
+
+  .taza-svg .svg-steam-1 {
+    animation: svgSteam 3s ease-in-out infinite;
+  }
+  .taza-svg .svg-steam-2 {
+    animation: svgSteam 3.5s ease-in-out infinite 0.5s;
+  }
+  .taza-svg .svg-steam-3 {
+    animation: svgSteam 4s ease-in-out infinite 1s;
+  }
+
+  @keyframes svgSteam {
+    0% { opacity: 0; transform: translateY(10px); }
+    30% { opacity: 0.6; }
+    100% { opacity: 0; transform: translateY(-15px); }
+  }
+
+  .taza-svg .svg-label {
+    font-family: "Mononoki", monospace;
+    font-size: 10px;
+    font-weight: 700;
+    fill: var(--gruvbox-fg);
+    letter-spacing: 0.15em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .taza-css .vapor::before,
+    .taza-css .vapor::after,
+    .taza-svg .svg-steam {
+      animation: none !important;
+      opacity: 0.4;
+    }
+  }
+</style>
