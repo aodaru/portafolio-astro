@@ -8,12 +8,13 @@
 ## Fase 1: Scaffolding
 **Setup del proyecto y estructura base**
 
-- [ ] Inicializar proyecto Astro con TypeScript
-- [ ] Configurar Tailwind CSS (u otro framework decidido)
-- [ ] Estructura de directorios: `src/components`, `src/layouts`, `src/content`, `src/pages`
-- [ ] Crear `src/content/config.ts` para colecciones (blog, projects)
-- [ ] Copiar assets estáticos desde `themeWp/` (imágenes, favicon)
-- [ ] Configurar `astro.config.ts` con sitemap y RSS
+- [x] Inicializar proyecto Astro con TypeScript
+- [x] Configurar Tailwind CSS (Tailwind 4 + Vite plugin)
+- [x] Estructura de directorios: `src/components`, `src/layouts`, `src/content`, `src/pages`
+- [x] Crear `src/content.config.ts` para colecciones (blog, projects)
+- [x] Copiar assets estáticos desde `themeWp/` (imágenes, favicon, fuentes)
+- [x] Configurar `astro.config.ts` con sitemap
+- [x] Endpoint RSS para el blog (`/rss.xml`)
 
 **Entregable**: Proyecto corriendo en `localhost`, build sin errores.
 
@@ -22,11 +23,11 @@
 ## Fase 2: Layout base + Navegación
 **Esqueleto visual del sitio**
 
-- [ ] Layout global (`BaseLayout.astro`) con `<head>`, meta tags, footer
-- [ ] Barra de navegación responsive (logo + enlaces: Inicio, Blog, Trabajos, Contacto)
-- [ ] Dark/Light mode toggle funcional (persistencia en localStorage)
-- [ ] Definir CSS custom properties para el sistema de colores (paleta nueva — rediseño completo)
-- [ ] Footer con copyright y redes sociales
+- [x] Layout global (`BaseLayout.astro`) con `<head>`, meta tags, footer
+- [x] Barra de navegación responsive (logo + enlaces: Inicio, Blog, Trabajos, Contacto + GitHub)
+- [x] Dark/Light mode toggle funcional (persistencia en localStorage)
+- [x] Definir CSS custom properties (paleta GruvBox con variables `--gruvbox-*`, variantes light/dark)
+- [x] Footer con copyright y redes sociales (GitHub, Twitter/X, LinkedIn)
 
 **Entregable**: Navegación entre páginas placeholder, dark/light mode funcionando.
 
@@ -35,13 +36,14 @@
 ## Fase 3: Home Page
 **Página principal con bio y contenido estático**
 
-- [ ] Hero section: avatar + nombre + título profesional
-- [ ] Sección "Bio" / línea de tiempo profesional (datos desde YAML/JSON)
-- [ ] Sección "Pasatiempos"
-- [ ] Sección "Trabajos" — resumen con enlace a página de proyectos
-- [ ] Sección "Contacto" — redes sociales (GitHub, Twitter, LinkedIn, etc.)
+- [x] Hero section: avatar + nombre + título profesional
+- [x] Sección "Bio" / línea de tiempo profesional (datos desde `src/data/bio.json`)
+- [x] Sección "Pasatiempos"
+- [x] Sección "Trabajos" — resumen con enlace a página de proyectos
+- [x] Sección "Contacto" — redes sociales (GitHub, Twitter/X, LinkedIn)
+- [x] Diseño terminal tipo GruvBox con tarjetas estilo ventanas
 
-**Entregable**: Home page similar en contenido a la actual `index.html` pero con nuevo diseño.
+**Entregable**: Home page completa con diseño terminal GruvBox.
 
 ---
 
@@ -64,12 +66,11 @@
 ## Fase 5: Página de Proyectos / Trabajos
 **Galería de trabajos destacados**
 
-- [x] Página `/trabajos` (o `/projects`) con grid de proyectos
+- [x] Página `/trabajos` con listado de proyectos (tarjetas terminal)
 - [x] Cada proyecto: thumbnail, título, descripción corta, tags, enlace
 - [x] Página individual de proyecto (`/trabajos/[slug]`)
-
-**Pendiente como siguiente tarea:**
-- [ ] Migrar datos de `themeWp/trabajos.html` y `themeWp/Works/`
+- [x] Migrar datos de `themeWp/Works/` — 3 proyectos creados (intranet, sitios web, portafolio)
+- [x] Migrar redes sociales de `themeWp/home.html` — Instagram + email en contacto
 
 **Entregable**: Sección de portafolio completa.
 
@@ -106,12 +107,12 @@
 **Optimización para motores de búsqueda y velocidad**
 
 - [ ] Meta tags dinámicos (title, description, OG) por página
-- [ ] Sitemap.xml automático (`@astrojs/sitemap`)
+- [x] Sitemap.xml automático (`@astrojs/sitemap`)
 - [ ] RSS feed para blog (`@astrojs/rss`)
 - [ ] Imágenes optimizadas con `astro:assets` y WebP
 - [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices)
 - [ ] Google Tag Manager integrado (via Partytown)
-- [ ] `robots.txt`
+- [x] `robots.txt`
 
 **Entregable**: Sitio optimizado y listo para indexación.
 
