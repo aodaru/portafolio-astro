@@ -1,0 +1,561 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import TazaAscii from '../components/TazaAscii.astro'
+import bio from '../data/bio.json'
+---
+
+<BaseLayout title="Teapartydev — Inicio 5" description="Variante taza + tipografía — Adal Michael García">
+  <div class="inicio5">
+    <!-- Hero: texto grande izquierda, taza CSS derecha -->
+    <section class="hero5">
+      <div class="hero5-grid">
+        <div class="hero5-text">
+          <div class="hero5-eyebrow">— Hello, I'm a {bio.role} based in Panamá</div>
+
+          <h1 class="hero5-title">
+            <span class="hero5-line">Adal</span>
+            <span class="hero5-line hero5-line-accent">Michael</span>
+            <span class="hero5-line">García</span>
+          </h1>
+
+          <p class="hero5-sub">
+            I build <em>digital systems</em> that respect the operator.
+            Reporting tools, data layers, and the kind of small software
+            that makes teams faster.
+          </p>
+
+          <div class="hero5-cta">
+            <a href="/trabajos" class="hero5-btn hero5-btn-primary">
+              View my work
+              <span class="hero5-btn-arrow">→</span>
+            </a>
+            <a href="/contacto" class="hero5-btn hero5-btn-ghost">Get in touch</a>
+          </div>
+
+          <div class="hero5-meta">
+            <span><span class="hero5-meta-key">role</span> engineer / sysadmin</span>
+            <span><span class="hero5-meta-key">since</span> 2012</span>
+            <span><span class="hero5-meta-key">based</span> Chiriquí, PA</span>
+          </div>
+        </div>
+
+        <aside class="hero5-taza-wrap">
+          <TazaAscii variant="css" size="lg" label="Taza de café humeante" class="hero5-taza" />
+          <div class="hero5-taza-caption">
+            <span class="hero5-cup-icon">☕</span>
+            <span>currently brewing</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="sec5" data-reveal>
+      <div class="sec5-label">— 01 / About</div>
+      <div class="sec5-content">
+        <h2 class="sec5-h2">A decade of keeping things running.</h2>
+        <p class="sec5-p">
+          I've spent the last 12+ years in the trenches of system administration — building
+          reporting tools, data query layers, and small pieces of software that make teams
+          faster. I care about reliability, clarity, and tools that respect the operator.
+        </p>
+        <a href="/blog" class="sec5-link">Read my notes →</a>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="sec5" data-reveal>
+      <div class="sec5-label">— 02 / Selected work</div>
+      <div class="sec5-content">
+        <h2 class="sec5-h2">Recent projects</h2>
+        <p class="sec5-p sec5-p-sm">A few things I've built and shipped recently.</p>
+
+        <div class="proj5-grid">
+          <a href="/trabajos" class="proj5-card">
+            <span class="proj5-num">01</span>
+            <h3 class="proj5-title">Intranet & reporting</h3>
+            <p class="proj5-desc">Sales reporting, dashboards, and internal tools for fast decision-making.</p>
+            <span class="proj5-arrow">→</span>
+          </a>
+
+          <a href="/trabajos" class="proj5-card">
+            <span class="proj5-num">02</span>
+            <h3 class="proj5-title">Web platforms</h3>
+            <p class="proj5-desc">Custom websites and content systems tailored to small business needs.</p>
+            <span class="proj5-arrow">→</span>
+          </a>
+
+          <a href="/trabajos" class="proj5-card">
+            <span class="proj5-num">03</span>
+            <h3 class="proj5-title">This portfolio</h3>
+            <p class="proj5-desc">A static site built with Astro + GruvBox, replacing a WordPress theme.</p>
+            <span class="proj5-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hobbies -->
+    <section class="sec5" data-reveal>
+      <div class="sec5-label">— 03 / Things I like</div>
+      <div class="sec5-content">
+        <h2 class="sec5-h2">Beyond the terminal</h2>
+        <p class="sec5-p">
+          When I'm not shipping code, you'll find me tinkering with electronics, IoT projects,
+          and way too many video games.
+        </p>
+        <div class="hobby5-grid">
+          {bio.hobbies.map((hobby) => (
+            <span class="hobby5-chip">{hobby}</span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="sec5 sec5-cta" data-reveal>
+      <div class="cta5">
+        <h2 class="cta5-h2">Have something in mind?</h2>
+        <p class="cta5-p">Let's talk about systems, tools, or a new project.</p>
+        <div class="cta5-actions">
+          <a href="mailto:hi@teapartydev.com" class="hero5-btn hero5-btn-primary">
+            Say hello
+            <span class="hero5-btn-arrow">→</span>
+          </a>
+          <div class="cta5-socials">
+            <a href="https://github.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta5-social">GitHub</a>
+            <a href="https://twitter.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta5-social">Twitter</a>
+            <a href="https://www.linkedin.com/in/adal-garcia-471889197/" target="_blank" rel="noopener noreferrer" class="cta5-social">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .inicio5 {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  /* ================= HERO ================= */
+  .hero5 {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    padding: 4rem 0 6rem;
+  }
+
+  .hero5-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .hero5-grid {
+      grid-template-columns: 1.4fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .hero5-text {
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  }
+
+  .hero5-eyebrow {
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--gruvbox-gray);
+    margin-bottom: 2rem;
+  }
+
+  .hero5-title {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin: 0 0 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero5-line {
+    display: block;
+    color: var(--gruvbox-fg);
+  }
+
+  .hero5-line-accent {
+    color: var(--gruvbox-yellow);
+    font-style: italic;
+    font-weight: 400;
+    padding-left: 1.5rem;
+  }
+
+  .hero5-sub {
+    font-family: "MesloLG", monospace;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--gruvbox-fg);
+    margin: 0 0 2rem;
+    max-width: 50ch;
+  }
+
+  .hero5-sub em {
+    color: var(--gruvbox-orange);
+    font-style: italic;
+  }
+
+  .hero5-cta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero5-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 6px;
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .hero5-btn-primary {
+    background: var(--gruvbox-yellow);
+    color: var(--gruvbox-bg);
+    box-shadow: 0 6px 20px -8px var(--gruvbox-yellow);
+  }
+
+  .hero5-btn-primary:hover {
+    background: var(--gruvbox-orange);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -8px var(--gruvbox-orange);
+  }
+
+  .hero5-btn-arrow {
+    transition: transform 0.2s;
+  }
+
+  .hero5-btn:hover .hero5-btn-arrow {
+    transform: translateX(4px);
+  }
+
+  .hero5-btn-ghost {
+    background: transparent;
+    color: var(--gruvbox-fg);
+    border: 1px solid var(--gruvbox-card);
+  }
+
+  .hero5-btn-ghost:hover {
+    border-color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow);
+    transform: translateY(-2px);
+  }
+
+  .hero5-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-family: "MesloLG", monospace;
+    font-size: 0.85rem;
+    color: var(--gruvbox-fg);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gruvbox-card);
+  }
+
+  .hero5-meta-key {
+    color: var(--gruvbox-gray);
+    text-transform: lowercase;
+    margin-right: 0.4rem;
+  }
+
+  /* Taza */
+  .hero5-taza-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  }
+
+  .hero5-taza {
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
+  }
+
+  .hero5-taza-caption {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 999px;
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    color: var(--gruvbox-gray);
+    font-style: italic;
+  }
+
+  .hero5-cup-icon {
+    color: var(--gruvbox-orange);
+  }
+
+  /* ================= SECTIONS ================= */
+  .sec5 {
+    padding: 5rem 0;
+    border-top: 1px solid var(--gruvbox-card);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sec5.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .sec5-label {
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--gruvbox-yellow);
+    margin-bottom: 1.5rem;
+  }
+
+  .sec5-h2 {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--gruvbox-fg);
+    margin: 0 0 1.25rem;
+    max-width: 22ch;
+  }
+
+  .sec5-p {
+    font-family: "MesloLG", monospace;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--gruvbox-fg);
+    margin: 0 0 1.5rem;
+    max-width: 60ch;
+  }
+
+  .sec5-p-sm {
+    color: var(--gruvbox-gray);
+    font-size: 0.95rem;
+  }
+
+  .sec5-link {
+    display: inline-block;
+    font-family: "MesloLG", monospace;
+    font-size: 0.95rem;
+    color: var(--gruvbox-yellow);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .sec5-link:hover {
+    color: var(--gruvbox-orange);
+    transform: translateX(4px);
+  }
+
+  /* Projects */
+  .proj5-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--gruvbox-card);
+  }
+
+  .proj5-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 2rem 0.5rem;
+    text-decoration: none;
+    color: var(--gruvbox-fg);
+    border-bottom: 1px solid var(--gruvbox-card);
+    transition: padding-left 0.3s, color 0.3s, background 0.3s;
+  }
+
+  .proj5-card:hover {
+    padding-left: 1.5rem;
+    color: var(--gruvbox-yellow);
+    background: var(--gruvbox-card);
+  }
+
+  .proj5-num {
+    font-family: "Mononoki", monospace;
+    font-size: 0.85rem;
+    color: var(--gruvbox-gray);
+    font-weight: 700;
+  }
+
+  .proj5-title {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin: 0 0 0.25rem;
+  }
+
+  .proj5-desc {
+    font-family: "MesloLG", monospace;
+    font-size: 0.9rem;
+    color: var(--gruvbox-gray);
+    margin: 0;
+  }
+
+  .proj5-card:hover .proj5-desc {
+    color: var(--gruvbox-fg);
+  }
+
+  .proj5-arrow {
+    font-size: 1.5rem;
+    color: var(--gruvbox-yellow);
+    transition: transform 0.3s;
+  }
+
+  .proj5-card:hover .proj5-arrow {
+    transform: translateX(8px);
+  }
+
+  /* Hobbies */
+  .hobby5-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .hobby5-chip {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 999px;
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    color: var(--gruvbox-blue);
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+
+  .hobby5-chip:hover {
+    border-color: var(--gruvbox-blue);
+    transform: translateY(-2px);
+  }
+
+  /* CTA */
+  .sec5-cta {
+    border-top: none;
+  }
+
+  .cta5 {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+  }
+
+  .cta5-h2 {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    color: var(--gruvbox-fg);
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .cta5-p {
+    font-family: "MesloLG", monospace;
+    font-size: 1rem;
+    color: var(--gruvbox-gray);
+    margin: 0 0 2rem;
+  }
+
+  .cta5-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .cta5-socials {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .cta5-social {
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    color: var(--gruvbox-fg);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .cta5-social:hover {
+    color: var(--gruvbox-yellow);
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sec5,
+    .hero5-text,
+    .hero5-taza-wrap {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -80px 0px' }
+  );
+
+  document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+</script>

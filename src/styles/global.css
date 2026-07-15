@@ -177,6 +177,37 @@ body {
   width: 80%;
 }
 
+/* ===== Dev Variants Group ===== */
+
+.gruvbox-nav .nav-dev-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  margin-left: 0.5rem;
+  padding-left: 0.5rem;
+  border-left: 1px dashed var(--gruvbox-card);
+}
+
+.gruvbox-nav .nav-link-dev {
+  font-size: 0.72rem;
+  padding: 0.3rem 0.55rem;
+  color: var(--gruvbox-gray);
+  opacity: 0.7;
+  font-family: "MesloLG", monospace;
+  letter-spacing: 0.05em;
+}
+
+.gruvbox-nav .nav-link-dev:hover,
+.gruvbox-nav .nav-link-dev.active {
+  opacity: 1;
+  color: var(--gruvbox-orange);
+  background-color: transparent;
+}
+
+.gruvbox-nav .nav-link-dev::after {
+  display: none;
+}
+
 /* ===== Mobile Menu ===== */
 
 .gruvbox-nav .nav-menu.absolute {

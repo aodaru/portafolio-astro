@@ -1,0 +1,450 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import bio from '../data/bio.json'
+---
+
+<BaseLayout title="Teapartydev — Inicio 2" description="Variante terminal de inicio — Adal Michael García">
+  <div class="inicio2">
+    <!-- Hero minimal -->
+    <header class="inicio2-hero">
+      <h1 class="inicio2-name">Adal Michael García<span class="inicio2-cursor">_</span></h1>
+      <p class="inicio2-role">{bio.role}</p>
+      <div class="inicio2-divider"></div>
+    </header>
+
+    <!-- Grid 2x2 -->
+    <div class="inicio2-grid">
+      <!-- Trabajos -->
+      <article class="t-card" data-tilt>
+        <div class="t-header">
+          <div class="t-dots">
+            <span class="t-dot t-close"></span>
+            <span class="t-dot t-min"></span>
+            <span class="t-dot t-max"></span>
+          </div>
+          <span class="t-title">~/trabajos</span>
+        </div>
+        <div class="t-body">
+          <div class="t-cmd">
+            <span class="t-prompt">$</span> cat trabajos.md
+            <span class="t-blink">▌</span>
+          </div>
+          <h3 class="t-h3">→ {bio.role}</h3>
+          <p class="t-p">{bio.summary}</p>
+          <ul class="t-list">
+            {bio.highlights.map((item) => (
+              <li class="t-li">
+                <span class="t-li-marker">▸</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <a href="/trabajos" class="t-link">cd ~/portfolio →</a>
+        </div>
+      </article>
+
+      <!-- Bio / Timeline -->
+      <article class="t-card" data-tilt>
+        <div class="t-header">
+          <div class="t-dots">
+            <span class="t-dot t-close"></span>
+            <span class="t-dot t-min"></span>
+            <span class="t-dot t-max"></span>
+          </div>
+          <span class="t-title">~/bio.log</span>
+        </div>
+        <div class="t-body">
+          <div class="t-cmd">
+            <span class="t-prompt">$</span> tail -f bio.log
+            <span class="t-blink">▌</span>
+          </div>
+          <ol class="t-timeline">
+            {bio.timeline.map((entry) => (
+              <li class="t-tl-item">
+                <span class="t-tl-year">[{entry.year}]</span>
+                <span class="t-tl-text">{entry.description}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </article>
+
+      <!-- Pasatiempos -->
+      <article class="t-card" data-tilt>
+        <div class="t-header">
+          <div class="t-dots">
+            <span class="t-dot t-close"></span>
+            <span class="t-dot t-min"></span>
+            <span class="t-dot t-max"></span>
+          </div>
+          <span class="t-title">~/hobbies</span>
+        </div>
+        <div class="t-body">
+          <div class="t-cmd">
+            <span class="t-prompt">$</span> ls hobbies/
+            <span class="t-blink">▌</span>
+          </div>
+          <div class="t-tags">
+            {bio.hobbies.map((hobby) => (
+              <span class="t-tag">
+                <span class="t-tag-dot"></span>
+                {hobby}
+              </span>
+            ))}
+          </div>
+        </div>
+      </article>
+
+      <!-- Contacto -->
+      <article class="t-card" data-tilt>
+        <div class="t-header">
+          <div class="t-dots">
+            <span class="t-dot t-close"></span>
+            <span class="t-dot t-min"></span>
+            <span class="t-dot t-max"></span>
+          </div>
+          <span class="t-title">~/contact.sh</span>
+        </div>
+        <div class="t-body">
+          <div class="t-cmd">
+            <span class="t-prompt">$</span> ./connect.sh
+            <span class="t-blink">▌</span>
+          </div>
+          <div class="t-cmds">
+            <a href="https://github.com/aodaru" target="_blank" rel="noopener noreferrer" class="t-cmd-link">
+              <span class="t-cli-prompt">ssh</span> github.com@aodaru
+            </a>
+            <a href="https://twitter.com/aodaru" target="_blank" rel="noopener noreferrer" class="t-cmd-link">
+              <span class="t-cli-prompt">ssh</span> twitter.com@aodaru
+            </a>
+            <a href="https://www.linkedin.com/in/adal-garcia-471889197/" target="_blank" rel="noopener noreferrer" class="t-cmd-link">
+              <span class="t-cli-prompt">ssh</span> linkedin.com@adal-garcia
+            </a>
+            <a href="https://www.instagram.com/aodarug/" target="_blank" rel="noopener noreferrer" class="t-cmd-link">
+              <span class="t-cli-prompt">ssh</span> instagram.com@aodarug
+            </a>
+            <a href="mailto:hi@teapartydev.com" class="t-cmd-link">
+              <span class="t-cli-prompt">mail</span> hi@teapartydev.com
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .inicio2 {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 5rem;
+  }
+
+  /* Hero */
+  .inicio2-hero {
+    text-align: center;
+    margin-bottom: 4rem;
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .inicio2-name {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: var(--gruvbox-fg);
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .inicio2-cursor {
+    color: var(--gruvbox-yellow);
+    animation: blink 1s steps(1) infinite;
+    margin-left: 0.1em;
+  }
+
+  .inicio2-role {
+    font-family: "MesloLG", monospace;
+    font-size: 0.9rem;
+    color: var(--gruvbox-gray);
+    margin: 0 0 2rem;
+  }
+
+  .inicio2-divider {
+    width: 60px;
+    height: 2px;
+    background: var(--gruvbox-yellow);
+    margin: 0 auto;
+    border-radius: 1px;
+  }
+
+  /* Grid */
+  .inicio2-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .inicio2-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+    }
+  }
+
+  /* Card */
+  .t-card {
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 8px;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .t-card:nth-child(1) { animation-delay: 0.1s; }
+  .t-card:nth-child(2) { animation-delay: 0.2s; }
+  .t-card:nth-child(3) { animation-delay: 0.3s; }
+  .t-card:nth-child(4) { animation-delay: 0.4s; }
+
+  .t-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--gruvbox-yellow);
+    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--gruvbox-yellow);
+  }
+
+  /* Header */
+  .t-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    background: linear-gradient(180deg, var(--gruvbox-header-from), var(--gruvbox-header-to));
+    border-bottom: 1px solid var(--gruvbox-card);
+  }
+
+  .t-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .t-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    display: block;
+  }
+
+  .t-close { background: var(--gruvbox-close); }
+  .t-min { background: var(--gruvbox-minimize); }
+  .t-max { background: var(--gruvbox-maximize); }
+
+  .t-title {
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    color: var(--gruvbox-fg);
+    opacity: 0.85;
+  }
+
+  /* Body */
+  .t-body {
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+
+  .t-cmd {
+    font-family: "MesloLG", monospace;
+    font-size: 0.82rem;
+    color: var(--gruvbox-gray);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .t-prompt {
+    color: var(--gruvbox-green);
+    font-weight: 700;
+  }
+
+  .t-blink {
+    color: var(--gruvbox-yellow);
+    animation: blink 1.1s steps(1) infinite;
+    margin-left: auto;
+  }
+
+  .t-h3 {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--gruvbox-orange);
+    margin: 0 0 0.75rem;
+  }
+
+  .t-p {
+    font-family: "MesloLG", monospace;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--gruvbox-fg);
+    margin: 0 0 1rem;
+  }
+
+  .t-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.25rem;
+  }
+
+  .t-li {
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    padding: 0.3rem 0;
+    color: var(--gruvbox-fg);
+  }
+
+  .t-li-marker {
+    color: var(--gruvbox-yellow);
+    margin-right: 0.5rem;
+  }
+
+  .t-link {
+    display: inline-block;
+    font-family: "MesloLG", monospace;
+    font-size: 0.85rem;
+    color: var(--gruvbox-yellow);
+    text-decoration: none;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--gruvbox-yellow);
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .t-link:hover {
+    background: var(--gruvbox-yellow);
+    color: var(--gruvbox-bg);
+  }
+
+  /* Timeline */
+  .t-timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .t-tl-item {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .t-tl-year {
+    color: var(--gruvbox-yellow);
+    font-weight: 700;
+  }
+
+  .t-tl-text {
+    color: var(--gruvbox-fg);
+  }
+
+  /* Tags */
+  .t-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .t-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.7rem;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 999px;
+    font-family: "MesloLG", monospace;
+    font-size: 0.82rem;
+    color: var(--gruvbox-blue);
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  [data-theme="dark"] .t-tag {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .t-tag:hover {
+    border-color: var(--gruvbox-blue);
+  }
+
+  .t-tag-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gruvbox-blue);
+  }
+
+  /* Commands */
+  .t-cmds {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .t-cmd-link {
+    font-family: "MesloLG", monospace;
+    font-size: 0.85rem;
+    color: var(--gruvbox-fg);
+    text-decoration: none;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s, padding-left 0.2s;
+    display: block;
+  }
+
+  .t-cmd-link:hover {
+    background: var(--gruvbox-card);
+    color: var(--gruvbox-yellow);
+    padding-left: 1rem;
+  }
+
+  .t-cli-prompt {
+    color: var(--gruvbox-green);
+    font-weight: 700;
+    margin-right: 0.5rem;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes cardIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .inicio2-hero,
+    .t-card {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    .t-blink,
+    .inicio2-cursor {
+      animation: none !important;
+    }
+  }
+</style>

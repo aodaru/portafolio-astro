@@ -1,0 +1,653 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import bio from '../data/bio.json'
+---
+
+<BaseLayout title="Teapartydev — Inicio 3" description="Variante landing moderna de inicio — Adal Michael García">
+  <div class="inicio3">
+    <!-- Hero -->
+    <section class="hero3">
+      <div class="hero3-bg" aria-hidden="true">
+        <div class="hero3-glow hero3-glow-1"></div>
+        <div class="hero3-glow hero3-glow-2"></div>
+        <div class="hero3-grid"></div>
+      </div>
+
+      <div class="hero3-inner">
+        <div class="hero3-eyebrow">
+          <span class="hero3-dot"></span>
+          Available for new projects
+        </div>
+
+        <h1 class="hero3-title">
+          Hi, I'm <span class="hero3-name">Adal</span>.<br />
+          I build <span class="hero3-accent">systems</span> that last.
+        </h1>
+
+        <p class="hero3-sub">
+          {bio.role} based in Chiriquí, Panamá — {bio.summary}
+        </p>
+
+        <div class="hero3-cta">
+          <a href="/trabajos" class="hero3-btn hero3-btn-primary">
+            View my work
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <a href="/contacto" class="hero3-btn hero3-btn-ghost">Get in touch</a>
+        </div>
+
+        <div class="hero3-avatar">
+          <div class="hero3-avatar-ring"></div>
+          <img src="/img/Avatar.webp" alt="Adal Michael García" loading="eager" />
+        </div>
+      </div>
+
+      <div class="hero3-scroll" aria-hidden="true">
+        <span>scroll</span>
+        <div class="hero3-scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- Sobre mí -->
+    <section class="sec3" data-reveal>
+      <div class="sec3-grid">
+        <div class="sec3-label">01 — About</div>
+        <div class="sec3-content">
+          <h2 class="sec3-h2">A decade of keeping things running.</h2>
+          <p class="sec3-p">
+            I've spent the last 12+ years in the trenches of system administration — building
+            reporting tools, data query layers, and small pieces of software that make teams
+            faster. I care about reliability, clarity, and tools that respect the operator.
+          </p>
+          <a href="/blog" class="sec3-link">Read my notes →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects featured -->
+    <section class="sec3 sec3-projects" data-reveal>
+      <div class="sec3-grid">
+        <div class="sec3-label">02 — Selected work</div>
+        <div class="sec3-content">
+          <h2 class="sec3-h2">Recent projects</h2>
+          <p class="sec3-p sec3-p-sm">A few things I've built and shipped recently.</p>
+        </div>
+      </div>
+
+      <div class="proj3-grid">
+        <a href="/trabajos" class="proj3-card">
+          <div class="proj3-icon" style="color: var(--gruvbox-yellow);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+          </div>
+          <h3 class="proj3-title">Intranet & reporting</h3>
+          <p class="proj3-desc">Sales reporting, dashboards, and internal tools for fast decision-making.</p>
+          <span class="proj3-arrow">→</span>
+        </a>
+
+        <a href="/trabajos" class="proj3-card">
+          <div class="proj3-icon" style="color: var(--gruvbox-blue);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+          </div>
+          <h3 class="proj3-title">Web platforms</h3>
+          <p class="proj3-desc">Custom websites and content systems tailored to small business needs.</p>
+          <span class="proj3-arrow">→</span>
+        </a>
+
+        <a href="/trabajos" class="proj3-card">
+          <div class="proj3-icon" style="color: var(--gruvbox-green);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 17l6-6-4-4M12 17l8-8"/><circle cx="20" cy="6" r="2"/></svg>
+          </div>
+          <h3 class="proj3-title">This portfolio</h3>
+          <p class="proj3-desc">A static site built with Astro + GruvBox, replacing a WordPress theme.</p>
+          <span class="proj3-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Stack / hobbies -->
+    <section class="sec3" data-reveal>
+      <div class="sec3-grid">
+        <div class="sec3-label">03 — Things I like</div>
+        <div class="sec3-content">
+          <h2 class="sec3-h2">Beyond the terminal</h2>
+          <p class="sec3-p">
+            When I'm not shipping code, you'll find me tinkering with electronics, IoT projects,
+            and way too many video games.
+          </p>
+          <div class="hobby3-grid">
+            {bio.hobbies.map((hobby) => (
+              <span class="hobby3-chip">{hobby}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="sec3 sec3-cta" data-reveal>
+      <div class="cta3">
+        <h2 class="cta3-h2">Have something in mind?</h2>
+        <p class="cta3-p">Let's talk about systems, tools, or a new project.</p>
+        <div class="cta3-actions">
+          <a href="mailto:hi@teapartydev.com" class="hero3-btn hero3-btn-primary">
+            Say hello
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <div class="cta3-socials">
+            <a href="https://github.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta3-social">GitHub</a>
+            <a href="https://twitter.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta3-social">Twitter</a>
+            <a href="https://www.linkedin.com/in/adal-garcia-471889197/" target="_blank" rel="noopener noreferrer" class="cta3-social">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .inicio3 {
+    overflow-x: hidden;
+  }
+
+  /* ================= HERO ================= */
+  .hero3 {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 1.5rem 4rem;
+    overflow: hidden;
+  }
+
+  .hero3-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero3-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.35;
+    animation: float 12s ease-in-out infinite;
+  }
+
+  .hero3-glow-1 {
+    width: 480px;
+    height: 480px;
+    background: var(--gruvbox-yellow);
+    top: -120px;
+    left: -120px;
+  }
+
+  .hero3-glow-2 {
+    width: 380px;
+    height: 380px;
+    background: var(--gruvbox-orange);
+    bottom: -100px;
+    right: -100px;
+    animation-delay: -6s;
+  }
+
+  [data-theme="light"] .hero3-glow {
+    opacity: 0.25;
+  }
+
+  .hero3-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--gruvbox-card) 1px, transparent 1px),
+      linear-gradient(90deg, var(--gruvbox-card) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+    opacity: 0.4;
+  }
+
+  .hero3-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero3-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 999px;
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    color: var(--gruvbox-fg);
+    margin-bottom: 2rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .hero3-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gruvbox-green);
+    box-shadow: 0 0 0 0 var(--gruvbox-green);
+    animation: pulse 2s ease-out infinite;
+  }
+
+  .hero3-title {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 7vw, 4.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--gruvbox-fg);
+    margin: 0 0 1.5rem;
+  }
+
+  .hero3-name {
+    color: var(--gruvbox-yellow);
+  }
+
+  .hero3-accent {
+    color: var(--gruvbox-orange);
+    font-style: italic;
+  }
+
+  .hero3-sub {
+    font-family: "MesloLG", monospace;
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
+    line-height: 1.6;
+    color: var(--gruvbox-gray);
+    max-width: 56ch;
+    margin: 0 0 2.5rem;
+  }
+
+  .hero3-cta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 4rem;
+  }
+
+  .hero3-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 6px;
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .hero3-btn-primary {
+    background: var(--gruvbox-yellow);
+    color: var(--gruvbox-bg);
+    box-shadow: 0 6px 20px -8px var(--gruvbox-yellow);
+  }
+
+  .hero3-btn-primary:hover {
+    background: var(--gruvbox-orange);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -8px var(--gruvbox-orange);
+  }
+
+  .hero3-btn-ghost {
+    background: transparent;
+    color: var(--gruvbox-fg);
+    border: 1px solid var(--gruvbox-card);
+  }
+
+  .hero3-btn-ghost:hover {
+    border-color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow);
+    transform: translateY(-2px);
+  }
+
+  .hero3-avatar {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: 1rem;
+  }
+
+  .hero3-avatar-ring {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--gruvbox-yellow), var(--gruvbox-orange), var(--gruvbox-blue), var(--gruvbox-yellow));
+    animation: spin 6s linear infinite;
+    z-index: -1;
+  }
+
+  .hero3-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--gruvbox-bg);
+  }
+
+  .hero3-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: "MesloLG", monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--gruvbox-gray);
+  }
+
+  .hero3-scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(180deg, var(--gruvbox-gray), transparent);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero3-scroll-line::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: var(--gruvbox-yellow);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+
+  /* ================= SECTIONS ================= */
+  .sec3 {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 1.5rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sec3.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .sec3-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .sec3-grid {
+      grid-template-columns: 200px 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .sec3-label {
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gruvbox-yellow);
+    padding-top: 0.4rem;
+  }
+
+  .sec3-h2 {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--gruvbox-fg);
+    margin: 0 0 1rem;
+    max-width: 22ch;
+  }
+
+  .sec3-p {
+    font-family: "MesloLG", monospace;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--gruvbox-fg);
+    margin: 0 0 1.5rem;
+    max-width: 60ch;
+  }
+
+  .sec3-p-sm {
+    color: var(--gruvbox-gray);
+    font-size: 0.95rem;
+  }
+
+  .sec3-link {
+    display: inline-block;
+    font-family: "MesloLG", monospace;
+    font-size: 0.95rem;
+    color: var(--gruvbox-yellow);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .sec3-link:hover {
+    color: var(--gruvbox-orange);
+    transform: translateX(4px);
+  }
+
+  /* ================= PROJECTS ================= */
+  .proj3-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .proj3-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .proj3-card {
+    position: relative;
+    display: block;
+    padding: 1.75rem 1.5rem 4rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 8px;
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, background 0.3s;
+    overflow: hidden;
+  }
+
+  .proj3-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--gruvbox-yellow);
+    background: var(--gruvbox-card);
+  }
+
+  .proj3-icon {
+    margin-bottom: 1.25rem;
+  }
+
+  .proj3-title {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--gruvbox-fg);
+    margin: 0 0 0.5rem;
+  }
+
+  .proj3-desc {
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--gruvbox-gray);
+    margin: 0;
+  }
+
+  .proj3-arrow {
+    position: absolute;
+    bottom: 1.25rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--gruvbox-yellow);
+    transition: transform 0.3s;
+  }
+
+  .proj3-card:hover .proj3-arrow {
+    transform: translate(4px, -4px);
+  }
+
+  /* ================= HOBBIES ================= */
+  .hobby3-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .hobby3-chip {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 999px;
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    color: var(--gruvbox-blue);
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+
+  .hobby3-chip:hover {
+    border-color: var(--gruvbox-blue);
+    transform: translateY(-2px);
+  }
+
+  /* ================= CTA ================= */
+  .sec3-cta {
+    padding-bottom: 8rem;
+  }
+
+  .cta3 {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+  }
+
+  .cta3-h2 {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    color: var(--gruvbox-fg);
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .cta3-p {
+    font-family: "MesloLG", monospace;
+    font-size: 1rem;
+    color: var(--gruvbox-gray);
+    margin: 0 0 2rem;
+  }
+
+  .cta3-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .cta3-socials {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .cta3-social {
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    color: var(--gruvbox-fg);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .cta3-social:hover {
+    color: var(--gruvbox-yellow);
+  }
+
+  /* ================= ANIMATIONS ================= */
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 var(--gruvbox-green); }
+    70% { box-shadow: 0 0 0 10px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(40px, -30px); }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes scrollLine {
+    0% { top: -50%; }
+    100% { top: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sec3,
+    .hero3-glow,
+    .hero3-avatar-ring,
+    .hero3-scroll-line::after,
+    .hero3-dot {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -80px 0px' }
+  );
+
+  document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+</script>

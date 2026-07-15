@@ -1,11 +1,22 @@
 ---
 const currentPath = Astro.url.pathname
+const isDev = import.meta.env.DEV
 
 const links = [
   { href: '/', label: 'Inicio' },
   { href: '/blog', label: 'Blog' },
   { href: '/trabajos', label: 'Trabajos' },
   { href: '/contacto', label: 'Contacto' },
+]
+
+const devVariants = [
+  { href: '/inicio1', label: 'i1' },
+  { href: '/inicio2', label: 'i2' },
+  { href: '/inicio3', label: 'i3' },
+  { href: '/inicio4', label: 'i4' },
+  { href: '/inicio5', label: 'i5' },
+  { href: '/inicio6', label: 'i6' },
+  { href: '/inicio7', label: 'i7' },
 ]
 ---
 
@@ -33,6 +44,19 @@ const links = [
           {label}
         </a>
       ))}
+
+      {isDev && (
+        <span class="nav-dev-group" title="Variantes de inicio (solo dev)">
+          {devVariants.map(({ href, label }) => (
+            <a
+              href={href}
+              class={`nav-link nav-link-dev ${currentPath === href ? 'active' : ''}`}
+            >
+              {label}
+            </a>
+          ))}
+        </span>
+      )}
 
       <a
         href="https://github.com/aodaru"
