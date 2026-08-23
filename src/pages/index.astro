@@ -1,163 +1,590 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import TazaAscii from '../components/TazaAscii.astro'
 import bio from '../data/bio.json'
 ---
 
 <BaseLayout title="Teapartydev — Inicio" description="Portafolio personal de Adal Michael García">
-  <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
-    <!-- Coffee cup video -->
-    <div class="max-w-[400px] mx-auto mb-6 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl" style="box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
-      <video autoplay muted loop playsinline class="w-full block">
-        <source src="/img/taza-cafe-compressed.webm" type="video/webm; codecs=vp9" />
-        <source src="/img/taza-cafe.webm" type="video/webm; codecs=vp9" />
-      </video>
-    </div>
+  <div class="inicio8">
+    <section class="hero8">
+      <div class="hero8-bg" aria-hidden="true">
+        <video autoplay muted loop playsinline class="hero8-video" data-taza-play>
+          <source src="/img/taza-cafe-compressed.webm" type="video/webm" />
+        </video>
+        <div class="hero8-overlay"></div>
+      </div>
 
-    <!-- Intro card -->
-    <div class="intro-card">
-      <p class="mb-0 text-lg">
-        Apasionado a la tecnología, con muchas ganas de seguir aprendiendo
-      </p>
-    </div>
+      <div class="hero8-grid">
+        <div class="hero8-text">
+          <div class="hero8-eyebrow">— Hello, I'm a {bio.role} based in Panamá</div>
 
-    <!-- Profile -->
-    <div class="flex flex-col md:flex-row items-center justify-between mb-8 gap-6">
-      <div class="text-center md:text-left">
-        <h1 class="text-4xl font-bold mb-1" style="font-family: 'Courier New', monospace;">
-          Adal Michael García
-        </h1>
-        <p class="text-lg" style="color: var(--gruvbox-gray); font-family: 'Courier New', monospace;">
-          Desarrollador / Administrador de sistemas
-        </p>
-      </div>
-      <div class="avatar-ring w-[150px] h-[150px] rounded-full shrink-0 overflow-hidden">
-        <img src="/img/Avatar.webp" alt="Adal Michael García" class="w-full h-full object-cover" />
-      </div>
-    </div>
+          <h1 class="hero8-title">
+            <span class="hero8-line">Adal</span>
+            <span class="hero8-line hero8-line-accent">Michael</span>
+            <span class="hero8-line">García</span>
+          </h1>
 
-    <!-- Trabajos -->
-    <div class="terminal-card">
-      <div class="terminal-header">
-        <div class="terminal-dots">
-          <span class="terminal-dot close"></span>
-          <span class="terminal-dot minimize"></span>
-          <span class="terminal-dot maximize"></span>
-        </div>
-        <span class="terminal-title">adalgarcia@portfolio: ~/trabajos</span>
-      </div>
-      <div class="terminal-body">
-        <div class="terminal-command">
-          <span class="terminal-prompt">cat</span> trabajos.txt
-          <span class="terminal-cursor"></span>
-        </div>
-        <h4 class="fw-bold mb-3" style="color: var(--gruvbox-orange);">
-          → {bio.role}
-        </h4>
-        <p class="mb-3">
-          {bio.summary}
-        </p>
-        <ul class="terminal-list">
-          {bio.highlights.map((item) => (
-            <li class="mb-2">{item}</li>
-          ))}
-        </ul>
-      </div>
-    </div>
+          <p class="hero8-sub">
+            I build <em>digital systems</em> that respect the operator.
+            Reporting tools, data layers, and the kind of small software
+            that makes teams faster.
+          </p>
 
-    <!-- Bio / Timeline -->
-    <div class="terminal-card">
-      <div class="terminal-header">
-        <div class="terminal-dots">
-          <span class="terminal-dot close"></span>
-          <span class="terminal-dot minimize"></span>
-          <span class="terminal-dot maximize"></span>
-        </div>
-        <span class="terminal-title">adalgarcia@portfolio: ~/bio</span>
-      </div>
-      <div class="terminal-body">
-        <div class="terminal-command">
-          <span class="terminal-prompt">timeline</span> --show-all
-          <span class="terminal-cursor"></span>
-        </div>
-        {bio.timeline.map((entry) => (
-          <div class="bio-item">
-            <span class="bio-year">[{entry.year}]</span>
-            <p class="mb-0">{entry.description}</p>
+          <div class="hero8-cta">
+            <a href="/trabajos" class="hero8-btn hero8-btn-primary">
+              View my work
+              <span class="hero8-btn-arrow">→</span>
+            </a>
+            <a href="/contacto" class="hero8-btn hero8-btn-ghost">Get in touch</a>
           </div>
-        ))}
-      </div>
-    </div>
 
-    <!-- Pasatiempos -->
-    <div class="terminal-card">
-      <div class="terminal-header">
-        <div class="terminal-dots">
-          <span class="terminal-dot close"></span>
-          <span class="terminal-dot minimize"></span>
-          <span class="terminal-dot maximize"></span>
+          <div class="hero8-meta">
+            <span><span class="hero8-meta-key">role</span> engineer / sysadmin</span>
+            <span><span class="hero8-meta-key">since</span> 2012</span>
+            <span><span class="hero8-meta-key">based</span> Chiriquí, PA</span>
+          </div>
         </div>
-        <span class="terminal-title">adalgarcia@portfolio: ~/hobbies</span>
+
+        <aside class="hero8-taza-wrap">
+          <TazaAscii variant="svg" size="lg" label="Taza de café humeante" class="hero8-taza" />
+          <div class="hero8-taza-caption">
+            <span class="hero8-cup-icon">☕</span>
+            <span>currently brewing</span>
+          </div>
+        </aside>
       </div>
-      <div class="terminal-body">
-        <div class="terminal-command">
-          <span class="terminal-prompt">ls</span> -la hobbies/
-          <span class="terminal-cursor"></span>
-        </div>
-        <p class="mb-0">
-          {bio.hobbies.join(', ')}
+    </section>
+
+    <section class="sec8" data-reveal>
+      <div class="sec8-label">— 01 / About</div>
+      <div class="sec8-content">
+        <h2 class="sec8-h2">A decade of keeping things running.</h2>
+        <p class="sec8-p">
+          I've spent the last 12+ years in the trenches of system administration — building
+          reporting tools, data query layers, and small pieces of software that make teams
+          faster. I care about reliability, clarity, and tools that respect the operator.
         </p>
+        <a href="/blog" class="sec8-link">Read my notes →</a>
       </div>
-    </div>
+    </section>
 
-    <!-- Blog placeholder -->
-    <div class="terminal-card">
-      <div class="terminal-header">
-        <div class="terminal-dots">
-          <span class="terminal-dot close"></span>
-          <span class="terminal-dot minimize"></span>
-          <span class="terminal-dot maximize"></span>
-        </div>
-        <span class="terminal-title">adalgarcia@portfolio: ~/blog</span>
-      </div>
-      <div class="terminal-body">
-        <div class="terminal-command">
-          <span class="terminal-prompt">cat</span> posts.txt
-          <span class="terminal-cursor"></span>
-        </div>
-        <p class="opacity-75">Próximamente — artículos y tutoriales.</p>
-      </div>
-    </div>
+    <section class="sec8" data-reveal>
+      <div class="sec8-label">— 02 / Selected work</div>
+      <div class="sec8-content">
+        <h2 class="sec8-h2">Recent projects</h2>
+        <p class="sec8-p sec8-p-sm">A few things I've built and shipped recently.</p>
 
-    <!-- Contacto -->
-    <div class="terminal-card">
-      <div class="terminal-header">
-        <div class="terminal-dots">
-          <span class="terminal-dot close"></span>
-          <span class="terminal-dot minimize"></span>
-          <span class="terminal-dot maximize"></span>
-        </div>
-        <span class="terminal-title">adalgarcia@portfolio: ~/contact</span>
-      </div>
-      <div class="terminal-body">
-        <div class="terminal-command">
-          <span class="terminal-prompt">cat</span> social-links.json
-          <span class="terminal-cursor"></span>
-        </div>
-        <div class="flex flex-col gap-2">
-          <a href="https://github.com/aodaru" target="_blank" rel="noopener noreferrer" class="social-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-            @aodaru
+        <div class="proj8-grid">
+          <a href="/trabajos" class="proj8-card">
+            <span class="proj8-num">01</span>
+            <h3 class="proj8-title">Intranet & reporting</h3>
+            <p class="proj8-desc">Sales reporting, dashboards, and internal tools for fast decision-making.</p>
+            <span class="proj8-arrow">→</span>
           </a>
-          <a href="https://twitter.com/aodaru" target="_blank" rel="noopener noreferrer" class="social-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/></svg>
-            @aodaru
+
+          <a href="/trabajos" class="proj8-card">
+            <span class="proj8-num">02</span>
+            <h3 class="proj8-title">Web platforms</h3>
+            <p class="proj8-desc">Custom websites and content systems tailored to small business needs.</p>
+            <span class="proj8-arrow">→</span>
           </a>
-          <a href="https://www.linkedin.com/in/adal-garcia-471889197/" target="_blank" rel="noopener noreferrer" class="social-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
-            @adalgarcia
+
+          <a href="/trabajos" class="proj8-card">
+            <span class="proj8-num">03</span>
+            <h3 class="proj8-title">This portfolio</h3>
+            <p class="proj8-desc">A static site built with Astro + GruvBox, replacing a WordPress theme.</p>
+            <span class="proj8-arrow">→</span>
           </a>
         </div>
       </div>
-    </div>
+    </section>
+
+    <section class="sec8" data-reveal>
+      <div class="sec8-label">— 03 / Things I like</div>
+      <div class="sec8-content">
+        <h2 class="sec8-h2">Beyond the terminal</h2>
+        <p class="sec8-p">
+          When I'm not shipping code, you'll find me tinkering with electronics, IoT projects,
+          and way too many video games.
+        </p>
+        <div class="hobby8-grid">
+          {bio.hobbies.map((hobby) => (
+            <span class="hobby8-chip">{hobby}</span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="sec8 sec8-cta" data-reveal>
+      <div class="cta8">
+        <h2 class="cta8-h2">Have something in mind?</h2>
+        <p class="cta8-p">Let's talk about systems, tools, or a new project.</p>
+        <div class="cta8-actions">
+          <a href="mailto:hi@teapartydev.com" class="hero8-btn hero8-btn-primary">
+            Say hello
+            <span class="hero8-btn-arrow">→</span>
+          </a>
+          <div class="cta8-socials">
+            <a href="https://github.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta8-social">GitHub</a>
+            <a href="https://twitter.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta8-social">Twitter</a>
+            <a href="https://www.linkedin.com/in/adal-garcia-471889197/" target="_blank" rel="noopener noreferrer" class="cta8-social">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </BaseLayout>
+
+<style>
+  .inicio8 {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  .hero8 {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    padding: 4rem 0 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero8-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero8-video {
+    position: absolute;
+    inset: -25%;
+    width: 150%;
+    height: 150%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.4;
+    -webkit-mask-image: radial-gradient(circle farthest-corner at center, black 20%, transparent 65%);
+    mask-image: radial-gradient(circle farthest-corner at center, black 20%, transparent 65%);
+  }
+
+  [data-theme="light"] .hero8-video {
+    opacity: 0.3;
+  }
+
+  .hero8-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 0%, transparent 70%, var(--gruvbox-bg) 100%);
+  }
+
+  .hero8-grid {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .hero8-grid {
+      grid-template-columns: 1.4fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .hero8-text {
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  }
+
+  .hero8-eyebrow {
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--gruvbox-gray);
+    margin-bottom: 2rem;
+  }
+
+  .hero8-title {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin: 0 0 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero8-line {
+    display: block;
+    color: var(--gruvbox-fg);
+  }
+
+  .hero8-line-accent {
+    color: var(--gruvbox-yellow);
+    font-style: italic;
+    font-weight: 400;
+    padding-left: 1.5rem;
+  }
+
+  .hero8-sub {
+    font-family: "MesloLG", monospace;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--gruvbox-fg);
+    margin: 0 0 2rem;
+    max-width: 50ch;
+  }
+
+  .hero8-sub em {
+    color: var(--gruvbox-orange);
+    font-style: italic;
+  }
+
+  .hero8-cta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero8-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 6px;
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .hero8-btn-primary {
+    background: var(--gruvbox-yellow);
+    color: var(--gruvbox-bg);
+    box-shadow: 0 6px 20px -8px var(--gruvbox-yellow);
+  }
+
+  .hero8-btn-primary:hover {
+    background: var(--gruvbox-orange);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -8px var(--gruvbox-orange);
+  }
+
+  .hero8-btn-arrow {
+    transition: transform 0.2s;
+  }
+
+  .hero8-btn:hover .hero8-btn-arrow {
+    transform: translateX(4px);
+  }
+
+  .hero8-btn-ghost {
+    background: transparent;
+    color: var(--gruvbox-fg);
+    border: 1px solid var(--gruvbox-card);
+  }
+
+  .hero8-btn-ghost:hover {
+    border-color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow);
+    transform: translateY(-2px);
+  }
+
+  .hero8-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-family: "MesloLG", monospace;
+    font-size: 0.85rem;
+    color: var(--gruvbox-fg);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gruvbox-card);
+  }
+
+  .hero8-meta-key {
+    color: var(--gruvbox-gray);
+    text-transform: lowercase;
+    margin-right: 0.4rem;
+  }
+
+  .hero8-taza-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  }
+
+  .hero8-taza {
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
+  }
+
+  .hero8-taza-caption {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 999px;
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    color: var(--gruvbox-gray);
+    font-style: italic;
+  }
+
+  .hero8-cup-icon {
+    color: var(--gruvbox-orange);
+  }
+
+  .sec8 {
+    padding: 5rem 0;
+    border-top: 1px solid var(--gruvbox-card);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sec8.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .sec8-label {
+    font-family: "MesloLG", monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--gruvbox-yellow);
+    margin-bottom: 1.5rem;
+  }
+
+  .sec8-h2 {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--gruvbox-fg);
+    margin: 0 0 1.25rem;
+    max-width: 22ch;
+  }
+
+  .sec8-p {
+    font-family: "MesloLG", monospace;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--gruvbox-fg);
+    margin: 0 0 1.5rem;
+    max-width: 60ch;
+  }
+
+  .sec8-p-sm {
+    color: var(--gruvbox-gray);
+    font-size: 0.95rem;
+  }
+
+  .sec8-link {
+    display: inline-block;
+    font-family: "MesloLG", monospace;
+    font-size: 0.95rem;
+    color: var(--gruvbox-yellow);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .sec8-link:hover {
+    color: var(--gruvbox-orange);
+    transform: translateX(4px);
+  }
+
+  .proj8-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--gruvbox-card);
+  }
+
+  .proj8-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 2rem 0.5rem;
+    text-decoration: none;
+    color: var(--gruvbox-fg);
+    border-bottom: 1px solid var(--gruvbox-card);
+    transition: padding-left 0.3s, color 0.3s, background 0.3s;
+  }
+
+  .proj8-card:hover {
+    padding-left: 1.5rem;
+    color: var(--gruvbox-yellow);
+    background: var(--gruvbox-card);
+  }
+
+  .proj8-num {
+    font-family: "Mononoki", monospace;
+    font-size: 0.85rem;
+    color: var(--gruvbox-gray);
+    font-weight: 700;
+  }
+
+  .proj8-title {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin: 0 0 0.25rem;
+  }
+
+  .proj8-desc {
+    font-family: "MesloLG", monospace;
+    font-size: 0.9rem;
+    color: var(--gruvbox-gray);
+    margin: 0;
+  }
+
+  .proj8-card:hover .proj8-desc {
+    color: var(--gruvbox-fg);
+  }
+
+  .proj8-arrow {
+    font-size: 1.5rem;
+    color: var(--gruvbox-yellow);
+    transition: transform 0.3s;
+  }
+
+  .proj8-card:hover .proj8-arrow {
+    transform: translateX(8px);
+  }
+
+  .hobby8-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .hobby8-chip {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 999px;
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    color: var(--gruvbox-blue);
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+
+  .hobby8-chip:hover {
+    border-color: var(--gruvbox-blue);
+    transform: translateY(-2px);
+  }
+
+  .sec8-cta {
+    border-top: none;
+  }
+
+  .cta8 {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    background: var(--gruvbox-card);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+  }
+
+  .cta8-h2 {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    color: var(--gruvbox-fg);
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .cta8-p {
+    font-family: "MesloLG", monospace;
+    font-size: 1rem;
+    color: var(--gruvbox-gray);
+    margin: 0 0 2rem;
+  }
+
+  .cta8-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .cta8-socials {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .cta8-social {
+    font-family: "MesloLG", monospace;
+    font-size: 0.88rem;
+    color: var(--gruvbox-fg);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .cta8-social:hover {
+    color: var(--gruvbox-yellow);
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sec8,
+    .hero8-text,
+    .hero8-taza-wrap {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -80px 0px' }
+  );
+
+  document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+</script>
