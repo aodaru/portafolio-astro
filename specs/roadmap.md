@@ -79,14 +79,14 @@
 ## Fase 5B: Exploración de Diseños de Home
 **Múltiples variantes de página de inicio para estudiar diseños**
 
-- [ ] Crear ruta `/inicio1` con diseño alternativo (e.g. tarjetas, minimalista)
-- [ ] Crear ruta `/inicio2` con diseño alternativo (e.g. landing moderno, hero grande)
-- [ ] Crear ruta `/inicio3` con diseño alternativo (e.g. dashboard / grid estilo portafolio)
-- [ ] Mantener la home actual (`/`) intacta como referencia
-- [ ] Cada variante debe compartir el mismo contenido (bio.json) pero con layout y CSS distintos
-- [ ] (Opcional) Enlace desde la barra de navegación para switchear entre variantes en desarrollo
+- [x] Crear 6 variantes iniciales (`/inicio1` a `/inicio6`) con direcciones estéticas distintas
+- [x] Componente reutilizable `TazaAscii.astro` con 3 variants (webm/css/svg)
+- [x] Iteración adicional con variantes enfocadas en la taza de café como elemento central
+- [x] Selección del diseño final basado en las exploraciones (commit `9495c57`)
+- [x] Implementación del diseño definitivo en `index.astro` con video de fondo de taza de café
+- [x] Eliminación de páginas de prueba (`inicio1-6.astro`) tras seleccionar el diseño final
 
-**Entregable**: 3 páginas de inicio alternativas navegables, sin afectar la home actual.
+**Entregable**: Home page rediseñada con video de taza de café como hero, basada en la exploración de múltiples variantes.
 
 ---
 

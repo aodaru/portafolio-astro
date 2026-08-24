@@ -158,3 +158,30 @@
 3 páginas nuevas en `/inicio4`, `/inicio5`, `/inicio6` con la taza integrada de 3 formas distintas manteniendo la base de inicio3. Home actual e inicio3 intactos. Componente reutilizable `TazaAscii.astro` con 3 variants para futuro uso.
 
 **Implementado en commit `c63d931`**.
+
+---
+
+## Iteración 5B.3 — Selección del diseño final
+
+> Tras explorar 6+ variantes, se seleccionó el diseño definitivo para la home.
+
+### Proceso de selección
+
+- [x] Revisión de todas las variantes (inicio1-6) con sus enfoques distintos
+- [x] Evaluación de cada diseño según: enganche visual, coherencia con identidad GruvBox, rendimiento, accesibilidad
+- [x] Decisión: el diseño con video de taza de café como hero es el seleccionado
+
+### Implementación del diseño final
+
+- [x] Crear nueva versión de `src/pages/index.astro` basada en las exploraciones
+- [x] Hero con video de fondo `taza-cafe-compressed.webm` (246KB) como elemento central
+- [x] Integración del contenido principal (bio, proyectos, hobbies, contacto) con el hero de taza
+- [x] Eliminación de páginas de prueba (`inicio1.astro` a `inicio6.astro`)
+- [x] Navbar actualizada: eliminar enlaces de variantes de desarrollo
+- [x] Validación final: `pnpm astro check` y `pnpm build` sin errores
+
+### Entregable 5B.3 ✅
+
+Home page rediseñada con video de taza de café como hero. Diseño definitivo seleccionado tras explorar múltiples variantes. Páginas de prueba eliminadas.
+
+**Implementado en commit `9495c57`**.

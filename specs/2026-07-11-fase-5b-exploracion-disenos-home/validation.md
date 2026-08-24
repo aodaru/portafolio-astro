@@ -46,34 +46,43 @@
 - [x] `aria-label` personalizable funciona
 - [x] Vapor de variants `css` y `svg` se desactiva con reduced-motion
 
-### `/` (home actual) e `/inicio3`
+### `/` (home actual) — post 5B.3
 
-- [x] Home actual sigue funcionando idéntica a antes de 5B
-- [x] `/inicio3` sigue funcionando idéntica a cuando se implementó (5B.1)
-- [x] Mismos estilos, mismas animaciones, misma estructura
+- [x] Home rediseñada con video de taza de café como hero
+- [x] Video `taza-cafe-compressed.webm` carga correctamente (246KB)
+- [x] Contenido completo visible: nombre, rol, trabajos, bio, hobbies, contacto
+- [x] Dark/light mode funciona correctamente
+- [x] Responsive funcional en mobile/tablet/desktop
+- [x] `prefers-reduced-motion` desactiva animaciones del video
+
+### Páginas de prueba eliminadas
+
+- [x] `/inicio1` a `/inicio6` ya no existen (archivos eliminados)
+- [x] Navbar no muestra enlaces a variantes de desarrollo
+- [x] Build no genera páginas para variantes eliminadas
 
 ### Navbar
 
-- [x] Muestra enlaces `i1` a `i6` (solo en `pnpm dev`)
-- [x] En build de producción no muestra los enlaces de variantes (verificado: 0 ocurrencias de `nav-link-dev`/`nav-dev-group` en `dist/`)
+- [x] Enlaces de variantes (`i1` a `i6`) eliminados del Navbar
+- [x] En build de producción no hay referencias a variantes (verificado: 0 ocurrencias de `nav-link-dev`/`nav-dev-group` en `dist/`)
 
 ## Verificación técnica
 
 - [x] `pnpm astro check` pasa sin errores TypeScript (0 errors, 0 warnings)
-- [x] `pnpm astro build` completa sin errores (31 páginas)
-- [x] El output de `dist/` incluye las 6 páginas nuevas: `/inicio1`, `/inicio2`, `/inicio3`, `/inicio4`, `/inicio5`, `/inicio6`
+- [x] `pnpm astro build` completa sin errores
+- [x] El output de `dist/` NO incluye páginas de variantes eliminadas
 - [x] No hay warnings de Tailwind/CSS no usados
 - [x] No se introdujeron dependencias npm nuevas (verificar `package.json` y `pnpm-lock.yaml`)
 
 ## Criterios de aceptación
 
-1. Las 6 variantes son **visualmente distintas** entre sí (no solo cambios de color)
-2. Las 6 son **coherentes con el tema GruvBox** (paleta cálida, identidad visual mantenida)
-3. Las 6 tienen **animaciones con propósito** (no decoración gratuita)
-4. La home actual e inicio3 **siguen intactas**
+1. Las 6 variantes exploradas fueron **visualmente distintas** entre sí (no solo cambios de color)
+2. Todas fueron **coherentes con el tema GruvBox** (paleta cálida, identidad visual mantenida)
+3. Todas tuvieron **animaciones con propósito** (no decoración gratuita)
+4. El diseño final seleccionado incorpora lo mejor de las exploraciones
 5. **Responsive** funcional en mobile/tablet/desktop
 6. **Accesibilidad** básica (foco, contraste, reduced-motion)
-7. **Taza integrada** de 3 formas distintas en inicio4/5/6, manteniendo coherencia visual
+7. **Taza de café** como elemento central del hero en la home definitiva
 
 ## Cómo validar
 
@@ -81,17 +90,16 @@
 # Desde la raíz del proyecto
 pnpm dev
 # Abrir http://localhost:4321/
-# Navegar a /inicio1, /inicio2, /inicio3, /inicio4, /inicio5, /inicio6
-# Probar toggle de tema en cada una
+# Verificar la home con video de taza de café como hero
+# Probar toggle de tema
 # Inspeccionar responsive con DevTools
 # Probar con prefers-reduced-motion activado en DevTools
-# En inicio6, hacer scroll lento para ver el parallax y la rotación sticky
 
 # Verificar typecheck y build
 pnpm astro check
 pnpm build
-# Verificar que dist/ tiene 31 páginas
-ls dist/inicio*/index.html
+# Verificar que dist/ NO tiene páginas de variantes eliminadas
+ls dist/inicio*/index.html  # Debe fallar (no existen)
 ```
 
 ## Checklist final antes de merge

@@ -20,6 +20,14 @@
 - `/inicio3` intacta como referencia
 - Navbar actualizada con enlaces `i4`, `i5`, `i6` (solo en dev)
 
+### Incluido (5B.3 — selección e implementación del diseño final)
+
+- Selección del diseño definitivo tras revisar todas las variantes
+- Implementación del diseño final en `index.astro` con video de taza de café como hero
+- Eliminación de páginas de prueba (`inicio1.astro` a `inicio6.astro`)
+- Limpieza de enlaces de variantes en Navbar
+- Validación final de build y typecheck
+
 ### Excluido
 
 - Cambios a la home actual (`/`) o a `/inicio3`
@@ -120,12 +128,12 @@ Todas las variantes usan la paleta GruvBox existente (variables `--gruvbox-*`).
 
 ### Estado actual
 
-- Fase 1-5B.2 completadas: scaffolding, layout, home, contenido, proyectos, 6 variantes de home
-- Home actual en `src/pages/index.astro` con tarjetas-terminal GruvBox (intacta)
-- 6 variantes: `/inicio1`, `/inicio2`, `/inicio3`, `/inicio4`, `/inicio5`, `/inicio6`
+- Fase 1-5B.3 completadas: scaffolding, layout, home, contenido, proyectos, exploración de diseños, diseño final
+- Home actual en `src/pages/index.astro` con video de taza de café como hero (diseño definitivo)
+- Páginas de prueba (`inicio1-6.astro`) eliminadas tras seleccionar el diseño final
 - `BaseLayout.astro` con Navbar, Footer, dark/light mode, global.css
 - `bio.json` con role, summary, highlights, timeline, hobbies
-- `TazaAscii.astro` componente reutilizable con 3 variants
+- `TazaAscii.astro` componente reutilizable con 3 variants (disponible para futuro uso)
 - Tailwind 4 + Vite plugin ya configurado
 - Paleta GruvBox en CSS custom properties con variantes light/dark
 - Fuentes Mononoki y MesloLG self-hosted
