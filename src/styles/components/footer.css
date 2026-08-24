@@ -1,0 +1,6 @@
+.gruvbox-footer {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background-color: var(--gruvbox-card);
+  border-top: 2px solid var(--gruvbox-yellow);
+}

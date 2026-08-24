@@ -1,0 +1,33 @@
+.bio-item {
+  padding-left: 3rem;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.bio-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--gruvbox-yellow);
+}
+
+.bio-item::after {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 0.5rem;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--gruvbox-orange);
+  border: 3px solid var(--gruvbox-bg);
+}
+
+.bio-year {
+  font-weight: 700;
+  color: var(--gruvbox-yellow);
+  font-size: 1.1rem;
+}
