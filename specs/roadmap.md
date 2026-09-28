@@ -93,11 +93,15 @@
 ## Fase 6: Internacionalización
 **Soporte bilingüe español/inglés**
 
-- [ ] Traducciones base (navegación, footer, títulos de secciones)
-- [ ] Archivos JSON por idioma: `src/i18n/es.json`, `src/i18n/en.json`
-- [ ] Ruteo `/es/...` y `/en/...` para contenido localizado
-- [ ] Selector de idioma en navegación
-- [ ] Posts en ambos idiomas con relación entre versiones
+- [x] Traducciones base (navegación, footer, títulos de secciones) — `src/i18n/ui.ts` (es/en)
+- [x] Helper i18n: `src/i18n/utils.ts` (`getLangFromUrl`, `useTranslations`, `useTranslatedPath`, `formatDate`, `getAlternateUrls`)
+- [x] Ruteo ES en raíz + `/en/...` para inglés (`prefixDefaultLocale: false`; se descartó `/es/...` con redirect para evitar breaking change de URLs existentes)
+- [x] Selector de idioma en navegación (ES | EN, con idioma activo resaltado)
+- [x] Posts en ambos idiomas con mismo slug (`src/content/blog/es/` + `src/content/blog/en/`)
+- [x] Proyectos en ambos idiomas (`src/content/projects/es/` + `src/content/projects/en/`)
+- [x] Bio por idioma (`src/i18n/bio-es.json`, `src/i18n/bio-en.json`; eliminado `src/data/bio.json`)
+- [x] `hreflang` (es/en/x-default) + `<html lang>` dinámico en `BaseLayout.astro`
+- [x] `README.md` con manual de posts/proyectos bilingües
 
 **Entregable**: Sitio completamente navegable en español e inglés.
 

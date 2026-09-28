@@ -1,12 +1,12 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro'
+import BaseLayout from '../../../layouts/BaseLayout.astro'
 import { getCollection, getEntry, render } from 'astro:content'
-import { getLangFromUrl, useTranslations, useTranslatedPath, formatDate } from '../../i18n/utils'
+import { getLangFromUrl, useTranslations, useTranslatedPath, formatDate } from '../../../i18n/utils'
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
   return posts
-    .filter((post) => !post.data.draft && post.data.lang === 'es')
+    .filter((post) => !post.data.draft && post.data.lang === 'en')
     .map((post) => ({
       params: { slug: post.id.split('/').slice(1).join('/') },
       props: { id: post.id },

@@ -6,6 +6,7 @@ tags: ["PHP", "MySQL", "JavaScript", "Intranet"]
 image: "/img/Works/Intranet1_1.png"
 url: ""
 draft: false
+lang: es
 ---
 
 Sistema de intranet desarrollado para la gestión interna de la empresa, automatizando procesos clave como facturación, control de inventario, directorio de empleados y reportes de ventas.

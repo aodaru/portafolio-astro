@@ -2,23 +2,32 @@
 import '../styles/global.css'
 import Navbar from '../components/Navbar.astro'
 import Footer from '../components/Footer.astro'
+import { getAlternateUrls } from '../i18n/utils'
 
 export interface Props {
   title: string
   description?: string
+  lang?: 'es' | 'en'
 }
 
-const { title, description } = Astro.props
+const { title, description, lang = 'es' } = Astro.props
+const alternates = getAlternateUrls(Astro.url)
+const site = (Astro.site?.toString() ?? '').replace(/\/$/, '')
+const hrefEs = `${site}${alternates.es}`
+const hrefEn = `${site}${alternates.en}`
 ---
 
 <!doctype html>
-<html lang="es" data-theme="dark">
+<html lang={lang} data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description ?? title} />
     <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" hreflang="es" href={hrefEs} />
+    <link rel="alternate" hreflang="en" href={hrefEn} />
+    <link rel="alternate" hreflang="x-default" href={hrefEs} />
     <title>{title}</title>
     <script is:inline>
       (function () {

@@ -1,13 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import { getCollection, getEntry, render } from 'astro:content'
+import { getLangFromUrl, useTranslations, useTranslatedPath, formatDate } from '../../i18n/utils'
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects')
   return projects
-    .filter((p) => !p.data.draft)
+    .filter((p) => !p.data.draft && p.data.lang === 'es')
     .map((project) => ({
-      params: { slug: project.id },
+      params: { slug: project.id.split('/').slice(1).join('/') },
       props: { id: project.id },
     }))
 }
@@ -16,26 +17,35 @@ const { id } = Astro.props
 const project = await getEntry('projects', id)
 if (!project) return new Response(null, { status: 404 })
 const { Content } = await render(project)
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
 ---
 
 <BaseLayout
   title={`${project.data.title} — Trabajos — Teapartydev`}
   description={project.data.description}
+  lang={lang}
 >
   <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
     <a
-      href="/trabajos"
+      href={translatePath('/trabajos')}
       class="inline-flex items-center gap-1 mb-6 no-underline transition-all duration-300 hover:opacity-80"
       style="color: var(--gruvbox-blue);"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
       </svg>
-      Volver a trabajos
+      {t('works.back')}
     </a>
 
     <article>
       <header class="mb-8">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
+            {formatDate(project.data.date, lang)}
+          </span>
+        </div>
         <h1 class="text-3xl font-bold mb-4" style="color: var(--gruvbox-orange); font-family: 'Courier New', monospace;">
           {project.data.title}
         </h1>
@@ -64,7 +74,7 @@ const { Content } = await render(project)
               <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
               <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
             </svg>
-            Visitar proyecto
+            {t('works.visit')}
           </a>
         )}
       </header>

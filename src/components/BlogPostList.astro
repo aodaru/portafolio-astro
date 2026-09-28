@@ -1,22 +1,20 @@
 ---
+import { useTranslations, useTranslatedPath, formatDate } from '../i18n/utils'
+import type { Lang } from '../i18n/utils'
+
 export interface Props {
   posts: import('astro:content').CollectionEntry<'blog'>[]
   currentPage: number
   totalPages: number
+  lang: Lang
 }
 
-const { posts, currentPage, totalPages } = Astro.props
-
-function formatDate(date: Date): string {
-  return date.toLocaleDateString('es-ES', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
-}
+const { posts, currentPage, totalPages, lang } = Astro.props
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
 
 function pageUrl(n: number): string {
-  return n === 1 ? '/blog' : `/blog/page/${n}`
+  return n === 1 ? translatePath('/blog') : `${translatePath('/blog')}/page/${n}`
 }
 ---
 
@@ -38,14 +36,14 @@ function pageUrl(n: number): string {
         <span class="terminal-title">adalgarcia@portfolio: ~/blog</span>
       </div>
       <div class="terminal-body">
-        <p class="opacity-75">No hay artículos publicados todavía.</p>
+        <p class="opacity-75">{t('blog.empty')}</p>
       </div>
     </div>
   )}
 
   {posts.map((post, i) => (
     <a
-      href={`/blog/${post.id}`}
+      href={`${translatePath('/blog')}/${post.id.split('/').pop()}`}
       class="block no-underline"
       style={`animation: fadeInUp 0.6s ease-out ${i * 0.12}s both;`}
     >
@@ -56,12 +54,12 @@ function pageUrl(n: number): string {
             <span class="terminal-dot minimize"></span>
             <span class="terminal-dot maximize"></span>
           </div>
-          <span class="terminal-title">adalgarcia@portfolio: ~/blog/{post.id}</span>
+          <span class="terminal-title">adalgarcia@portfolio: ~/blog/{post.id.split('/').pop()}</span>
         </div>
         <div class="terminal-body">
           <div class="flex items-center gap-2 mb-4 select-none">
             <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
-              {formatDate(post.data.date)}
+              {formatDate(post.data.date, lang)}
             </span>
           </div>
           <h2 class="text-xl font-bold mb-2" style="color: var(--gruvbox-yellow);">
@@ -93,7 +91,7 @@ function pageUrl(n: number): string {
           class="px-4 py-2 rounded border no-underline transition-all duration-300"
           style="border-color: var(--gruvbox-gray); color: var(--gruvbox-fg);"
         >
-          ← Anterior
+          {t('blog.prev')}
         </a>
       )}
       <span class="px-4 py-2 opacity-75">
@@ -105,7 +103,7 @@ function pageUrl(n: number): string {
           class="px-4 py-2 rounded border no-underline transition-all duration-300"
           style="border-color: var(--gruvbox-gray); color: var(--gruvbox-fg);"
         >
-          Siguiente →
+          {t('blog.next')}
         </a>
       )}
     </div>
@@ -113,11 +111,11 @@ function pageUrl(n: number): string {
 
   <div class="mt-8 text-center">
     <a
-      href="/blog/tags"
+      href={`${translatePath('/blog')}/tags`}
       class="inline-block px-4 py-2 rounded border no-underline transition-all duration-300 hover:border-[var(--gruvbox-yellow)]"
       style="border-color: var(--gruvbox-gray); color: var(--gruvbox-fg);"
     >
-      Ver todos los tags #
+      {t('blog.tags')}
     </a>
   </div>
 </div>

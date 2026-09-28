@@ -1,9 +1,9 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
-import TazaAscii from '../components/TazaAscii.astro'
-import bio from '../i18n/bio-es.json'
-import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils'
-import '../styles/pages/home.css'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import TazaAscii from '../../components/TazaAscii.astro'
+import bio from '../../i18n/bio-en.json'
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils'
+import '../../styles/pages/home.css'
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)

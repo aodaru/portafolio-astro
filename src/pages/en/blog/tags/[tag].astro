@@ -1,7 +1,7 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro'
+import BaseLayout from '../../../../layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
-import { getLangFromUrl, useTranslations, useTranslatedPath, formatDate } from '../../../i18n/utils'
+import { getLangFromUrl, useTranslations, useTranslatedPath, formatDate } from '../../../../i18n/utils'
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
@@ -9,8 +9,8 @@ const translatePath = useTranslatedPath(lang)
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
-  const esPosts = posts.filter((post) => !post.data.draft && post.data.lang === 'es')
-  const tags = new Set(esPosts.flatMap((post) => post.data.tags))
+  const enPosts = posts.filter((post) => !post.data.draft && post.data.lang === 'en')
+  const tags = new Set(enPosts.flatMap((post) => post.data.tags))
   return Array.from(tags).map((tag) => ({
     params: { tag },
     props: { tag },
@@ -21,7 +21,7 @@ const { tag } = Astro.props
 
 const allPosts = await getCollection('blog')
 const posts = allPosts
-  .filter((post) => !post.data.draft && post.data.lang === 'es' && post.data.tags.includes(tag))
+  .filter((post) => !post.data.draft && post.data.lang === 'en' && post.data.tags.includes(tag))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 ---
 

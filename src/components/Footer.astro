@@ -1,4 +1,8 @@
 ---
+import { getLangFromUrl, useTranslations } from '../i18n/utils'
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 const year = new Date().getFullYear()
 
 const socialLinks = [
@@ -23,7 +27,7 @@ const socialLinks = [
 <footer class="gruvbox-footer mt-auto py-4">
   <div class="max-w-3xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
     <p class="text-sm opacity-75">
-      &copy; {year} Adal Michael García
+      {t('footer.copyright', { year })}
     </p>
 
     <div class="flex items-center gap-4">

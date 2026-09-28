@@ -1,8 +1,8 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro'
-import BlogPostList from '../../../components/BlogPostList.astro'
+import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import BlogPostList from '../../../../components/BlogPostList.astro'
 import { getCollection } from 'astro:content'
-import { getLangFromUrl, useTranslations } from '../../../i18n/utils'
+import { getLangFromUrl, useTranslations } from '../../../../i18n/utils'
 
 interface PageProps {
   data: import('astro:content').CollectionEntry<'blog'>[]
@@ -17,7 +17,7 @@ interface PageProps {
 export async function getStaticPaths({ paginate }: { paginate: any }) {
   const allPosts = await getCollection('blog')
   const publishedPosts = allPosts
-    .filter((post) => !post.data.draft && post.data.lang === 'es')
+    .filter((post) => !post.data.draft && post.data.lang === 'en')
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   return paginate(publishedPosts, { pageSize: 5 })
 }

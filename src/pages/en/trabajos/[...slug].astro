@@ -1,66 +1,81 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro'
+import BaseLayout from '../../../layouts/BaseLayout.astro'
 import { getCollection, getEntry, render } from 'astro:content'
-import { getLangFromUrl, useTranslations, useTranslatedPath, formatDate } from '../../i18n/utils'
+import { getLangFromUrl, useTranslations, useTranslatedPath, formatDate } from '../../../i18n/utils'
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog')
-  return posts
-    .filter((post) => !post.data.draft && post.data.lang === 'es')
-    .map((post) => ({
-      params: { slug: post.id.split('/').slice(1).join('/') },
-      props: { id: post.id },
+  const projects = await getCollection('projects')
+  return projects
+    .filter((p) => !p.data.draft && p.data.lang === 'en')
+    .map((project) => ({
+      params: { slug: project.id.split('/').slice(1).join('/') },
+      props: { id: project.id },
     }))
 }
 
 const { id } = Astro.props
-const post = await getEntry('blog', id)
-if (!post) return new Response(null, { status: 404 })
-const { Content } = await render(post)
+const project = await getEntry('projects', id)
+if (!project) return new Response(null, { status: 404 })
+const { Content } = await render(project)
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)
 ---
 
 <BaseLayout
-  title={`${post.data.title} — Blog — Teapartydev`}
-  description={post.data.description}
+  title={`${project.data.title} — Trabajos — Teapartydev`}
+  description={project.data.description}
   lang={lang}
 >
   <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
     <a
-      href={translatePath('/blog')}
+      href={translatePath('/trabajos')}
       class="inline-flex items-center gap-1 mb-6 no-underline transition-all duration-300 hover:opacity-80"
       style="color: var(--gruvbox-blue);"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
       </svg>
-      {t('blog.back')}
+      {t('works.back')}
     </a>
 
     <article>
       <header class="mb-8">
         <div class="flex items-center gap-2 mb-4">
           <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
-            {formatDate(post.data.date, lang)}
+            {formatDate(project.data.date, lang)}
           </span>
         </div>
-        <h1 class="text-3xl font-bold mb-4" style="color: var(--gruvbox-yellow); font-family: 'Courier New', monospace;">
-          {post.data.title}
+        <h1 class="text-3xl font-bold mb-4" style="color: var(--gruvbox-orange); font-family: 'Courier New', monospace;">
+          {project.data.title}
         </h1>
-        {post.data.tags.length > 0 && (
+        <p class="text-lg mb-4 opacity-80">{project.data.description}</p>
+        {project.data.tags.length > 0 && (
           <div class="flex flex-wrap gap-2 mb-4">
-            {post.data.tags.map((tag) => (
-              <a
-                href={`${translatePath('/blog')}/tags/${tag}`}
-                class="text-xs px-2 py-1 rounded no-underline transition-all duration-300 hover:opacity-80"
+            {project.data.tags.map((tag) => (
+              <span
+                class="text-xs px-2 py-1 rounded"
                 style="background: var(--gruvbox-card); color: var(--gruvbox-blue); border: 1px solid var(--gruvbox-blue);"
               >
                 #{tag}
-              </a>
+              </span>
             ))}
           </div>
+        )}
+        {project.data.url && (
+          <a
+            href={project.data.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded no-underline transition-all duration-300"
+            style="background: var(--gruvbox-yellow); color: var(--gruvbox-bg);"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+              <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+            </svg>
+            {t('works.visit')}
+          </a>
         )}
       </header>
 
@@ -71,7 +86,7 @@ const translatePath = useTranslatedPath(lang)
             <span class="terminal-dot minimize"></span>
             <span class="terminal-dot maximize"></span>
           </div>
-          <span class="terminal-title">adalgarcia@portfolio: ~/blog/{post.id}</span>
+          <span class="terminal-title">adalgarcia@portfolio: ~/proyectos/{project.id}</span>
         </div>
         <div class="terminal-body prose-styles">
           <Content />
@@ -176,8 +191,8 @@ const translatePath = useTranslatedPath(lang)
   .prose-styles :global(th) {
     text-align: left;
     padding: 0.5rem;
-    border-bottom: 2px solid var(--gruvbox-yellow);
-    color: var(--gruvbox-yellow);
+    border-bottom: 2px solid var(--gruvbox-orange);
+    color: var(--gruvbox-orange);
     font-weight: 700;
   }
 
@@ -193,7 +208,7 @@ const translatePath = useTranslatedPath(lang)
   }
 
   .prose-styles :global(blockquote) {
-    border-left: 4px solid var(--gruvbox-yellow);
+    border-left: 4px solid var(--gruvbox-orange);
     padding-left: 1rem;
     margin: 1rem 0;
     opacity: 0.85;
