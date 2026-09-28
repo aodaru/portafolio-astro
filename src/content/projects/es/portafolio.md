@@ -6,6 +6,7 @@ tags: ["Linux", "portafolio", "proyectos"]
 image: "/img/posts/portafolio.gif"
 url: "https://ssr.astro.adalgarcia.com"
 draft: false
+lang: es
 ---
 
 El objetivo de este proyecto es llevar un historial de los trabajos en los cuales he realizado algún tipo de desarrollo, como también compartir las experiencias vividas en estos proyectos y algunas otras experiencias y dificultades que se me hayan presentado en este recorrido de aprendizaje en el desarrollo web y otras herramientas.

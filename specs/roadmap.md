@@ -93,11 +93,15 @@
 ## Fase 6: Internacionalización
 **Soporte bilingüe español/inglés**
 
-- [ ] Traducciones base (navegación, footer, títulos de secciones)
-- [ ] Archivos JSON por idioma: `src/i18n/es.json`, `src/i18n/en.json`
-- [ ] Ruteo `/es/...` y `/en/...` para contenido localizado
-- [ ] Selector de idioma en navegación
-- [ ] Posts en ambos idiomas con relación entre versiones
+- [x] Traducciones base (navegación, footer, títulos de secciones) — `src/i18n/ui.ts` (es/en)
+- [x] Helper i18n: `src/i18n/utils.ts` (`getLangFromUrl`, `useTranslations`, `useTranslatedPath`, `formatDate`, `getAlternateUrls`)
+- [x] Ruteo ES en raíz + `/en/...` para inglés (`prefixDefaultLocale: false`; se descartó `/es/...` con redirect para evitar breaking change de URLs existentes)
+- [x] Selector de idioma en navegación (ES | EN, con idioma activo resaltado)
+- [x] Posts en ambos idiomas con mismo slug (`src/content/blog/es/` + `src/content/blog/en/`)
+- [x] Proyectos en ambos idiomas (`src/content/projects/es/` + `src/content/projects/en/`)
+- [x] Bio por idioma (`src/i18n/bio-es.json`, `src/i18n/bio-en.json`; eliminado `src/data/bio.json`)
+- [x] `hreflang` (es/en/x-default) + `<html lang>` dinámico en `BaseLayout.astro`
+- [x] `README.md` con manual de posts/proyectos bilingües
 
 **Entregable**: Sitio completamente navegable en español e inglés.
 
@@ -106,12 +110,12 @@
 ## Fase 7: SEO + Performance
 **Optimización para motores de búsqueda y velocidad**
 
-- [ ] Meta tags dinámicos (title, description, OG) por página
+- [x] Meta tags dinámicos (title, description, OG) por página
 - [x] Sitemap.xml automático (`@astrojs/sitemap`)
-- [ ] RSS feed para blog (`@astrojs/rss`)
-- [ ] Imágenes optimizadas con `astro:assets` y WebP
-- [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices)
-- [ ] Google Tag Manager integrado (via Partytown)
+- [x] RSS feed para blog (endpoints propios `rss.xml.ts` bilingües ES/EN, no `@astrojs/rss`)
+- [x] Imágenes optimizadas con `astro:assets` y WebP
+- [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices) — seguimiento Fase 8: re-medir en deploy preview (local: 90 desk / 60 mob, A11y/BP/SEO 100)
+- [ ] Google Tag Manager integrado (via Partytown) — diferido D1
 - [x] `robots.txt`
 
 **Entregable**: Sitio optimizado y listo para indexación.

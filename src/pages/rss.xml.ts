@@ -5,7 +5,7 @@ import type { APIContext } from 'astro'
 export const GET = async (context: APIContext) => {
   const posts = await getCollection('blog')
   const published = posts
-    .filter((post) => !post.data.draft)
+    .filter((post) => !post.data.draft && post.data.lang === 'es')
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 
   return rss({
@@ -16,7 +16,7 @@ export const GET = async (context: APIContext) => {
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.description,
-      link: `/blog/${post.id}/`,
+      link: `/blog/${post.id.split('/').slice(1).join('/')}/`,
     })),
   })
 }

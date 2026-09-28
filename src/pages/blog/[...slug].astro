@@ -1,13 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import ContentImage from '../../components/ContentImage.astro'
 import { getCollection, getEntry, render } from 'astro:content'
+import { getLangFromUrl, useTranslations, useTranslatedPath, formatDate } from '../../i18n/utils'
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
   return posts
-    .filter((post) => !post.data.draft)
+    .filter((post) => !post.data.draft && post.data.lang === 'es')
     .map((post) => ({
-      params: { slug: post.id },
+      params: { slug: post.id.split('/').slice(1).join('/') },
       props: { id: post.id },
     }))
 }
@@ -16,33 +18,36 @@ const { id } = Astro.props
 const post = await getEntry('blog', id)
 if (!post) return new Response(null, { status: 404 })
 const { Content } = await render(post)
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
 ---
 
 <BaseLayout
   title={`${post.data.title} — Blog — Teapartydev`}
   description={post.data.description}
+  lang={lang}
+  image={post.data.image}
+  type="article"
+  publishedDate={post.data.date}
 >
   <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
     <a
-      href="/blog"
+      href={translatePath('/blog')}
       class="inline-flex items-center gap-1 mb-6 no-underline transition-all duration-300 hover:opacity-80"
       style="color: var(--gruvbox-blue);"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
       </svg>
-      Volver al blog
+      {t('blog.back')}
     </a>
 
     <article>
       <header class="mb-8">
         <div class="flex items-center gap-2 mb-4">
           <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
-            {new Date(post.data.date).toLocaleDateString('es-ES', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
+            {formatDate(post.data.date, lang)}
           </span>
         </div>
         <h1 class="text-3xl font-bold mb-4" style="color: var(--gruvbox-yellow); font-family: 'Courier New', monospace;">
@@ -52,7 +57,7 @@ const { Content } = await render(post)
           <div class="flex flex-wrap gap-2 mb-4">
             {post.data.tags.map((tag) => (
               <a
-                href={`/blog/tags/${tag}`}
+                href={`${translatePath('/blog')}/tags/${tag}`}
                 class="text-xs px-2 py-1 rounded no-underline transition-all duration-300 hover:opacity-80"
                 style="background: var(--gruvbox-card); color: var(--gruvbox-blue); border: 1px solid var(--gruvbox-blue);"
               >
@@ -62,6 +67,8 @@ const { Content } = await render(post)
           </div>
         )}
       </header>
+
+      <ContentImage image={post.data.image} alt={post.data.title} />
 
       <div class="terminal-card">
         <div class="terminal-header">

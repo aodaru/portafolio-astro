@@ -1,17 +1,31 @@
 ---
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils'
+import { languages } from '../i18n/ui'
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
 const currentPath = Astro.url.pathname
 
 const links = [
-  { href: '/', label: 'Inicio' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/trabajos', label: 'Trabajos' },
-  { href: '/contacto', label: 'Contacto' },
+  { href: translatePath('/'), label: t('nav.home'), key: 'home' },
+  { href: translatePath('/blog'), label: t('nav.blog'), key: 'blog' },
+  { href: translatePath('/trabajos'), label: t('nav.works'), key: 'works' },
+  { href: translatePath('/contacto'), label: t('nav.contact'), key: 'contact' },
 ]
+
+function isActive(href: string): boolean {
+  const hrefPath = href.split('?')[0]
+  if (hrefPath === '/') {
+    return currentPath === '/' || currentPath === ''
+  }
+  return currentPath.startsWith(hrefPath)
+}
 ---
 
 <header class="gruvbox-nav fixed top-0 inset-x-0 z-50">
   <nav class="mx-auto px-4 h-16 flex items-center justify-center">
-    <button class="mobile-toggle md:hidden p-2 text-[var(--gruvbox-fg)] hover:text-[var(--gruvbox-yellow)] transition-colors" aria-label="Menú de navegación" type="button">
+    <button class="mobile-toggle md:hidden p-2 text-[var(--gruvbox-fg)] hover:text-[var(--gruvbox-yellow)] transition-colors" aria-label={t('nav.menu') as string} type="button">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="3" y1="6" x2="21" y2="6"/>
         <line x1="3" y1="12" x2="21" y2="12"/>
@@ -20,9 +34,9 @@ const links = [
     </button>
 
     <div class="nav-menu hidden md:flex items-center gap-1">
-      {links.map(({ href, label }) => (
-        <a href={href} class={`nav-link ${currentPath === href ? 'active' : ''}`}>
-          {label === 'Inicio' ? <span class="nf nf-md-tea text-xl" aria-hidden="true"></span> : label}
+      {links.map(({ href, label, key }) => (
+        <a href={href} class={`nav-link ${isActive(href) ? 'active' : ''}`} aria-label={key === 'home' ? label : undefined}>
+          {key === 'home' ? <span class="nf nf-md-tea text-xl" aria-hidden="true"></span> : label}
         </a>
       ))}
       <a
@@ -30,13 +44,30 @@ const links = [
         target="_blank"
         rel="noopener noreferrer"
         class="nav-link inline-flex items-center gap-1"
-        aria-label="GitHub"
       >
-        <span class="nf nf-fa-github"></span>
-        <span class="hidden sm:inline">Repo</span>
+        <span class="nf nf-fa-github" aria-hidden="true"></span>
+        <span class="hidden sm:inline">{t('nav.repo')}</span>
       </a>
 
-      <button class="theme-toggle ml-2" aria-label="Cambiar tema" type="button">
+      <div class="lang-switcher inline-flex items-center gap-1 ml-2">
+        {Object.entries(languages).map(([code, name]) => {
+          // Obtener la ruta actual sin el prefijo de idioma
+          const pathWithoutLang = currentPath.replace(/^\/(es|en)/, '') || '/'
+          const targetLang = code as keyof typeof languages
+          const href = translatePath(pathWithoutLang, targetLang)
+          return (
+            <a
+              href={href}
+              class={`nav-link text-xs px-1.5 py-0.5 rounded ${lang === code ? 'opacity-100 font-bold' : 'opacity-50'}`}
+              aria-label={name}
+            >
+              {code.toUpperCase()}
+            </a>
+          )
+        })}
+      </div>
+
+      <button class="theme-toggle ml-1" aria-label={t('nav.theme') as string} type="button">
         <svg class="bi" width="24" height="24" fill="currentColor">
           <use href="#sun" id="themeIcon"/>
         </svg>

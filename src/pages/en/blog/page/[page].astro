@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import BlogPostList from '../../../../components/BlogPostList.astro'
+import { getCollection } from 'astro:content'
+import { getLangFromUrl, useTranslations } from '../../../../i18n/utils'
+
+interface PageProps {
+  data: import('astro:content').CollectionEntry<'blog'>[]
+  currentPage: number
+  totalPages: number
+  start: number
+  end: number
+  size: number
+  url: { current: string; prev?: string; next?: string }
+}
+
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+  const allPosts = await getCollection('blog')
+  const publishedPosts = allPosts
+    .filter((post) => !post.data.draft && post.data.lang === 'en')
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  return paginate(publishedPosts, { pageSize: 5 })
+}
+
+const props = Astro.props as { page: PageProps }
+const posts = props.page.data
+const currentPage = props.page.currentPage
+const totalPages = props.page.totalPages
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+---
+
+<BaseLayout
+  title={currentPage === 1 ? t('blog.title') : `${t('blog.title')} — ${currentPage}`}
+  description={t('blog.description')}
+  lang={lang}
+>
+  <BlogPostList lang={lang} posts={posts} currentPage={currentPage} totalPages={totalPages} />
+</BaseLayout>

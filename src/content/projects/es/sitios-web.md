@@ -6,6 +6,7 @@ tags: ["HTML", "CSS", "JavaScript", "Bootstrap", "Laravel"]
 image: "/img/Works/WebPage_8.png"
 url: ""
 draft: false
+lang: es
 ---
 
 Desarrollo de sitios web completos, desde landing pages hasta aplicaciones web con panel de administración. Cada proyecto se adapta a las necesidades específicas del cliente.

@@ -1,16 +1,22 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
+import { getLangFromUrl, useTranslations, useTranslatedPath, formatDate } from '../i18n/utils'
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
 
 const allProjects = await getCollection('projects')
 const projects = allProjects
-  .filter((p) => !p.data.draft)
+  .filter((p) => !p.data.draft && p.data.lang === 'es')
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 ---
 
 <BaseLayout
-  title="Trabajos — Teapartydev"
-  description="Portafolio de proyectos de Adal Michael García"
+  title={t('works.title')}
+  description={t('works.description')}
+  lang={lang}
 >
   <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
     <h1 class="text-3xl font-bold mb-8" style="font-family: 'Courier New', monospace;">
@@ -30,14 +36,14 @@ const projects = allProjects
           <span class="terminal-title">adalgarcia@portfolio: ~/proyectos</span>
         </div>
         <div class="terminal-body">
-          <p class="opacity-75">No hay proyectos publicados todavía.</p>
+          <p class="opacity-75">{t('works.empty')}</p>
         </div>
       </div>
     )}
 
     {projects.map((project, i) => (
       <a
-        href={`/trabajos/${project.id}`}
+        href={`${translatePath('/trabajos')}/${project.id.split('/').pop()}`}
         class="block no-underline"
         style={`animation: fadeInUp 0.6s ease-out ${i * 0.15}s both;`}
       >
@@ -48,16 +54,12 @@ const projects = allProjects
               <span class="terminal-dot minimize"></span>
               <span class="terminal-dot maximize"></span>
             </div>
-            <span class="terminal-title">adalgarcia@portfolio: ~/proyectos/{project.id}</span>
+            <span class="terminal-title">adalgarcia@portfolio: ~/proyectos/{project.id.split('/').pop()}</span>
           </div>
           <div class="terminal-body">
             <div class="flex items-center gap-2 mb-4 select-none">
               <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
-                {new Date(project.data.date).toLocaleDateString('es-ES', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
+                {formatDate(new Date(project.data.date), lang)}
               </span>
             </div>
             <h2 class="text-xl font-bold mb-2" style="color: var(--gruvbox-orange);">

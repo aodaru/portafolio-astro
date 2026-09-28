@@ -5,6 +5,7 @@ date: 2025-12-24
 tags: ["Docker", "Linux", "Virtualización"]
 image: "/img/posts/docker.jpg"
 draft: false
+lang: es
 ---
 
 A lo largo de mi vida como apasionado y estudiante de por vida de la informática, el concepto de la virtualización es algo que he usado innumerables veces. Ya sea para realizar pruebas, experimentos o incluso llevando algunos proyectos a producción, la virtualización ha sido una compañera fiable y de gran ayuda gracias a su —entre comillas— fácil mantenimiento.

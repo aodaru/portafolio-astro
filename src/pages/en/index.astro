@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import TazaAscii from '../../components/TazaAscii.astro'
+import bio from '../../i18n/bio-en.json'
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils'
+import '../../styles/pages/home.css'
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
+---
+
+<BaseLayout title={t('home.title')} description={t('home.description')} lang={lang}>
+  <div class="inicio8">
+    <section class="hero8">
+      <div class="hero8-bg" aria-hidden="true">
+        <video muted loop playsinline preload="none" poster="/img/Avatar.webp" class="hero8-video" data-taza-defer data-taza-src="/img/taza-cafe-compressed.webm">
+        </video>
+        <div class="hero8-overlay"></div>
+      </div>
+
+      <div class="hero8-grid">
+        <div class="hero8-text">
+          <div class="hero8-eyebrow">{t('home.eyebrow', { role: bio.role })}</div>
+
+          <h1 class="hero8-title">
+            <span class="hero8-line">Adal</span>
+            <span class="hero8-line hero8-line-accent">Michael</span>
+            <span class="hero8-line">García</span>
+          </h1>
+
+          <p class="hero8-sub" set:html={t('home.subtitle')} />
+
+          <div class="hero8-cta">
+            <a href={translatePath('/trabajos')} class="hero8-btn hero8-btn-primary">
+              {t('home.cta.work')}
+              <span class="hero8-btn-arrow">→</span>
+            </a>
+            <a href={translatePath('/contacto')} class="hero8-btn hero8-btn-ghost">{t('home.cta.contact')}</a>
+          </div>
+
+          <div class="hero8-meta">
+            <span><span class="hero8-meta-key">role</span> {t('home.meta.role')}</span>
+            <span><span class="hero8-meta-key">{t('home.meta.since')}</span> 2012</span>
+            <span><span class="hero8-meta-key">based</span> {t('home.meta.based')}</span>
+          </div>
+        </div>
+
+        <aside class="hero8-taza-wrap">
+          <TazaAscii variant="svg" size="lg" label={t('home.taza.label')} class="hero8-taza" />
+          <div class="hero8-taza-caption">
+            <span class="hero8-cup-icon">☕</span>
+            <span>{t('home.taza.caption')}</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="sec8" data-reveal>
+      <div class="sec8-label">{t('home.about.label')}</div>
+      <div class="sec8-content">
+        <h2 class="sec8-h2">{t('home.about.title')}</h2>
+        <p class="sec8-p" set:html={t('home.about.text')} />
+        <a href={translatePath('/blog')} class="sec8-link">{t('home.about.link')}</a>
+      </div>
+    </section>
+
+    <section class="sec8" data-reveal>
+      <div class="sec8-label">{t('home.work.label')}</div>
+      <div class="sec8-content">
+        <h2 class="sec8-h2">{t('home.work.title')}</h2>
+        <p class="sec8-p sec8-p-sm">{t('home.work.subtitle')}</p>
+
+        <div class="proj8-grid">
+          <a href={translatePath('/trabajos')} class="proj8-card">
+            <span class="proj8-num">01</span>
+            <h3 class="proj8-title">{t('home.work.01.title')}</h3>
+            <p class="proj8-desc">{t('home.work.01.desc')}</p>
+            <span class="proj8-arrow">→</span>
+          </a>
+
+          <a href={translatePath('/trabajos')} class="proj8-card">
+            <span class="proj8-num">02</span>
+            <h3 class="proj8-title">{t('home.work.02.title')}</h3>
+            <p class="proj8-desc">{t('home.work.02.desc')}</p>
+            <span class="proj8-arrow">→</span>
+          </a>
+
+          <a href={translatePath('/trabajos')} class="proj8-card">
+            <span class="proj8-num">03</span>
+            <h3 class="proj8-title">{t('home.work.03.title')}</h3>
+            <p class="proj8-desc">{t('home.work.03.desc')}</p>
+            <span class="proj8-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec8" data-reveal>
+      <div class="sec8-label">{t('home.hobby.label')}</div>
+      <div class="sec8-content">
+        <h2 class="sec8-h2">{t('home.hobby.title')}</h2>
+        <p class="sec8-p">{t('home.hobby.text')}</p>
+        <div class="hobby8-grid">
+          {bio.hobbies.map((hobby) => (
+            <span class="hobby8-chip">{hobby}</span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="sec8 sec8-cta" data-reveal>
+      <div class="cta8">
+        <h2 class="cta8-h2">{t('home.contact.title')}</h2>
+        <p class="cta8-p">{t('home.contact.text')}</p>
+        <div class="cta8-actions">
+          <a href="mailto:hi@teapartydev.com" class="hero8-btn hero8-btn-primary">
+            {t('home.contact.cta')}
+            <span class="hero8-btn-arrow">→</span>
+          </a>
+          <div class="cta8-socials">
+            <a href="https://github.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta8-social">{t('home.contact.github')}</a>
+            <a href="https://twitter.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta8-social">{t('home.contact.twitter')}</a>
+            <a href="https://www.linkedin.com/in/adal-garcia-471889197/" target="_blank" rel="noopener noreferrer" class="cta8-social">{t('home.contact.linkedin')}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  // Hero diferido (Fase 7, performance): el `.webm` (241 KB) no se descarga en
+  // el camino crítico. Tras `window load` (o idle) se inyecta el `<source>` y
+  // se reproduce, salvo `prefers-reduced-motion: reduce` (queda el poster).
+  function loadDeferredHeroVideos() {
+    let reduceMotion = false
+    try {
+      reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    } catch {}
+    if (reduceMotion) return
+    document.querySelectorAll('video[data-taza-defer]').forEach((video) => {
+      if (!(video instanceof HTMLVideoElement)) return
+      if (video.querySelector('source')) return
+      const src = video.getAttribute('data-taza-src')
+      if (!src) return
+      const source = document.createElement('source')
+      source.src = src
+      source.type = 'video/webm'
+      video.appendChild(source)
+      video.load()
+      video.play().catch(() => {})
+    })
+  }
+
+  if (document.readyState === 'complete') {
+    loadDeferredHeroVideos()
+  } else {
+    window.addEventListener('load', loadDeferredHeroVideos, { once: true })
+  }
+  try {
+    const ric = (window as unknown as { requestIdleCallback?: (cb: () => void) => void }).requestIdleCallback
+    if (typeof ric === 'function') ric.call(window, loadDeferredHeroVideos)
+  } catch {}
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -80px 0px' }
+  );
+
+  document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+</script>

@@ -1,8 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import { getLangFromUrl, useTranslations } from '../i18n/utils'
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 ---
 
-<BaseLayout title="Contacto — Teapartydev" description="Ponte en contacto con Adal Michael García">
+<BaseLayout title={t('contact.title')} description={t('contact.description')} lang={lang}>
   <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
     <div class="terminal-card">
       <div class="terminal-header">
@@ -19,7 +23,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
           <span class="terminal-cursor"></span>
         </div>
         <p class="mb-6 opacity-75">
-          Puedes encontrarme en las siguientes redes sociales o enviarme un correo electrónico.
+          {t('contact.text')}
         </p>
         <div class="flex flex-col gap-2 max-w-md">
           <a href="https://github.com/aodaru" target="_blank" rel="noopener noreferrer" class="social-btn">

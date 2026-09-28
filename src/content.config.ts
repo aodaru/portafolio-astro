@@ -10,6 +10,8 @@ const blog = defineCollection({
     tags: z.array(z.string()).default([]),
     image: z.string().optional(),
     draft: z.boolean().default(false),
+    lang: z.enum(['es', 'en']).default('es'),
+    translationKey: z.string().optional(),
   }),
 })
 
@@ -23,6 +25,7 @@ const projects = defineCollection({
     image: z.string().optional(),
     url: z.string().optional(),
     draft: z.boolean().default(false),
+    lang: z.enum(['es', 'en']).default('es'),
   }),
 })
 

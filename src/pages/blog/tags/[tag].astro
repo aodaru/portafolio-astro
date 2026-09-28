@@ -1,10 +1,16 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
+import { getLangFromUrl, useTranslations, useTranslatedPath, formatDate } from '../../../i18n/utils'
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
-  const tags = new Set(posts.flatMap((post) => post.data.tags))
+  const esPosts = posts.filter((post) => !post.data.draft && post.data.lang === 'es')
+  const tags = new Set(esPosts.flatMap((post) => post.data.tags))
   return Array.from(tags).map((tag) => ({
     params: { tag },
     props: { tag },
@@ -15,24 +21,25 @@ const { tag } = Astro.props
 
 const allPosts = await getCollection('blog')
 const posts = allPosts
-  .filter((post) => !post.data.draft && post.data.tags.includes(tag))
+  .filter((post) => !post.data.draft && post.data.lang === 'es' && post.data.tags.includes(tag))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 ---
 
 <BaseLayout
-  title={`#${tag} — Blog — Teapartydev`}
-  description={`Artículos etiquetados con #${tag}`}
+  title={`#${tag} — ${t('blog.title')}`}
+  description={t('blog.description')}
+  lang={lang}
 >
   <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
     <a
-      href="/blog"
+      href={translatePath('/blog')}
       class="inline-flex items-center gap-1 mb-6 no-underline transition-all duration-300 hover:opacity-80"
       style="color: var(--gruvbox-blue);"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
       </svg>
-      Volver al blog
+      {t('blog.back')}
     </a>
 
     <h1 class="text-3xl font-bold mb-2" style="font-family: 'Courier New', monospace;">
@@ -41,17 +48,17 @@ const posts = allPosts
       <span class="terminal-cursor"></span>
     </h1>
     <p class="mb-8 opacity-75">
-      {posts.length} artículo{posts.length !== 1 ? 's' : ''} con la etiqueta
+      {t('blog.tagged', { count: posts.length, plural: posts.length !== 1 ? 's' : '' })}
       <span style="color: var(--gruvbox-blue);">#{tag}</span>
     </p>
 
     {posts.length === 0 && (
-      <p class="opacity-75">No hay artículos con esta etiqueta.</p>
+      <p class="opacity-75">{t('blog.noTag')}</p>
     )}
 
     {posts.map((post, i) => (
       <a
-        href={`/blog/${post.id}`}
+        href={`${translatePath('/blog')}/${post.id.split('/').pop()}`}
         class="block no-underline"
         style={`animation: fadeInUp 0.6s ease-out ${i * 0.12}s both;`}
       >
@@ -62,16 +69,12 @@ const posts = allPosts
               <span class="terminal-dot minimize"></span>
               <span class="terminal-dot maximize"></span>
             </div>
-            <span class="terminal-title">adalgarcia@portfolio: ~/blog/{post.id}</span>
+            <span class="terminal-title">adalgarcia@portfolio: ~/blog/{post.id.split('/').pop()}</span>
           </div>
           <div class="terminal-body">
             <div class="flex items-center gap-2 mb-4 select-none">
               <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
-                {new Date(post.data.date).toLocaleDateString('es-ES', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
+                {formatDate(new Date(post.data.date), lang)}
               </span>
             </div>
             <h2 class="text-xl font-bold mb-2" style="color: var(--gruvbox-yellow);">

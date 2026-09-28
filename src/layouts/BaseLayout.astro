@@ -2,23 +2,67 @@
 import '../styles/global.css'
 import Navbar from '../components/Navbar.astro'
 import Footer from '../components/Footer.astro'
+import { getAlternateUrls } from '../i18n/utils'
+import { resolveOgImagePath } from '../utils/images'
 
 export interface Props {
   title: string
   description?: string
+  lang?: 'es' | 'en'
+  image?: string
+  type?: 'website' | 'article'
+  publishedDate?: Date
 }
 
-const { title, description } = Astro.props
+const { title, description, lang = 'es', image, type = 'website', publishedDate } = Astro.props
+const alternates = getAlternateUrls(Astro.url)
+const site = (Astro.site?.toString() ?? Astro.url.origin).replace(/\/$/, '')
+const canonical = `${site}${Astro.url.pathname}`
+const hrefEs = `${site}${alternates.es}`
+const hrefEn = `${site}${alternates.en}`
+const metaDescription = description ?? title
+const ogLocale = lang === 'es' ? 'es_ES' : 'en_US'
+const ogLocaleAlternate = lang === 'es' ? 'en_US' : 'es_ES'
+// og:image siempre absoluta: variante WebP optimizada de `src/assets/` o ruta pública
+const ogImagePath = await resolveOgImagePath(image)
+const ogImage = ogImagePath.startsWith('http') ? ogImagePath : `${site}${ogImagePath}`
+// Autodiscovery RSS del idioma actual
+const rssHref = lang === 'en' ? '/en/rss.xml' : '/rss.xml'
+const rssTitle = lang === 'en' ? 'Blog — Teapartydev (EN)' : 'Blog — Teapartydev (ES)'
 ---
 
 <!doctype html>
-<html lang="es" data-theme="dark">
+<html lang={lang} data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description ?? title} />
-    <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <meta name="description" content={metaDescription} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={type} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocaleAlternate} />
+    {type === 'article' && publishedDate && (
+      <meta property="article:published_time" content={publishedDate.toISOString()} />
+    )}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" hreflang="es" href={hrefEs} />
+    <link rel="alternate" hreflang="en" href={hrefEn} />
+    <link rel="alternate" hreflang="x-default" href={hrefEs} />
+    <link rel="alternate" type="application/rss+xml" title={rssTitle} href={new URL(rssHref, `${site}/`).toString()} />
+    {/* Fase 7 perf fino (sin cambio visual): preload solo de la fuente del
+      * camino crítico (Mononoki Regular 400, texto base/FCP) + poster del
+      * hero (Avatar.webp 12 KB, LCP diferido). No precargar Bold/MesloLG/
+      * NerdFonts: coste de preload injustificado; van con font-display: swap. */}
+    <link rel="preload" href="/fonts/Mononoki-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/img/Avatar.webp" as="image" fetchpriority="high" />
     <title>{title}</title>
     <script is:inline>
       (function () {
