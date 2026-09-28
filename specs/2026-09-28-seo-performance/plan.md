@@ -47,7 +47,7 @@ Marcar checkboxes al ejecutar.
 24. [x] Validar sitemap incluye ambos idiomas y canonicals coinciden
 25. [x] Validar `robots.txt` + feeds RSS (items, fechas, links 200)
 26. [x] Validar OG con inspector (tags presentes, imagen absoluta 200, locale correcto por idioma)
-27. [ ] Tildar items de Fase 7 en `specs/roadmap.md`
+27. [x] Tildar items de Fase 7 en `specs/roadmap.md`
 28. [x] Commitear resto pendiente de Fase 6 (`astro.config.ts` con bloque i18n) en commit separado
 
 ## Grupo 7: Documentación y merge
@@ -55,5 +55,5 @@ Marcar checkboxes al ejecutar.
 - [x] Commit de todos los cambios
 - [x] Push de la rama
 - [x] Crear PR
-- [ ] Validar criterios de éxito (ver `validation.md`)
-- [ ] Mergear y limpiar
+- [x] Validar criterios de éxito (ver `validation.md`; local verificado post-merge, Perf 90+ pendiente deploy preview Fase 8)
+- [x] Mergear y limpiar (PR #3 mergeado a `feat/internacionalizacion`, 2026-09-28)

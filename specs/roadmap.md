@@ -110,12 +110,12 @@
 ## Fase 7: SEO + Performance
 **Optimización para motores de búsqueda y velocidad**
 
-- [ ] Meta tags dinámicos (title, description, OG) por página
+- [x] Meta tags dinámicos (title, description, OG) por página
 - [x] Sitemap.xml automático (`@astrojs/sitemap`)
-- [ ] RSS feed para blog (`@astrojs/rss`)
-- [ ] Imágenes optimizadas con `astro:assets` y WebP
-- [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices)
-- [ ] Google Tag Manager integrado (via Partytown)
+- [x] RSS feed para blog (endpoints propios `rss.xml.ts` bilingües ES/EN, no `@astrojs/rss`)
+- [x] Imágenes optimizadas con `astro:assets` y WebP
+- [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices) — seguimiento Fase 8: re-medir en deploy preview (local: 83 desk / 56 mob, A11y/BP/SEO 100)
+- [ ] Google Tag Manager integrado (via Partytown) — diferido D1
 - [x] `robots.txt`
 
 **Entregable**: Sitio optimizado y listo para indexación.
