@@ -93,7 +93,7 @@ ls dist/_astro/ | grep -i -E 'webp|avif'
 
 - [ ] Todos los criterios de éxito marcados como completados
 - [ ] Rebase al día con `feat/internacionalizacion` (o main si PR #2 ya mergeó)
-- [ ] PR abierto en GitHub
+- [x] PR abierto en GitHub (#3, base `feat/internacionalizacion`)
 - [ ] Validación manual ejecutada (todos los comandos de "Cómo verificar")
 
 ## Anti-criterios (lo que NO debe pasar)

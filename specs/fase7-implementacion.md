@@ -160,6 +160,9 @@ Decisiones humanas aplicadas sin preguntar (enmienda F1 ya reflejada en
 ## Verificación final ronda 2
 
 - `pnpm astro check`: 0 errores, 0 warnings. `pnpm build`: limpio, 37 páginas.
+- Commits (rama `feat/seo-performance`, apilada sobre `feat/internacionalizacion`):
+  `08c92a1` i18n resto Fase 6 · `8d1007b` Fase 7 · `3a3dfe1` N1 pins.
+- PR: https://github.com/aodaru/portafolio-astro/pull/3 (base `feat/internacionalizacion`).
 - Archivos tocados (ronda 2, sobre ronda 1): `package.json` (+`sharp`, pins),
   `pnpm-lock.yaml`, `public/fonts/*.woff2` (nuevos) + `*.ttf` (eliminados),
   `src/components/ContentImage.astro`, `src/utils/images.ts`, `src/env.d.ts`,
