@@ -36,6 +36,26 @@ Pendiente solo: Perf 90+ re-medido en deploy preview (Fase 8).**
 - [x] NerdFonts no bloquea el render (self-host o preload medido)
 - [x] `pnpm astro check` 0 errores, `pnpm build` sin warnings nuevos
 
+#### Medición ronda 3 (2026-09-28, `lighthouse@12.8.0` vía `pnpm dlx`, `pnpm preview` localhost, Chromium headless, tras palancas finas P0+P1)
+
+| Página | Perf Desk | Perf Mob | A11y | BP | SEO |
+|---|---|---|---|---|---|
+| `/` | **90** (↑ de 83) | 60 (↑ de 56) | 100 | 100 | 100 |
+| `/en/` | **90** (↑ de 83) | 60 (↑ de 56) | 100 | 100 | 100 |
+
+Palancas finas aplicadas (sin cambio visual, `src/layouts/BaseLayout.astro`):
+P0 preload `Mononoki-Regular.woff2` (`as="font"`, `crossorigin`, solo
+Regular — precargar los 4 costaría ~1,9 MB); P1 preload `as="image"` de
+`/img/Avatar.webp` con `fetchpriority="high"` (poster hero 12 KB).
+P2 verificado sin cambios: `Mononoki-Bold` sí participa en el LCP
+above-the-fold (`.hero8-title` en 700); no se toca por regla
+sin-cambio-visual (mitiga `font-display: swap`).
+Móvil: FCP=LCP=SI con TBT 0 y CLS 0; `render-blocking-resources` atribuye
+4,92 s de ahorro a ~8 KB de CSS → artefacto de laboratorio confirmado
+(CPU×4 + Slow-4G contra localhost), no recurso real. Veredicto honesto:
+**33-34 siguen sin marcar** (móvil <90 en local); desktop ya en 90.
+Re-medir en deploy preview Fase 8 para el cierre.
+
 #### Medición ronda 2 (2026-09-28, `lighthouse@12.8.0`, `pnpm preview` localhost, Chromium headless)
 
 | Página | Perf Desk | Perf Mob | A11y | BP | SEO |

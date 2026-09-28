@@ -114,7 +114,7 @@
 - [x] Sitemap.xml automático (`@astrojs/sitemap`)
 - [x] RSS feed para blog (endpoints propios `rss.xml.ts` bilingües ES/EN, no `@astrojs/rss`)
 - [x] Imágenes optimizadas con `astro:assets` y WebP
-- [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices) — seguimiento Fase 8: re-medir en deploy preview (local: 83 desk / 56 mob, A11y/BP/SEO 100)
+- [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices) — seguimiento Fase 8: re-medir en deploy preview (local: 90 desk / 60 mob, A11y/BP/SEO 100)
 - [ ] Google Tag Manager integrado (via Partytown) — diferido D1
 - [x] `robots.txt`
 
