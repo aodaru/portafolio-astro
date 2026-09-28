@@ -208,7 +208,7 @@ importers:
   .:
     dependencies:
       '@astrojs/check':
-        specifier: ^0.9.10
+        specifier: 0.9.10
         version: 0.9.10(prettier@3.9.4)(typescript@6.0.3)
       '@astrojs/rss':
         specifier: 4.0.19
@@ -226,7 +226,7 @@ importers:
         specifier: 4.3.2
         version: 4.3.2
       typescript:
-        specifier: ^6.0.3
+        specifier: 6.0.3
         version: 6.0.3
     devDependencies:
       sharp:
