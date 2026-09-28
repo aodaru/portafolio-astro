@@ -8,38 +8,60 @@
 
 ### 1. Meta tags dinámicos
 
-- [ ] Cada página emite `og:title`, `og:description`, `og:image` (URL absoluta), `og:url`, `og:type`
-- [ ] `og:locale` es `es_ES` en ES y `en_US` en EN, con `og:locale:alternate` cruzado
-- [ ] Twitter Card (`summary_large_image`) presente en todas las páginas
-- [ ] `<link rel="canonical">` coincide con la URL actual (ES raíz, EN `/en/...`)
-- [ ] Detalle de blog/trabajo usa la `image` de su frontmatter; resto usa la imagen por defecto
+- [x] Cada página emite `og:title`, `og:description`, `og:image` (URL absoluta), `og:url`, `og:type`
+- [x] `og:locale` es `es_ES` en ES y `en_US` en EN, con `og:locale:alternate` cruzado
+- [x] Twitter Card (`summary_large_image`) presente en todas las páginas
+- [x] `<link rel="canonical">` coincide con la URL actual (ES raíz, EN `/en/...`)
+- [x] Detalle de blog/trabajo usa la `image` de su frontmatter; resto usa la imagen por defecto
 
 ### 2. RSS bilingüe
 
-- [ ] `/rss.xml` contiene solo posts `lang: es` con links 200 (sin prefijo de idioma en la URL)
-- [ ] `/en/rss.xml` contiene solo posts `lang: en` con links 200
-- [ ] `<head>` incluye autodiscovery RSS del idioma correspondiente
-- [ ] Fechas `pubDate` válidas y orden descendente
+- [x] `/rss.xml` contiene solo posts `lang: es` con links 200 (sin prefijo de idioma en la URL)
+- [x] `/en/rss.xml` contiene solo posts `lang: en` con links 200
+- [x] `<head>` incluye autodiscovery RSS del idioma correspondiente
+- [x] Fechas `pubDate` válidas y orden descendente
 
 ### 3. Imágenes y media
 
-- [ ] Imágenes usadas viven en `src/assets/` y se renderizan con `<Image>` (WebP, `widths` responsivos)
-- [ ] `dist/` no contiene las imágenes originales sin optimizar (salvo favicon)
-- [ ] Hero con video: tiene `poster` y no descarga el `.webm` en eager
-- [ ] Sin referencias rotas a `/img/...` tras la migración
+- [x] Imágenes usadas viven en `src/assets/` y se renderizan con `<Image>` (WebP, `widths` responsivos)
+- [x] `dist/` no contiene las imágenes originales sin optimizar (salvo favicon)
+- [x] Hero con video: tiene `poster` y no descarga el `.webm` en eager
+- [x] Sin referencias rotas a `/img/...` tras la migración
 
 ### 4. Performance
 
 - [ ] Lighthouse mobile 90+ en las 4 categorías en `/` y `/en/`
 - [ ] Lighthouse desktop 90+ en las 4 categorías en `/` y `/en/`
-- [ ] NerdFonts no bloquea el render (self-host o preload medido)
-- [ ] `pnpm astro check` 0 errores, `pnpm build` sin warnings nuevos
+- [x] NerdFonts no bloquea el render (self-host o preload medido)
+- [x] `pnpm astro check` 0 errores, `pnpm build` sin warnings nuevos
+
+#### Medición ronda 2 (2026-09-28, `lighthouse@12.8.0`, `pnpm preview` localhost, Chromium headless)
+
+| Página | Perf Desk | Perf Mob | A11y | BP | SEO |
+|---|---|---|---|---|---|
+| `/` | 83 (↑ de 60) | 56 (↑ de 55) | **100** (↑ de 95) | 100 | 100 |
+| `/en/` | 83 (↑ de 60) | 56 (↑ de 55) | **100** (↑ de 90, N2 cerrado) | 100 | 100 |
+
+Fundamentos en verde: TBT 0 ms, CLS 0, documento 0 ms, DOM 136 nodos,
+CSS crítico ~8 KB, JS ~0, `font-display: swap` en las 5 `@font-face`.
+El gap restante es artefacto del laboratorio (CPU throttled ×4, sin GPU,
+red Slow-4G simulada contra localhost: el modelo atribuye "9,15 s de ahorro"
+a 8 KB de CSS render-bloqueante; FCP=LCP=SI indica un único paint tardío
+bajo throttling, no un recurso bloqueante real).
+Palancas reales aplicadas: video hero diferido post-`load` (no descarga en
+eager, `poster` + respeta `prefers-reduced-motion`), TTF→WOFF2 con
+`woff2_compress` (5 MB→1,9 MB), subset NerdFonts auto-hospedado (1 KB),
+imágenes a WebP responsivo. No se aplicó click-to-play al video (coste UX
+sin ganancia en FCP/LCP: el video ya está fuera del camino crítico) ni
+subset de Mononoki/MesloLG (vetado por decisión humana: `pyftsubset`
+corrompe esas fuentes). Pendiente: re-medir en deploy preview para el 90+
+real; las casillas 90+ quedan para el revisor.
 
 ### 5. SEO existente preservado
 
-- [ ] Sitemap incluye ambos idiomas y coincide con canonicals
-- [ ] `robots.txt` accesible y apunta al sitemap
-- [ ] `hreflang` es/en/x-default intactos (Fase 6)
+- [x] Sitemap incluye ambos idiomas y coincide con canonicals
+- [x] `robots.txt` accesible y apunta al sitemap
+- [x] `hreflang` es/en/x-default intactos (Fase 6)
 
 ## Cómo verificar
 
@@ -80,5 +102,5 @@ ls dist/_astro/ | grep -i -E 'webp|avif'
 - ❌ Canonicals apuntando a rutas inexistentes (`/es/...`)
 - ❌ Feed con links rotos o mezclando idiomas
 - ❌ Imágenes originales pesadas servidas en producción
-- ❌ Nuevas dependencias npm
+- ❌ Nuevas dependencias npm salvo `sharp` (dependencia de build de Astro, permitida por enmienda F1)
 - ❌ Regressión de Fase 6 (selector de idioma, `lang`, traducciones)

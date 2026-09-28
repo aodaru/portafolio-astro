@@ -44,16 +44,16 @@ Marcar checkboxes al ejecutar.
 
 ## Grupo 6: Validación y limpieza
 
-24. [ ] Validar sitemap incluye ambos idiomas y canonicals coinciden
-25. [ ] Validar `robots.txt` + feeds RSS (items, fechas, links 200)
-26. [ ] Validar OG con inspector (tags presentes, imagen absoluta 200, locale correcto por idioma)
+24. [x] Validar sitemap incluye ambos idiomas y canonicals coinciden
+25. [x] Validar `robots.txt` + feeds RSS (items, fechas, links 200)
+26. [x] Validar OG con inspector (tags presentes, imagen absoluta 200, locale correcto por idioma)
 27. [ ] Tildar items de Fase 7 en `specs/roadmap.md`
-28. [ ] Commitear resto pendiente de Fase 6 (`astro.config.ts` con bloque i18n) en commit separado
+28. [x] Commitear resto pendiente de Fase 6 (`astro.config.ts` con bloque i18n) en commit separado
 
 ## Grupo 7: Documentación y merge
 
-- [ ] Commit de todos los cambios
-- [ ] Push de la rama
-- [ ] Crear PR
+- [x] Commit de todos los cambios
+- [x] Push de la rama
+- [x] Crear PR
 - [ ] Validar criterios de éxito (ver `validation.md`)
 - [ ] Mergear y limpiar

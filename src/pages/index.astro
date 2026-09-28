@@ -14,8 +14,7 @@ const translatePath = useTranslatedPath(lang)
   <div class="inicio8">
     <section class="hero8">
       <div class="hero8-bg" aria-hidden="true">
-        <video autoplay muted loop playsinline class="hero8-video" data-taza-play>
-          <source src="/img/taza-cafe-compressed.webm" type="video/webm" />
+        <video muted loop playsinline preload="none" poster="/img/Avatar.webp" class="hero8-video" data-taza-defer data-taza-src="/img/taza-cafe-compressed.webm">
         </video>
         <div class="hero8-overlay"></div>
       </div>
@@ -131,6 +130,39 @@ const translatePath = useTranslatedPath(lang)
 </BaseLayout>
 
 <script>
+  // Hero diferido (Fase 7, performance): el `.webm` (241 KB) no se descarga en
+  // el camino crítico. Tras `window load` (o idle) se inyecta el `<source>` y
+  // se reproduce, salvo `prefers-reduced-motion: reduce` (queda el poster).
+  function loadDeferredHeroVideos() {
+    let reduceMotion = false
+    try {
+      reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    } catch {}
+    if (reduceMotion) return
+    document.querySelectorAll('video[data-taza-defer]').forEach((video) => {
+      if (!(video instanceof HTMLVideoElement)) return
+      if (video.querySelector('source')) return
+      const src = video.getAttribute('data-taza-src')
+      if (!src) return
+      const source = document.createElement('source')
+      source.src = src
+      source.type = 'video/webm'
+      video.appendChild(source)
+      video.load()
+      video.play().catch(() => {})
+    })
+  }
+
+  if (document.readyState === 'complete') {
+    loadDeferredHeroVideos()
+  } else {
+    window.addEventListener('load', loadDeferredHeroVideos, { once: true })
+  }
+  try {
+    const ric = (window as unknown as { requestIdleCallback?: (cb: () => void) => void }).requestIdleCallback
+    if (typeof ric === 'function') ric.call(window, loadDeferredHeroVideos)
+  } catch {}
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {

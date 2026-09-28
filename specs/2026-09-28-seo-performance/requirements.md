@@ -15,7 +15,9 @@
 ### No incluido
 
 - Google Tag Manager / Partytown (diferido: no hay ID de GTM y añade peso de terceros; reevaluar en Fase 8/9)
-- Nuevas dependencias npm (`astro:assets` es built-in de Astro 7; `@astrojs/rss` y `@astrojs/sitemap` ya instalados)
+- Nuevas dependencias npm salvo `sharp` como dependencia de build de Astro
+  (`astro:assets` la exige para transformar a WebP; no es tracker de terceros
+  como el GTM de D1 — enmienda F1 aprobada 2026-09-28)
 - Cambios visuales o de contenido (solo optimización)
 - Página 404, View Transitions, deploy (Fase 8)
 
