@@ -57,6 +57,14 @@ src/content/projects/en/mi-proyecto.md
 
 Mismo frontmatter que los posts, más `url` opcional (enlace externo "Visitar proyecto") y `lang: es | en`.
 
+## Imágenes de contenido e feeds RSS
+
+- El campo `image` del frontmatter usa la ruta pública histórica (`/img/posts/...`, `/img/Works/...`).
+- Los estáticos (jpg/png) viven en `src/assets/` y se sirven optimizados (WebP, anchos responsivos) vía `src/utils/images.ts` + `src/components/ContentImage.astro`.
+- Los GIF animados se quedan en `public/img/` para conservar la animación.
+- La imagen por defecto para OG/Twitter es `/img/Avatar.webp`; el detalle de blog/trabajo usa su `image` (con `article:published_time`).
+- Feeds RSS por idioma: `/rss.xml` (solo `lang: es`) y `/en/rss.xml` (solo `lang: en`), con autodiscovery en el `<head>` según idioma.
+
 ## Traducciones de UI
 
 - `src/i18n/ui.ts` — diccionarios `es` / `en` (claves como `nav.home`, `blog.back`, `works.visit`).

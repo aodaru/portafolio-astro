@@ -16,7 +16,7 @@
   font-family: "Mononoki";
   font-style: normal;
   font-weight: 400;
-  src: url("/fonts/Mononoki-Regular.ttf") format("truetype");
+  src: url("/fonts/Mononoki-Regular.woff2") format("woff2");
   font-variant-ligatures: none;
   font-display: swap;
 }
@@ -25,7 +25,7 @@
   font-family: "Mononoki";
   font-style: normal;
   font-weight: 700;
-  src: url("/fonts/Mononoki-Bold.ttf") format("truetype");
+  src: url("/fonts/Mononoki-Bold.woff2") format("woff2");
   font-variant-ligatures: none;
   font-display: swap;
 }
@@ -34,7 +34,7 @@
   font-family: "MesloLG";
   font-style: normal;
   font-weight: 400;
-  src: url("/fonts/MesloLG-M-Regular.ttf") format("truetype");
+  src: url("/fonts/MesloLG-M-Regular.woff2") format("woff2");
   font-display: swap;
 }
 
@@ -42,8 +42,39 @@
   font-family: "MesloLG";
   font-style: normal;
   font-weight: 700;
-  src: url("/fonts/MesloLG-M-Bold.ttf") format("truetype");
+  src: url("/fonts/MesloLG-M-Bold.woff2") format("woff2");
   font-display: swap;
+}
+
+/* NerdFonts auto-hospedado: subset con los 2 glifos usados en el Navbar
+ * (U+F0D9E tea, U+F09B github). Generado con pyftsubset desde
+ * Symbols-2048-em Nerd Font Complete. Reemplaza el CDN de nerdfonts.com
+ * (Fase 7, performance). */
+@font-face {
+  font-family: "NerdFontsSymbols Nerd Font";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/nerd-symbols-subset.woff2") format("woff2");
+  font-display: swap;
+}
+
+.nf {
+  font-family: "NerdFontsSymbols Nerd Font";
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.nf-md-tea::before {
+  content: "\f0d9e";
+}
+
+.nf-fa-github::before {
+  content: "\f09b";
 }
 
 :root {

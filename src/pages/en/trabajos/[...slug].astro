@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro'
+import ContentImage from '../../../components/ContentImage.astro'
 import { getCollection, getEntry, render } from 'astro:content'
 import { getLangFromUrl, useTranslations, useTranslatedPath, formatDate } from '../../../i18n/utils'
 
@@ -26,6 +27,9 @@ const translatePath = useTranslatedPath(lang)
   title={`${project.data.title} — Trabajos — Teapartydev`}
   description={project.data.description}
   lang={lang}
+  image={project.data.image}
+  type="article"
+  publishedDate={project.data.date}
 >
   <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
     <a
@@ -78,6 +82,8 @@ const translatePath = useTranslatedPath(lang)
           </a>
         )}
       </header>
+
+      <ContentImage image={project.data.image} alt={project.data.title} />
 
       <div class="terminal-card">
         <div class="terminal-header">
