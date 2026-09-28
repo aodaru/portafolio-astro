@@ -2,7 +2,8 @@
 
 ## Estado de la fase
 
-**⬜ PENDIENTE**
+**✅ MERGEADA con seguimiento (2026-09-28, PR #3 → `feat/internacionalizacion`, merge `2428dcb`).
+Pendiente solo: Perf 90+ re-medido en deploy preview (Fase 8).**
 
 ## Criterios de éxito
 
@@ -91,10 +92,10 @@ ls dist/_astro/ | grep -i -E 'webp|avif'
 
 ## Criterio de merge a main
 
-- [ ] Todos los criterios de éxito marcados como completados
-- [ ] Rebase al día con `feat/internacionalizacion` (o main si PR #2 ya mergeó)
-- [x] PR abierto en GitHub (#3, base `feat/internacionalizacion`)
-- [ ] Validación manual ejecutada (todos los comandos de "Cómo verificar")
+- [ ] Todos los criterios de éxito marcados como completados (pendientes 33-34 hasta deploy preview Fase 8, por orden del revisor)
+- [x] Rebase al día con `feat/internacionalizacion` (o main si PR #2 ya mergeó) — verificado en cierre: PR #2 sin cambios (`0fcca17`), merge CLEAN sin rebase
+- [x] PR abierto en GitHub (#3, base `feat/internacionalizacion`) — mergeado 2026-09-28 (`2428dcb`)
+- [x] Validación manual ejecutada (todos los comandos de "Cómo verificar") — ejecutada post-merge en cierre (ver `specs/fase7-cierre.md`)
 
 ## Anti-criterios (lo que NO debe pasar)
 
