@@ -57,6 +57,12 @@ const rssTitle = lang === 'en' ? 'Blog — Teapartydev (EN)' : 'Blog — Teapart
     <link rel="alternate" hreflang="en" href={hrefEn} />
     <link rel="alternate" hreflang="x-default" href={hrefEs} />
     <link rel="alternate" type="application/rss+xml" title={rssTitle} href={new URL(rssHref, `${site}/`).toString()} />
+    {/* Fase 7 perf fino (sin cambio visual): preload solo de la fuente del
+      * camino crítico (Mononoki Regular 400, texto base/FCP) + poster del
+      * hero (Avatar.webp 12 KB, LCP diferido). No precargar Bold/MesloLG/
+      * NerdFonts: coste de preload injustificado; van con font-display: swap. */}
+    <link rel="preload" href="/fonts/Mononoki-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/img/Avatar.webp" as="image" fetchpriority="high" />
     <title>{title}</title>
     <script is:inline>
       (function () {
