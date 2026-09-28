@@ -35,7 +35,7 @@ function isActive(href: string): boolean {
 
     <div class="nav-menu hidden md:flex items-center gap-1">
       {links.map(({ href, label, key }) => (
-        <a href={href} class={`nav-link ${isActive(href) ? 'active' : ''}`}>
+        <a href={href} class={`nav-link ${isActive(href) ? 'active' : ''}`} aria-label={key === 'home' ? label : undefined}>
           {key === 'home' ? <span class="nf nf-md-tea text-xl" aria-hidden="true"></span> : label}
         </a>
       ))}
@@ -44,9 +44,8 @@ function isActive(href: string): boolean {
         target="_blank"
         rel="noopener noreferrer"
         class="nav-link inline-flex items-center gap-1"
-        aria-label="GitHub"
       >
-        <span class="nf nf-fa-github"></span>
+        <span class="nf nf-fa-github" aria-hidden="true"></span>
         <span class="hidden sm:inline">{t('nav.repo')}</span>
       </a>
 
