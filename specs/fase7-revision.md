@@ -35,3 +35,75 @@
 
 ## Respuesta al implementer: ¿el bloqueador `sharp`/WebP impide el merge?
 **Sí, impide el merge en su forma actual**, pero por causa formal (contradicción entre `requirements.md:18` y `validation.md:26`), no por mal trabajo: el código entregado es correcto y todo lo verificable en verde. Vía de salida recomendada: **aceptar `sharp` como dependencia de build** (es parte documentada de `astro:assets`, no runtime de terceros), enmendar el requisito, aplicar F1 y re-medir (F2). Alternativa: degradar `validation.md:26` a "assets con hash + dimensiones" y aceptar JPG/PNG originales como estado final (desaconsejado: `validation.md:82` lo marca como anti-criterio ❌ "Imágenes originales pesadas servidas en producción").
+
+---
+
+# Ronda 2 — Re-revisión (2026-09-28, rama `feat/seo-performance` sobre `6b7f3ad`)
+
+**Veredicto ronda 2:** APROBADO con seguimiento (Perf 90+ se re-mide en deploy preview, Fase 8)
+
+Docs contraste: `specs/fase7-implementacion.md` (ronda 2, líneas 100-173),
+`specs/2026-09-28-seo-performance/{requirements,plan,validation}.md`,
+`specs/roadmap.md` Fase 7, `specs/mission.md`, `specs/tech-stack.md`, `AGENTS.md`.
+Commits revisados: `08c92a1` + `8d1007b` + `3a3dfe1` (+ `bb918a9` docs).
+PR: https://github.com/aodaru/portafolio-astro/pull/3 (base `feat/internacionalizacion`, OPEN).
+
+## F1. `sharp` + WebP ✅ CERRADO
+
+- `package.json:25`: `"sharp": "0.35.5"` en `devDependencies`, exacto sin `^` (per `AGENTS.md`).
+  N1 incluido: `@astrojs/check 0.9.10`, `typescript 6.0.3` exactos (`package.json:15,21`).
+- `src/components/ContentImage.astro:22-29`: `<Image format="webp" widths={[480,800,1200]} sizes=...>` + lazy.
+- `src/utils/images.ts:56-62`: `resolveOgImagePath()` vía `getImage({format:'webp', width:1200})`.
+- `dist/` verificado: 17 `.webp` en `dist/_astro/` (436 KB total), **0 JPG/PNG originales**;
+  `srcset 480w/600w` en `dist/blog/docker/index.html`; `og:image` absoluta optimizada
+  (`https://teapartydev.com/_astro/docker.ozCeNX57_Z2iejjC.webp`, 200 en disco).
+- Anti-criterio "originales pesados en prod" ya no aplica; enmienda `requirements.md:18-20` cubre `sharp` como build-dep.
+
+## F2. Performance ⚠️ APROBADO CON SEGUIMIENTO (decisión motivada)
+
+- Scores ronda 2 (`validation.md:38-58`, `fase7-implementacion.md:125-135`):
+  `/` y `/en/` Perf 83 desk / 56 mob, **A11y 100, BP 100, SEO 100**.
+- Palancas aplicadas y verificadas: hero diferido (`preload="none"` + `data-taza-defer`,
+  inyección post-`load`, `prefers-reduced-motion` en `src/pages/index.astro:17,139-145`,
+  `src/pages/en/index.astro` idem, `TazaAscii.astro:36,235`);
+  TTF eliminados, solo WOFF2 en `public/fonts/` y `dist/fonts/` (1,9 MB) con
+  `font-display: swap` (`global.css:15-46`); NerdFonts subset 1 KB, 0 refs a `nerdfonts.com` en `dist/`.
+- Fundamentos: TBT 0, CLS 0, DOM 136, CSS ~8 KB, JS ~0 (no hay regresión posible por JS/CSS propio).
+- **Por qué se aprueba sin el 90+**: (a) desktop subió 60→83 con las palancas reales;
+  (b) el gap restante presenta firma de artefacto de lab (FCP=LCP=SI, un único paint tardío
+  bajo CPU×4 + Slow-4G simulada contra localhost con server 0 ms);
+  (c) exigir deploy preview dentro de Fase 7 contradice `requirements.md:22` ("deploy (Fase 8)" excluido);
+  (d) no quedan palancas locales sin coste UX (click-to-play) o prohibidas (subset Mononoki/MesloLG corrompe).
+- **Seguimiento obligatorio**: re-medir Lighthouse mobile+desktop en `/` y `/en/` en deploy preview
+  (Fase 8); si Perf real <90, abrir issue con las palancas pendientes. Las casillas
+  `validation.md:33-34` quedan a propósito sin marcar hasta esa medición.
+
+## F3. Grupos 6-7 ✅ CERRADO
+
+- Pasos 24-26 verificados: sitemap 37 URLs (25 ES + 12 EN, `dist/sitemap-0.xml`),
+  `robots.txt` OK, RSS 4 ES + 1 EN con links propios, `og:locale`/`canonical`/autodiscovery por idioma,
+  0 refs rotas, 0 `/es/...` en canonicals, `hreflang` es/en/x-default intactos.
+- `package-lock.json` eliminado (verificado: `ls` → no existe). `pnpm-lock.yaml` commiteado.
+- Commits separados verificados (`git log --stat`): `08c92a1` solo `astro.config.ts` (i18n Fase 6),
+  `3a3dfe1` solo pins N1, `8d1007b` lista blanca Fase 7. Untracked ajenos (`.opencode/`, `agents/`,
+  `skills/`, `.agents/skills/sap-*`) presentes en working tree pero **fuera de los commits**.
+- PR #3 existe, base `feat/internacionalizacion` correcta (D6), estado OPEN.
+- `specs/roadmap.md` Fase 7 sin tildar (correcto; lo marca la sesión de merge tras este veredicto).
+  `plan.md:27,58-59` y `validation.md:94,97` pendientes de merge — fuera del alcance del revisor.
+
+## Anti-criterios `validation.md:99-106` — todos en verde
+
+- og:image absoluta 200 ✅ · sin canonicals `/es/` (0 matches) ✅ · feeds sin mezcla ni rotos (4+1) ✅ ·
+  sin originales en prod ✅ · sin nuevas deps runtime (`sharp` es build, enmienda F1) ✅ ·
+  sin regresión Fase 6 (`hreflang`, `lang`, selector intactos) ✅.
+
+## Attest
+
+- `pnpm astro check`: **0 errores, 0 warnings** (21 hints preexistentes).
+- `pnpm build`: limpio, **37 páginas**, sitemap regenerado.
+
+## Respuesta al implementer
+
+F1 ✅, F3 ✅, N1 ✅, N2 ✅ (A11y 100/100 re-medido). F2 se da por cumplido en lo localizable
+con seguimiento en Fase 8. **Puede mergearse el PR #3** (tras rebase si PR #2 cambia) y tildar
+Fase 7 en roadmap en la sesión de merge.
