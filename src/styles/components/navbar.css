@@ -1,27 +1,34 @@
 /* ═══════════════════════════════════════════════════════
    Navbar — Réplica fiel del WP adalgarcia.com
-   .main-nav: backdrop-filter blur(20px) sin saturate, sin scroll
-   Estructura: header > .navbar > .container-fluid > [brand, toggler, collapse]
+   .main-nav: backdrop-filter blur(10px) sin saturate, sin scroll
+   Estructura: header.main-nav (full-width) > nav.navbar.col-md-7 (inner 58%) > container-fluid > [brand, toggler, collapse]
    ═══════════════════════════════════════════════════════ */
 
 .main-nav {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   background-color: transparent;
   border-bottom: 2px solid var(--gruvbox-yellow);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* ── Container interno (equivale a .col-md-7 del WP) ── */
 .nav-container {
-  max-width: 740px;
-  margin: 0 auto;
-  padding: 0 1rem;
+  width: 100%;
+  max-width: 58.333%; /* equivalente a Bootstrap col-md-7 */
+  padding: 8px 12px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 60px;
   gap: 0.5rem;
+}
+
+@media (max-width: 991.98px) {
+  .nav-container {
+    max-width: 100%;
+  }
 }
 
 /* ── Brand ─────────────────────────────────────────── */
@@ -32,11 +39,12 @@
   text-decoration: none;
   font-family: "Mononoki", monospace;
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 1.25rem; /* equivalente a fs-5 de Bootstrap */
   color: var(--gruvbox-yellow);
   transition: all 0.3s ease;
   white-space: nowrap;
   flex-shrink: 0;
+  flex-grow: 1; /* empuja el resto a la derecha (como Bootstrap .me-auto) */
 }
 
 .nav-brand:hover {
@@ -177,7 +185,6 @@
     flex-direction: row;
     gap: 0.25rem;
     align-items: center;
-    margin-right: auto;
   }
 }
 
@@ -186,27 +193,28 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.75rem;
   font-family: "Mononoki", monospace;
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 1.1rem;
+  font-weight: 400;
   color: var(--gruvbox-fg);
   text-decoration: none;
   border-radius: 6px;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
   position: relative;
   white-space: nowrap;
+  opacity: 0.75;
 }
 
 .nav-link:hover,
 .nav-link:focus {
   color: var(--gruvbox-yellow);
-  background: var(--gruvbox-card);
+  opacity: 1;
 }
 
 .nav-link.active {
   color: var(--gruvbox-yellow);
-  background: var(--gruvbox-card);
+  opacity: 1;
 }
 
 /* Underline indicator en desktop (como WP .nav-link::after) */
@@ -233,25 +241,23 @@
   font-size: 0.85rem;
 }
 
-/* ── Theme toggle (se mantiene como estaba) ────────── */
+/* ── Theme toggle (estilo WP rectangular) ────────── */
 .theme-toggle {
   background: var(--gruvbox-yellow);
   color: var(--gruvbox-bg);
   border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  border-radius: 8px;
+  padding: 4px 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
+  font-family: inherit;
 }
 
 .theme-toggle:hover {
-  transform: rotate(180deg) scale(1.1);
   background: var(--gruvbox-orange);
 }
 

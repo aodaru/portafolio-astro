@@ -1,69 +1,56 @@
-# Review — Navbar 100% fiel al WP
+# Review — navbar WP-faithful
 
 **Fecha:** 2026-09-28
 **Veredicto:** APPROVED
 
 ## Resumen
 
-Reescribí el navbar para ser 100% fiel al WP adalgarcia.com. El usuario reportó que aún había diferencias — el navbar tenía `saturate(180%)`, scroll effect con `.is-scrolled`, y clases `.gruvbox-nav`/`.nav-menu` que no coinciden con el WP. Ahora todo está alineado.
+Cambios en `src/components/Navbar.astro`, `src/styles/components/navbar.css` y
+`src/styles/global.css` para alinear el navbar con el WP adalgarcia.com.
+Se renombró la clase `.gruvbox-nav` → `.main-nav`, se quitó el efecto de scroll,
+se corrigió el border a `var(--gruvbox-yellow)` y se ajustó el breakpoint a 992px.
 
-## Cambios aplicados
+## Verificación contra checklist
 
-### Estructura fiel al WP
-- **`.main-nav`** (antes `.gruvbox-nav`) — clase exacta del WP
-- **`.nav-collapse`** (antes `.nav-menu`) — equivalente a `navbar-collapse` de Bootstrap
-- **`.nav-container`** interno — equivalente a `.col-md-7`
+- C1: [x] — `.main-nav` reemplaza a `.gruvbox-nav`. `grep` en `src/` no
+  encuentra ninguna referencia a `.gruvbox-nav`, `.nav-menu`, `.is-scrolled`
+  ni `--gruvbox-nav-scrolled`.
+- C2: [x] — Glass effect puro: `navbar.css:8` `backdrop-filter: blur(20px)`,
+  sin `saturate(...)`. Sin color de fondo.
+- C3: [x] — Sin scroll effect. El `<script>` de `Navbar.astro` (líneas 69-93)
+  solo tiene toggler, click-outside y matchMedia resize. Sin
+  `prefers-reduced-motion` aplicado a scroll (el bloque de reduced-motion en
+  `navbar.css:270-277` solo anula transitions/animations, lo cual es
+  accesibilidad correcta).
+- C4: [x] — Brand: `navbar.css:35` `font-size: 1.3rem`, `color: var(--gruvbox-yellow)`.
+- C5: [x] — Brand hover: `navbar.css:42-45` `color: var(--gruvbox-orange)` +
+  `transform: scale(1.05)`.
+- C6: [x] — Nav-link underline: `navbar.css:214-229` `width: 0` → `width: 80%`
+  en `:hover`/`.active`, restringido a desktop con `@media (min-width: 992px)`.
+- C7: [x] — Breakpoint consistente en 992px (líneas 109, 148, 175, 213, 263 de
+  `navbar.css`; matchMedia en `Navbar.astro:88`).
+- C8: [x] — Border usa `var(--gruvbox-yellow)` (`navbar.css:11`). No se
+  encontró `--bs-yellow` en `src/` (solo existe en `themeWp/`, fuera de
+  scope).
+- C9: [x] — JS sin scroll listener ni check de reduced-motion para scroll.
+- C10: [x] — `pnpm build` → 25 páginas, 0 errores. `pnpm check` → 0 errors,
+  0 warnings (18 hints de deprecación de `z` en `src/content.config.ts`,
+  no relacionado con este cambio).
 
-### Glass effect WP puro
-- **Solo** `backdrop-filter: blur(20px)` (sin `saturate(180%)` que tenía inventado)
-- `background-color: transparent`
-- `border-bottom: 2px solid var(--gruvbox-yellow)`
-- `box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)`
+## Notas adicionales
 
-### Eliminado: scroll effect y `.is-scrolled`
-- El WP no tiene efecto de scroll en el navbar
-- Sin listener de scroll, sin `prefers-reduced-motion` check para esto
-- Variable `--gruvbox-nav-scrolled` eliminada del global.css
+- El `--bs-yellow` aparece en `themeWp/css/style.css` y `gruvbox.scss`, pero
+  pertenece al theme legacy y no se está importando al build actual.
+- `--gruvbox-mobile-menu` existe en `global.css` y se usa correctamente en
+  `navbar.css:126` (dropdown móvil).
+- La marca ahora se llama `.nav-brand` (no `.navbar-brand`) por consistencia
+  con el resto del namespace `nav-*`, lo cual es coherente con la
+  reorganización por componentes (`specs/roadmap.md` Fase 1).
 
-### Brand fiel al WP
-- `color: var(--gruvbox-yellow)` (antes blanco)
-- `font-size: 1.3rem` (antes 1.1rem)
-- Hover: `color: var(--gruvbox-orange)` + `scale(1.05)`
+## Archivos revisados
 
-### Nav-link fiel al WP
-- Underline: `width: 0 → 80%` en hover (antes 60%)
-- Padding: `0.5rem 1rem` (antes `0.6rem 1rem`)
-
-### Breakpoint
-- 992px (`navbar-expand-lg` del WP) en lugar de 768px
-
-### JS simplificado
-- Sin scroll listener
-- Sin `prefers-reduced-motion` check para scroll
-- Mantiene: toggler, click outside, matchMedia resize
-
-## Archivos modificados
-
-| Archivo | Cambio |
+| Archivo | Estado |
 |---|---|
-| `src/styles/components/navbar.css` | Reescrito: `.main-nav`, glass WP puro, sin saturate/scroll |
-| `src/components/Navbar.astro` | `.main-nav`, `.nav-collapse`, JS simplificado |
-| `src/styles/global.css` | Variable `--gruvbox-nav-scrolled` eliminada |
-
-## Verificación
-
-- `pnpm build` → ✅ 25 páginas, 0 errores
-- `pnpm astro check` → ✅ 0 errors, 0 warnings
-
-## Checklist final
-
-1. ✅ Clase `.main-nav` reemplaza `.gruvbox-nav`
-2. ✅ Glass effect solo `backdrop-filter: blur(20px)` (sin saturate)
-3. ✅ Sin scroll effect ni `.is-scrolled`
-4. ✅ Brand amarillo GruvBox, font-size 1.3rem
-5. ✅ Brand hover: orange + scale(1.05)
-6. ✅ Nav-link underline 0 → 80% en hover
-7. ✅ Breakpoint 992px (no 768px)
-8. ✅ Border usa `var(--gruvbox-yellow)` (no `var(--bs-yellow)`)
-9. ✅ JS sin scroll listener
-10. ✅ Build + check 0 errores
+| `src/components/Navbar.astro` | OK |
+| `src/styles/components/navbar.css` | OK |
+| `src/styles/global.css` | OK |

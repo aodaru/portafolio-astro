@@ -2,7 +2,7 @@
 const currentPath = Astro.url.pathname
 
 const links = [
-  { href: '/', label: 'Inicio', icon: true },
+  { href: '/', label: 'Inicio' },
   { href: '/blog', label: 'Blog' },
   { href: '/trabajos', label: 'Trabajos' },
   { href: '/contacto', label: 'Contacto' },
@@ -35,10 +35,10 @@ const links = [
     <!-- Nav collapse (estilo WP navbar-collapse) -->
     <div class="nav-collapse" id="nav-collapse">
       <ul class="nav-list">
-        {links.map(({ href, label, icon }) => (
+        {links.map(({ href, label }) => (
           <li class="nav-item">
             <a href={href} class={`nav-link ${currentPath === href ? 'active' : ''}`}>
-              {icon ? <span class="nf nf-md-tea" aria-hidden="true"></span> : label}
+              {label}
             </a>
           </li>
         ))}
