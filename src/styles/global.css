@@ -6,6 +6,7 @@
 @import "./components/social.css";
 @import "./components/avatar.css";
 @import "./components/bio.css";
+@import "./components/blog.css";
 
 @theme {
   --font-site: "Mononoki", "MesloLG", "Courier New", monospace;
@@ -47,6 +48,13 @@
 }
 
 :root {
+  /* Typography scale */
+  --fs-hero: clamp(3rem, 8vw, 5.5rem);
+  --fs-section: clamp(2rem, 4.5vw, 3rem);
+  --fs-body: 1.05rem;
+  --fs-small: 0.88rem;
+  --fs-micro: 0.78rem;
+
   --gruvbox-bg: #fbf1c7;
   --gruvbox-fg: #282828;
   --gruvbox-yellow: #d79921;
@@ -126,15 +134,4 @@ body {
 
 .animate-fade-in {
   animation: fadeInUp 0.6s ease-out;
-}
-
-.intro-card {
-  background: var(--gruvbox-card);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 16px;
-  padding: 2rem;
-  text-align: center;
-  margin-bottom: 2rem;
-  border: 2px solid var(--gruvbox-yellow);
 }

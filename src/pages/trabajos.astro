@@ -10,75 +10,211 @@ const projects = allProjects
 
 <BaseLayout
   title="Trabajos — Teapartydev"
-  description="Portafolio de proyectos de Adal Michael García"
+  description="Portafolio de proyectos de Adal Michael García — intranet, sitios web, reporting"
 >
-  <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
-    <h1 class="text-3xl font-bold mb-8" style="font-family: 'Courier New', monospace;">
-      <span style="color: var(--gruvbox-green); font-weight: bold;">$</span>
+  <div class="max-w-4xl mx-auto px-4 py-12 animate-fade-in">
+    <h1 class="text-3xl font-bold mb-2" style="font-family: 'Mononoki', monospace;">
+      <span style="color: var(--gruvbox-green);">$</span>
       <span style="color: var(--gruvbox-yellow); margin-left: 0.5rem;">ls</span> -la proyectos/
       <span class="terminal-cursor"></span>
     </h1>
+    <p class="mb-8 opacity-60" style="font-family: 'MesloLG', monospace; font-size: var(--fs-small);">
+      Cosas que he construido y deployado recientemente.
+    </p>
 
     {projects.length === 0 && (
-      <div class="terminal-card">
-        <div class="terminal-header">
-          <div class="terminal-dots">
-            <span class="terminal-dot close"></span>
-            <span class="terminal-dot minimize"></span>
-            <span class="terminal-dot maximize"></span>
-          </div>
-          <span class="terminal-title">adalgarcia@portfolio: ~/proyectos</span>
-        </div>
-        <div class="terminal-body">
+      <div class="project-card" style="animation: none; opacity: 1;">
+        <div class="project-card-body">
           <p class="opacity-75">No hay proyectos publicados todavía.</p>
         </div>
       </div>
     )}
 
-    {projects.map((project, i) => (
-      <a
-        href={`/trabajos/${project.id}`}
-        class="block no-underline"
-        style={`animation: fadeInUp 0.6s ease-out ${i * 0.15}s both;`}
-      >
-        <article class="terminal-card cursor-pointer">
-          <div class="terminal-header">
-            <div class="terminal-dots">
-              <span class="terminal-dot close"></span>
-              <span class="terminal-dot minimize"></span>
-              <span class="terminal-dot maximize"></span>
+    {projects.length > 0 && (
+      <div class="project-grid">
+        {projects.map((project) => (
+          <a
+            href={`/trabajos/${project.id}`}
+            class="project-card"
+          >
+            <div class="project-card-thumb">
+              <span class="project-card-icon">
+                {project.data.tags?.includes('web') ? '🌐' :
+                 project.data.tags?.includes('intranet') ? '🏢' :
+                 project.data.tags?.includes('astro') ? '🚀' : '📄'}
+              </span>
             </div>
-            <span class="terminal-title">adalgarcia@portfolio: ~/proyectos/{project.id}</span>
-          </div>
-          <div class="terminal-body">
-            <div class="flex items-center gap-2 mb-4 select-none">
-              <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
+            <div class="project-card-body">
+              <span class="project-card-date">
                 {new Date(project.data.date).toLocaleDateString('es-ES', {
                   year: 'numeric',
                   month: 'long',
-                  day: 'numeric',
                 })}
               </span>
+              <h2 class="project-card-title">{project.data.title}</h2>
+              <p class="project-card-desc">{project.data.description}</p>
+              {project.data.tags.length > 0 && (
+                <div class="project-card-tags">
+                  {project.data.tags.map((tag) => (
+                    <span class="blog-tag">#{tag}</span>
+                  ))}
+                </div>
+              )}
             </div>
-            <h2 class="text-xl font-bold mb-2" style="color: var(--gruvbox-orange);">
-              {project.data.title}
-            </h2>
-            <p class="opacity-75 mb-3">{project.data.description}</p>
-            {project.data.tags.length > 0 && (
-              <div class="flex flex-wrap gap-2">
-                {project.data.tags.map((tag) => (
-                  <span
-                    class="text-xs px-2 py-1 rounded"
-                    style="background: var(--gruvbox-card); color: var(--gruvbox-blue); border: 1px solid var(--gruvbox-blue);"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        </article>
-      </a>
-    ))}
+            <span class="project-card-arrow">ver proyecto →</span>
+          </a>
+        ))}
+      </div>
+    )}
   </div>
 </BaseLayout>
+
+<style>
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--gruvbox-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--gruvbox-card);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--gruvbox-fg);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(69, 133, 136, 0.08) 0%,
+      rgba(104, 157, 106, 0.06) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+    border-radius: 12px;
+  }
+
+  .project-card:hover::before {
+    opacity: 1;
+  }
+
+  .project-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(215, 153, 33, 0.5);
+    box-shadow: 0 12px 40px rgba(215, 153, 33, 0.2);
+  }
+
+  .project-card-thumb {
+    aspect-ratio: 16 / 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+      135deg,
+      rgba(69, 133, 136, 0.12) 0%,
+      rgba(104, 157, 106, 0.08) 100%
+    );
+    position: relative;
+    z-index: 1;
+  }
+
+  .project-card-icon {
+    font-size: 2.5rem;
+    opacity: 0.5;
+  }
+
+  .project-card-body {
+    padding: 1.25rem 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+  }
+
+  .project-card-date {
+    font-family: "MesloLG", monospace;
+    font-size: var(--fs-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gruvbox-gray);
+    margin-bottom: 0.4rem;
+  }
+
+  .project-card-title {
+    font-family: "Mononoki", monospace;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--gruvbox-orange);
+    margin: 0 0 0.5rem;
+    transition: color 0.3s ease;
+  }
+
+  .project-card:hover .project-card-title {
+    color: var(--gruvbox-yellow);
+  }
+
+  .project-card-desc {
+    font-family: "MesloLG", monospace;
+    font-size: var(--fs-small);
+    color: var(--gruvbox-fg);
+    line-height: 1.6;
+    margin: 0 0 1rem;
+    opacity: 0.85;
+    flex: 1;
+  }
+
+  .project-card-tags {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--gruvbox-card);
+    padding-top: 0.75rem;
+    margin-top: auto;
+  }
+
+  .project-card-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border-top: 1px solid var(--gruvbox-card);
+    font-family: "MesloLG", monospace;
+    font-size: 0.82rem;
+    color: var(--gruvbox-yellow);
+    gap: 0.4rem;
+    transition: gap 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .project-card:hover .project-card-arrow {
+    gap: 0.8rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card {
+      transition: none;
+    }
+    .project-card:hover {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

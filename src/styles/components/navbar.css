@@ -1,107 +1,276 @@
+/* ═══════════════════════════════════════════════════════
+   Navbar — Estilo WP Bootstrap adaptado a GruvBox
+   ═══════════════════════════════════════════════════════ */
+
 .gruvbox-nav {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   background-color: var(--gruvbox-card);
+  border-bottom: 2px solid var(--gruvbox-yellow);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.gruvbox-nav .nav-logo {
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: var(--gruvbox-yellow);
-  transition: all 0.3s ease;
-}
-
-.gruvbox-nav .nav-logo:hover {
-  color: var(--gruvbox-orange);
-  transform: scale(1.05);
-}
-
-.gruvbox-nav .nav-link {
-  color: var(--gruvbox-fg);
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  position: relative;
-  font-family: "Mononoki", "MesloLG", "Courier New", monospace;
-}
-
-.gruvbox-nav .nav-link::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: var(--gruvbox-yellow);
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
-}
-
-.gruvbox-nav .nav-link:hover::after {
-  width: 80%;
-}
-
-.gruvbox-nav .nav-link:hover,
-.gruvbox-nav .nav-link.active {
-  background-color: var(--gruvbox-card);
-  color: var(--gruvbox-yellow);
-}
-
-.gruvbox-nav .nav-link.active::after {
-  width: 80%;
-}
-
-.gruvbox-nav .nav-dev-group {
-  display: inline-flex;
+/* ── Container centrado (estilo WP col-md-7) ──────── */
+.nav-container {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
   align-items: center;
-  gap: 0.15rem;
-  margin-left: 0.5rem;
-  padding-left: 0.5rem;
-  border-left: 1px dashed var(--gruvbox-card);
+  justify-content: space-between;
+  height: 56px;
 }
 
-.gruvbox-nav .nav-link-dev {
-  font-size: 0.72rem;
-  padding: 0.3rem 0.55rem;
-  color: var(--gruvbox-gray);
-  opacity: 0.7;
-  font-family: "MesloLG", monospace;
-  letter-spacing: 0.05em;
+@media (min-width: 768px) {
+  .nav-container {
+    justify-content: center;
+    gap: 2rem;
+  }
 }
 
-.gruvbox-nav .nav-link-dev:hover,
-.gruvbox-nav .nav-link-dev.active {
-  opacity: 1;
-  color: var(--gruvbox-orange);
-  background-color: transparent;
+/* ── Brand ────────────────────────────────────────── */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  font-family: "Mononoki", monospace;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--gruvbox-fg);
+  transition: color 0.2s ease;
 }
 
-.gruvbox-nav .nav-link-dev::after {
+.nav-brand:hover {
+  color: var(--gruvbox-yellow);
+}
+
+.nav-brand-icon {
+  font-size: 1.3rem;
+  color: var(--gruvbox-yellow);
+}
+
+/* ── Mobile toggler (estilo WP Bootstrap) ─────────── */
+.nav-toggler {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--gruvbox-gray);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-toggler:hover {
+  background: var(--gruvbox-card);
+  border-color: var(--gruvbox-yellow);
+}
+
+.nav-toggler:focus-visible {
+  outline: 2px solid var(--gruvbox-yellow);
+  outline-offset: 2px;
+}
+
+.nav-toggler-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 22px;
+}
+
+.nav-toggler-icon span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--gruvbox-fg);
+  border-radius: 1px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Animación a X cuando está abierto */
+.nav-toggler[aria-expanded="true"] .nav-toggler-icon span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggler[aria-expanded="true"] .nav-toggler-icon span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.nav-toggler[aria-expanded="true"] .nav-toggler-icon span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (min-width: 768px) {
+  .nav-toggler {
+    display: none;
+  }
+}
+
+/* ── Menu (desktop: inline, mobile: dropdown) ─────── */
+.nav-menu {
   display: none;
 }
 
-.gruvbox-nav .nav-menu.absolute {
-  background-color: var(--gruvbox-mobile-menu);
+.nav-menu.is-open {
+  display: block;
+  position: absolute;
+  top: 56px;
+  left: 1rem;
+  right: 1rem;
+  background: var(--gruvbox-mobile-menu);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--gruvbox-yellow);
+  border-radius: 8px;
+  padding: 0.75rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  animation: menuSlideIn 0.25s ease-out;
+  z-index: 100;
 }
 
+@keyframes menuSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 768px) {
+  .nav-menu {
+    display: flex !important;
+    position: static;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    animation: none;
+    align-items: center;
+    gap: 0.25rem;
+  }
+}
+
+/* ── Nav list ─────────────────────────────────────── */
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .nav-list {
+    flex-direction: row;
+    gap: 0.25rem;
+    align-items: center;
+  }
+}
+
+/* ── Nav links ────────────────────────────────────── */
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1rem;
+  font-family: "Mononoki", monospace;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--gruvbox-fg);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: var(--gruvbox-yellow);
+  background: var(--gruvbox-card);
+}
+
+.nav-link.active {
+  color: var(--gruvbox-yellow);
+  background: var(--gruvbox-card);
+}
+
+/* Underline indicator en desktop */
+@media (min-width: 768px) {
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--gruvbox-yellow);
+    transition: width 0.2s ease;
+    transform: translateX(-50%);
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    width: 60%;
+  }
+}
+
+.nav-link-text {
+  font-size: 0.85rem;
+}
+
+/* ── Theme toggle (se mantiene como estaba) ────────── */
 .theme-toggle {
   background: var(--gruvbox-yellow);
   color: var(--gruvbox-bg);
   border: none;
   border-radius: 50%;
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
 }
 
 .theme-toggle:hover {
   transform: rotate(180deg) scale(1.1);
   background: var(--gruvbox-orange);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--gruvbox-fg);
+  outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+  .theme-toggle {
+    margin-left: 0.5rem;
+  }
+}
+
+/* ── Reduced motion ───────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .nav-toggler-icon span,
+  .theme-toggle,
+  .nav-link,
+  .nav-menu {
+    transition: none !important;
+    animation: none !important;
+  }
 }

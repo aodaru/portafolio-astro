@@ -2,7 +2,7 @@
 const currentPath = Astro.url.pathname
 
 const links = [
-  { href: '/', label: 'Inicio' },
+  { href: '/', label: 'Inicio', icon: true },
   { href: '/blog', label: 'Blog' },
   { href: '/trabajos', label: 'Trabajos' },
   { href: '/contacto', label: 'Contacto' },
@@ -10,33 +10,54 @@ const links = [
 ---
 
 <header class="gruvbox-nav fixed top-0 inset-x-0 z-50">
-  <nav class="mx-auto px-4 h-16 flex items-center justify-center">
-    <button class="mobile-toggle md:hidden p-2 text-[var(--gruvbox-fg)] hover:text-[var(--gruvbox-yellow)] transition-colors" aria-label="Menú de navegación" type="button">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="6" x2="21" y2="6"/>
-        <line x1="3" y1="12" x2="21" y2="12"/>
-        <line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
+  <nav class="nav-container">
+    <!-- Brand -->
+    <a href="/" class="nav-brand" aria-label="Inicio">
+      <span class="nf nf-md-tea nav-brand-icon" aria-hidden="true"></span>
+      <span class="nav-brand-name">Adal Michael García</span>
+    </a>
+
+    <!-- Mobile toggle (estilo WP Bootstrap) -->
+    <button
+      class="nav-toggler"
+      type="button"
+      aria-label="Menú de navegación"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+    >
+      <span class="nav-toggler-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
     </button>
 
-    <div class="nav-menu hidden md:flex items-center gap-1">
-      {links.map(({ href, label }) => (
-        <a href={href} class={`nav-link ${currentPath === href ? 'active' : ''}`}>
-          {label === 'Inicio' ? <span class="nf nf-md-tea text-xl" aria-hidden="true"></span> : label}
-        </a>
-      ))}
-      <a
-        href="https://github.com/aodaru"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="nav-link inline-flex items-center gap-1"
-        aria-label="GitHub"
-      >
-        <span class="nf nf-fa-github"></span>
-        <span class="hidden sm:inline">Repo</span>
-      </a>
+    <!-- Menu -->
+    <div class="nav-menu" id="nav-menu">
+      <ul class="nav-list">
+        {links.map(({ href, label, icon }) => (
+          <li class="nav-item">
+            <a href={href} class={`nav-link ${currentPath === href ? 'active' : ''}`}>
+              {icon ? <span class="nf nf-md-tea" aria-hidden="true"></span> : label}
+            </a>
+          </li>
+        ))}
+        <li class="nav-item">
+          <a
+            href="https://github.com/aodaru"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="nav-link"
+            aria-label="GitHub repo"
+          >
+            <span class="nf nf-fa-github" aria-hidden="true"></span>
+            <span class="nav-link-text">repo</span>
+          </a>
+        </li>
+      </ul>
 
-      <button class="theme-toggle ml-2" aria-label="Cambiar tema" type="button">
+      <!-- Theme toggle (se mantiene como estaba) -->
+      <button class="theme-toggle" aria-label="Cambiar tema" type="button">
         <svg class="bi" width="24" height="24" fill="currentColor">
           <use href="#sun" id="themeIcon"/>
         </svg>
@@ -46,20 +67,27 @@ const links = [
 </header>
 
 <script>
-  const toggle = document.querySelector('.mobile-toggle')
+  const toggler = document.querySelector('.nav-toggler')
   const menu = document.querySelector('.nav-menu')
 
-  toggle?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden')
-    menu?.classList.toggle('flex')
-    menu?.classList.toggle('flex-col')
-    menu?.classList.toggle('absolute')
-    menu?.classList.toggle('top-16')
-    menu?.classList.toggle('inset-x-4')
-    menu?.classList.toggle('p-4')
-    menu?.classList.toggle('rounded-lg')
-    menu?.classList.toggle('border')
-    menu?.classList.toggle('border-[var(--gruvbox-yellow)]')
-    menu?.classList.toggle('shadow-lg')
+  toggler?.addEventListener('click', () => {
+    const expanded = toggler.getAttribute('aria-expanded') === 'true'
+    toggler.setAttribute('aria-expanded', String(!expanded))
+    menu?.classList.toggle('is-open')
+  })
+
+  // Cerrar menú al hacer click fuera
+  document.addEventListener('click', (e) => {
+    if (!menu?.contains(e.target as Node) && !toggler?.contains(e.target as Node)) {
+      menu?.classList.remove('is-open')
+      toggler?.setAttribute('aria-expanded', 'false')
+    }
+  })
+
+  // Cerrar menú al cambiar tamaño a desktop
+  const mql = window.matchMedia('(min-width: 768px)')
+  mql.addEventListener('change', () => {
+    menu?.classList.remove('is-open')
+    toggler?.setAttribute('aria-expanded', 'false')
   })
 </script>

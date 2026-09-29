@@ -1,0 +1,15 @@
+{
+  "role": "Ingeniero Informático",
+  "summary": "Experto en administración de sistemas con más de 12 años de experiencia. A lo largo de mi carrera, he desarrollado una amplia gama de soluciones informáticas, incluyendo:",
+  "highlights": [
+    "Reportes de ventas que optimizan el análisis y la toma de decisiones",
+    "Herramientas de consulta de datos que facilitan el acceso y la manipulación de información",
+    "Blogs que comparten mi conocimiento y experiencia con la comunidad"
+  ],
+  "timeline": [
+    { "year": "1983", "description": "Nací en David, Provincia de Chiriquí, Panamá" },
+    { "year": "2011", "description": "Completé mis estudios de Ingeniería en Sistemas Computacionales en la Universidad Latina de Panamá" },
+    { "year": "2012-2025", "description": "Inicio labores en Almacén Franklin Jurado" }
+  ],
+  "hobbies": ["Electrónica", "IoT", "Videojuegos", "Música"]
+}

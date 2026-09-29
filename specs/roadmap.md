@@ -93,11 +93,15 @@
 ## Fase 6: Internacionalización
 **Soporte bilingüe español/inglés**
 
-- [ ] Traducciones base (navegación, footer, títulos de secciones)
-- [ ] Archivos JSON por idioma: `src/i18n/es.json`, `src/i18n/en.json`
-- [ ] Ruteo `/es/...` y `/en/...` para contenido localizado
-- [ ] Selector de idioma en navegación
-- [ ] Posts en ambos idiomas con relación entre versiones
+- [x] Traducciones base (navegación, footer, títulos de secciones) — `src/i18n/ui.ts` (es/en)
+- [x] Helper i18n: `src/i18n/utils.ts` (`getLangFromUrl`, `useTranslations`, `useTranslatedPath`, `formatDate`, `getAlternateUrls`)
+- [x] Ruteo ES en raíz + `/en/...` para inglés (`prefixDefaultLocale: false`; se descartó `/es/...` con redirect para evitar breaking change de URLs existentes)
+- [x] Selector de idioma en navegación (ES | EN, con idioma activo resaltado)
+- [x] Posts en ambos idiomas con mismo slug (`src/content/blog/es/` + `src/content/blog/en/`)
+- [x] Proyectos en ambos idiomas (`src/content/projects/es/` + `src/content/projects/en/`)
+- [x] Bio por idioma (`src/i18n/bio-es.json`, `src/i18n/bio-en.json`; eliminado `src/data/bio.json`)
+- [x] `hreflang` (es/en/x-default) + `<html lang>` dinámico en `BaseLayout.astro`
+- [x] `README.md` con manual de posts/proyectos bilingües
 
 **Entregable**: Sitio completamente navegable en español e inglés.
 
@@ -106,19 +110,37 @@
 ## Fase 7: SEO + Performance
 **Optimización para motores de búsqueda y velocidad**
 
-- [ ] Meta tags dinámicos (title, description, OG) por página
+- [x] Meta tags dinámicos (title, description, OG) por página
 - [x] Sitemap.xml automático (`@astrojs/sitemap`)
-- [ ] RSS feed para blog (`@astrojs/rss`)
-- [ ] Imágenes optimizadas con `astro:assets` y WebP
-- [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices)
-- [ ] Google Tag Manager integrado (via Partytown)
+- [x] RSS feed para blog (endpoints propios `rss.xml.ts` bilingües ES/EN, no `@astrojs/rss`)
+- [x] Imágenes optimizadas con `astro:assets` y WebP
+- [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices) — seguimiento Fase 9: re-medir en deploy preview (local: 90 desk / 60 mob, A11y/BP/SEO 100)
+- [ ] Google Tag Manager integrado (via Partytown) — diferido D1
 - [x] `robots.txt`
 
 **Entregable**: Sitio optimizado y listo para indexación.
 
 ---
 
-## Fase 8: Polish & Deploy
+## Fase 8: Rediseño Home — Terminal Refinado
+**Evolución visual de la landing manteniendo la identidad GruvBox**
+
+> Spec: `specs/2026-09-28-fase-8-rediseno-home/` (`requirements.md`, `plan.md`, `validation.md`)
+
+- [x] Prioridad 1 — Romper uniformidad de secciones (fondos con tinte por sección, paddings 7→7→5→8rem)
+- [x] Prioridad 2 — Enriquecer cards de proyecto (grid vertical, thumb con gradiente, hover rico)
+- [x] Prioridad 3 — Evolucionar hero (full-bleed, stagger, eyebrow verde, keywords azules, CTA naranja→amarillo)
+- [x] Prioridad 4 — Jerarquía tipográfica (variables `--fs-*` en `global.css`)
+- [x] Prioridad 5 — Pulir CTA (gradiente dorado, cursor `█`, sociales con prefijo `→`)
+- [x] Prioridad 6 — Microinteracciones (chips en ciclo blue/orange/yellow, labels por sección)
+- [x] Prioridad 7 — Container breathing room (1140px, padding 3rem en desktop)
+- [x] Estrategia: página temporal `/preview` para comparar, luego portar a `index.astro` y eliminar preview
+
+**Entregable**: Home con secciones distinguibles, cards con gancho visual y hero con "momento", sin dependencias nuevas.
+
+---
+
+## Fase 9: Polish & Deploy
 **Detalles finales y puesta en producción**
 
 - [ ] Página 404 personalizada
@@ -132,7 +154,7 @@
 
 ---
 
-## Fase 9: Post-lanzamiento (futuro)
+## Fase 10: Post-lanzamiento (futuro)
 Mejoras posteriores al MVP
 
 - [ ] Comentarios en blog (opción: Webmentions, Giscus)
