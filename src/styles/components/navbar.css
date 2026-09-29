@@ -136,25 +136,49 @@
   }
 }
 
-/* ── Nav collapse (mobile: vertical dentro del flow, desktop: inline) ── */
+/* ── Nav collapse (mobile: vertical con animación Bootstrap, desktop: inline) ── */
 .nav-collapse {
-  display: none;
-  flex-basis: 100%; /* ocupa nueva línea debajo de brand+toggler */
+  display: block; /* el JS controla visibilidad con .collapse/.collapsing/.show */
+  flex-basis: 100%;
   order: 3;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.35s ease;
 }
 
-/* Estado abierto en mobile: parte del flow, sin estilos de dropdown */
-.nav-collapse.is-open {
+/* Bootstrap-style collapse: oculto por defecto */
+.nav-collapse.collapse:not(.show) {
+  display: none;
+}
+
+/* Estado de transición: altura animada, overflow hidden */
+.nav-collapse.collapsing {
   display: block;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.35s ease;
+}
+
+/* Estado abierto: visible, altura auto */
+.nav-collapse.collapse.show {
+  display: block;
+  height: auto;
+  overflow: visible;
 }
 
 @media (min-width: 992px) {
-  .nav-collapse {
+  .nav-collapse,
+  .nav-collapse.collapse,
+  .nav-collapse.collapsing,
+  .nav-collapse.collapse.show {
     display: flex !important;
-    flex-basis: auto; /* inline en desktop */
+    flex-basis: auto;
     align-items: center;
     gap: 0.25rem;
-    order: 2; /* entre brand (order:0) y theme toggle */
+    order: 2;
+    height: auto;
+    overflow: visible;
+    transition: none;
   }
 }
 

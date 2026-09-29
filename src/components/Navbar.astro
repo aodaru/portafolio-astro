@@ -67,27 +67,87 @@ const links = [
 </header>
 
 <script>
-  const toggler = document.querySelector('.nav-toggler')
-  const collapse = document.querySelector('.nav-collapse')
+  const toggler = document.querySelector<HTMLElement>('.nav-toggler')
+  const collapse = document.querySelector<HTMLElement>('.nav-collapse')
+
+  /**
+   * Anima la altura del collapse (estilo Bootstrap collapse).
+   * Antes de abrir: `collapsing` con altura actual (0) + overflow hidden
+   * Después de abrir: `collapsing` con scrollHeight + transition height 0.35s
+   * Al terminar: clase `show`, altura auto, overflow visible
+   */
+  function toggleCollapse() {
+    if (!collapse) return
+    const isOpen = collapse.classList.contains('show')
+
+    if (isOpen) {
+      // Cerrar: altura actual → 0
+      collapse.style.height = `${collapse.scrollHeight}px`
+      // Force reflow
+      void collapse.offsetHeight
+      collapse.style.height = '0px'
+      collapse.style.overflow = 'hidden'
+      collapse.classList.remove('show')
+      collapse.classList.add('collapsing')
+    } else {
+      // Abrir: 0 → scrollHeight
+      collapse.style.height = '0px'
+      collapse.style.overflow = 'hidden'
+      collapse.classList.remove('collapse')
+      collapse.classList.add('collapsing')
+      // Force reflow
+      void collapse.offsetHeight
+      collapse.style.height = `${collapse.scrollHeight}px`
+    }
+  }
+
+  function onTransitionEnd(this: HTMLElement, e: TransitionEvent) {
+    if (e.propertyName !== 'height') return
+    const isOpening = this.style.height !== '0px' && this.style.height !== ''
+
+    this.classList.remove('collapsing')
+    this.classList.add('collapse')
+    if (isOpening) {
+      this.classList.add('show')
+      this.style.height = ''
+      this.style.overflow = ''
+    } else {
+      this.classList.remove('show')
+      this.style.height = ''
+      this.style.overflow = ''
+    }
+  }
+
+  collapse?.addEventListener('transitionend', onTransitionEnd)
 
   toggler?.addEventListener('click', () => {
     const expanded = toggler.getAttribute('aria-expanded') === 'true'
     toggler.setAttribute('aria-expanded', String(!expanded))
-    collapse?.classList.toggle('is-open')
+    toggleCollapse()
   })
 
   // Cerrar menú al hacer click fuera
   document.addEventListener('click', (e) => {
-    if (!collapse?.contains(e.target as Node) && !toggler?.contains(e.target as Node)) {
-      collapse?.classList.remove('is-open')
+    const target = e.target as Node
+    if (
+      collapse?.classList.contains('show') &&
+      !collapse.contains(target) &&
+      !toggler?.contains(target)
+    ) {
       toggler?.setAttribute('aria-expanded', 'false')
+      toggleCollapse()
     }
   })
 
   // Cerrar menú al cambiar tamaño a desktop
   const mql = window.matchMedia('(min-width: 992px)')
   mql.addEventListener('change', () => {
-    collapse?.classList.remove('is-open')
+    if (collapse?.classList.contains('show')) {
+      collapse.classList.remove('show', 'collapsing')
+      collapse.classList.add('collapse')
+      collapse.style.height = ''
+      collapse.style.overflow = ''
+    }
     toggler?.setAttribute('aria-expanded', 'false')
   })
 </script>

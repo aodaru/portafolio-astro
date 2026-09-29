@@ -1,76 +1,65 @@
-# Review — Navbar mobile fiel al WP (v2)
+# Review — Animación de colapso del navbar (Bootstrap collapse)
 
 **Fecha:** 2026-09-29
 **Veredicto:** APPROVED
 
 ## Resumen
 
-Inspección con chrome-devtools del WP mobile abierto reveló que el menú collapse NO es un dropdown flotante con border/shadow — es parte del navbar que se expande verticalmente. Reescribí el CSS móvil para seguir exactamente el patrón Bootstrap `.navbar-collapse` del WP.
+El usuario reportó que el menú mobile se abría "de golpe" — faltaba la animación de altura. Inspeccioné el WP con chrome-devtools y confirmé que usa el patrón Bootstrap collapse (`height 0.35s` + clases `collapse`/`collapsing`/`show`). Implementé ese patrón en el JS y CSS del Navbar.
 
-## Cambios estructurales
+## Implementación
 
-### Mobile menu: ya no es dropdown flotante
-- **Antes**: `.nav-collapse.is-open` tenía `position: absolute`, `backdrop-filter`, `border`, `shadow` — era un dropdown flotante
-- **Ahora**: `position: static`, sin backdrop/border/shadow — parte del flow del navbar
+### CSS — clases Bootstrap collapse
+```css
+.nav-collapse {
+  display: block;
+  flex-basis: 100%;
+  order: 3;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.35s ease;
+}
 
-### Patrón Bootstrap navbar-collapse replicado
-- `.nav-container`: `flex-wrap: wrap` para que el collapse ocupe nueva línea
-- `.nav-collapse`: `flex-basis: 100%` cuando se abre (empuja el contenido abajo)
-- `.nav-collapse`: `display: none` por defecto, `display: block` cuando `.is-open`
-- En desktop (≥992px): `display: flex`, `flex-basis: auto`, `order: 2`
+.nav-collapse.collapse:not(.show) { display: none; }
+.nav-collapse.collapsing {
+  display: block;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.35s ease;
+}
+.nav-collapse.collapse.show {
+  display: block;
+  height: auto;
+  overflow: visible;
+}
+```
 
-### Items y theme toggle mobile
-- `.nav-list`: `flex-direction: column`, `margin-bottom: 8px`, `align-items: flex-start`
-- `.nav-link`: `padding: 8px 0` en mobile, `8px 12px` en desktop
-- `.theme-toggle`: `order: 1` (aparece antes del toggler en mobile), `margin-left: auto`
+### JS — toggle con animación de altura
+- Al abrir: `height: 0px` → forzar reflow → `height: ${scrollHeight}px`
+- Al cerrar: `height: ${scrollHeight}px` → forzar reflow → `height: 0px`
+- Listener `transitionend` para limpiar estilos y aplicar `show` o quitarlo
 
-### Toggler estilo WP Bootstrap
-- `padding: 4px 12px` (antes 0.5rem)
-- `border: 1px solid rgba(235, 219, 178, 0.15)` (transparente como WP)
-- `width/height: auto` (no fijo 44x44)
-
-### Animación
-- Quitado `@keyframes menuSlideIn` — el WP no tiene animación en mobile
-- Mantiene la animación 3 barras → X del toggler
-
-## Comparación métrica exacta con WP
+## Comparación métrica con WP
 
 | Métrica | WP | Astro | ✓ |
 |---------|-----|-------|---|
-| `main-nav.backdropFilter` | `blur(10px)` | `blur(10px)` | ✅ |
-| `container.flexWrap` | wrap | wrap | ✅ |
-| `collapse.position` | static | static | ✅ |
-| `collapse.flexBasis` | 100% | 100% | ✅ |
-| `collapse.background` | transparent | transparent | ✅ |
-| `collapse.backdropFilter` | none | none | ✅ |
-| `collapse.border` | 0 | 0 | ✅ |
-| `collapse.boxShadow` | none | none | ✅ |
-| `navList.flexDirection` | column | column | ✅ |
-| `navList.marginBottom` | 8px | 8px | ✅ |
+| `transition` en collapse | `height 0.35s` | `height 0.35s` | ✅ |
+| `overflow` durante transición | `hidden` | `hidden` | ✅ |
+| Clase durante animación | `collapsing` | `collapsing` | ✅ |
+| Clase al finalizar abrir | `collapse show` | `collapse show` | ✅ |
+| Altura final abierto | `auto` (calculada) | `auto` | ✅ |
+| Altura inicial cerrado | `0` | `0` | ✅ |
 
 ## Verificación visual
 
-### Mobile cerrado (671px):
-- Brand "🍵 Adal Michael García" izquierda
-- Toggler ☰ derecha
-- Yellow border-bottom del navbar
-
-### Mobile abierto (671px):
-- Brand + toggler arriba
-- Items apilados: Inicio (active), Blog, Trabajos, Contacto, repo
-- Theme toggle rectangular amarillo abajo derecha
-- Navbar glass se mantiene arriba
-
-### Desktop (1440px):
-- Brand amarillo izquierda
-- Links en línea: Inicio, Blog, Trabajos, Contacto, repo
-- Theme toggle rectangular amarillo derecha
+A los 150ms (mitad de los 350ms), la altura del collapse era 161px (entre 0 y 246px), confirmando la animación interpolada.
 
 ## Archivos modificados
 
 | Archivo | Cambio |
 |---|---|
-| `src/styles/components/navbar.css` | Reescrito: patrón Bootstrap navbar-collapse |
+| `src/components/Navbar.astro` | JS reescrito: Bootstrap collapse con animación de altura |
+| `src/styles/components/navbar.css` | Clases `.collapse`/`.collapsing`/`.show` + transition `height 0.35s` |
 
 ## Verificación
 
