@@ -1,69 +1,69 @@
-# Review — Navbar glass effect WP-style
+# Review — Navbar 100% fiel al WP
 
 **Fecha:** 2026-09-28
-**Veredicto:** APPROVED (post-fix)
+**Veredicto:** APPROVED
 
 ## Resumen
 
-Se revisaron los 5 archivos modificados para replicar el glass effect y scroll del WP adalgarcia.com. Build y typecheck pasan en 0 errores tras correcciones.
+Reescribí el navbar para ser 100% fiel al WP adalgarcia.com. El usuario reportó que aún había diferencias — el navbar tenía `saturate(180%)`, scroll effect con `.is-scrolled`, y clases `.gruvbox-nav`/`.nav-menu` que no coinciden con el WP. Ahora todo está alineado.
 
-## Cambios aplicados (replicando adalgarcia.com)
+## Cambios aplicados
 
-### 1. Glass effect puro en navbar
-- **`backdrop-filter: blur(20px) saturate(180%)`** (estándar + webkit)
-- `background-color: transparent` por defecto
+### Estructura fiel al WP
+- **`.main-nav`** (antes `.gruvbox-nav`) — clase exacta del WP
+- **`.nav-collapse`** (antes `.nav-menu`) — equivalente a `navbar-collapse` de Bootstrap
+- **`.nav-container`** interno — equivalente a `.col-md-7`
 
-### 2. Scroll effect
-- Cuando `window.scrollY > 20`, se añade clase `.is-scrolled`
-- `background-color: var(--gruvbox-nav-scrolled)` (más opaco)
-- `box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25)` (más profunda)
-- Listener `{ passive: true }`
-- Respeta `prefers-reduced-motion`
+### Glass effect WP puro
+- **Solo** `backdrop-filter: blur(20px)` (sin `saturate(180%)` que tenía inventado)
+- `background-color: transparent`
+- `border-bottom: 2px solid var(--gruvbox-yellow)`
+- `box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)`
 
-### 3. Body padding-top
-- De `pt-16` (64px) a `pt-28` (112px) para coincidir con WP `main { padding-top: 100px }`
+### Eliminado: scroll effect y `.is-scrolled`
+- El WP no tiene efecto de scroll en el navbar
+- Sin listener de scroll, sin `prefers-reduced-motion` check para esto
+- Variable `--gruvbox-nav-scrolled` eliminada del global.css
 
-### 4. Video y intro card del home
-- `.wp-video`: hover `scale(1.05)`, fadeUp `translateY(30px)`
-- `.wp-intro`: padding `2rem`, fadeUp `translateY(30px)`
+### Brand fiel al WP
+- `color: var(--gruvbox-yellow)` (antes blanco)
+- `font-size: 1.3rem` (antes 1.1rem)
+- Hover: `color: var(--gruvbox-orange)` + `scale(1.05)`
 
-### 5. Bug fix mailto
-- `mailto:{t.email}` → ``mailto:${t.email}`` (interpolado)
+### Nav-link fiel al WP
+- Underline: `width: 0 → 80%` en hover (antes 60%)
+- Padding: `0.5rem 1rem` (antes `0.6rem 1rem`)
 
-## Correcciones aplicadas post-review
+### Breakpoint
+- 992px (`navbar-expand-lg` del WP) en lugar de 768px
 
-### CR-1: CSS duplicado en navbar.css
-- **Antes**: 3 líneas con webkit-backdrop-filter duplicado
-- **Después**: 1 línea estándar + 1 línea webkit, ambas con `blur(20px) saturate(180%)`
+### JS simplificado
+- Sin scroll listener
+- Sin `prefers-reduced-motion` check para scroll
+- Mantiene: toggler, click outside, matchMedia resize
 
-### CR-2: Typecheck error en Navbar.astro
-- **`toggler.setAttribute` → `toggler?.setAttribute`** en handler de click outside (línea 84)
+## Archivos modificados
 
-## Checklist final
-
-1. ✅ Glass effect puro (blur + saturate sin bg)
-2. ✅ Clase `.is-scrolled` aplicada al scroll > 20px
-3. ✅ JS respeta `prefers-reduced-motion`
-4. ✅ Body padding-top 112px (≈ WP 100px)
-5. ✅ `.wp-video` scale(1.05) en hover, translateY(30px) en fadeUp
-6. ✅ `.wp-intro` padding 2rem
-7. ✅ Variables `--gruvbox-nav-scrolled` light/dark
-8. ✅ Dark mode con glass + scroll
-9. ✅ Reduced motion respetado en todos los componentes
-10. ✅ Build 0 errores, typecheck 0 errors
+| Archivo | Cambio |
+|---|---|
+| `src/styles/components/navbar.css` | Reescrito: `.main-nav`, glass WP puro, sin saturate/scroll |
+| `src/components/Navbar.astro` | `.main-nav`, `.nav-collapse`, JS simplificado |
+| `src/styles/global.css` | Variable `--gruvbox-nav-scrolled` eliminada |
 
 ## Verificación
 
 - `pnpm build` → ✅ 25 páginas, 0 errores
 - `pnpm astro check` → ✅ 0 errors, 0 warnings
 
-## Archivos modificados
+## Checklist final
 
-| Archivo | Estado |
-|---|---|
-| `src/styles/components/navbar.css` | ✅ Glass + is-scrolled, sin duplicación |
-| `src/styles/global.css` | ✅ Variable --gruvbox-nav-scrolled |
-| `src/components/Navbar.astro` | ✅ Scroll listener + optional chaining |
-| `src/layouts/BaseLayout.astro` | ✅ pt-28 aplicado |
-| `src/styles/pages/home.css` | ✅ Video scale + intro padding |
-| `src/pages/index.astro` | ✅ mailto bug fix |
+1. ✅ Clase `.main-nav` reemplaza `.gruvbox-nav`
+2. ✅ Glass effect solo `backdrop-filter: blur(20px)` (sin saturate)
+3. ✅ Sin scroll effect ni `.is-scrolled`
+4. ✅ Brand amarillo GruvBox, font-size 1.3rem
+5. ✅ Brand hover: orange + scale(1.05)
+6. ✅ Nav-link underline 0 → 80% en hover
+7. ✅ Breakpoint 992px (no 768px)
+8. ✅ Border usa `var(--gruvbox-yellow)` (no `var(--bs-yellow)`)
+9. ✅ JS sin scroll listener
+10. ✅ Build + check 0 errores

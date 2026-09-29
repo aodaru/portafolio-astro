@@ -9,21 +9,21 @@ const links = [
 ]
 ---
 
-<header class="gruvbox-nav fixed top-0 inset-x-0 z-50">
+<header class="main-nav fixed top-0 inset-x-0 z-50">
   <nav class="nav-container">
-    <!-- Brand -->
+    <!-- Brand (estilo WP navbar-brand con icono nf-md-tea) -->
     <a href="/" class="nav-brand" aria-label="Inicio">
       <span class="nf nf-md-tea nav-brand-icon" aria-hidden="true"></span>
       <span class="nav-brand-name">Adal Michael García</span>
     </a>
 
-    <!-- Mobile toggle (estilo WP Bootstrap) -->
+    <!-- Mobile toggle (estilo WP Bootstrap navbar-toggler) -->
     <button
       class="nav-toggler"
       type="button"
       aria-label="Menú de navegación"
       aria-expanded="false"
-      aria-controls="nav-menu"
+      aria-controls="nav-collapse"
     >
       <span class="nav-toggler-icon">
         <span></span>
@@ -32,8 +32,8 @@ const links = [
       </span>
     </button>
 
-    <!-- Menu -->
-    <div class="nav-menu" id="nav-menu">
+    <!-- Nav collapse (estilo WP navbar-collapse) -->
+    <div class="nav-collapse" id="nav-collapse">
       <ul class="nav-list">
         {links.map(({ href, label, icon }) => (
           <li class="nav-item">
@@ -68,41 +68,26 @@ const links = [
 
 <script>
   const toggler = document.querySelector('.nav-toggler')
-  const menu = document.querySelector('.nav-menu')
-  const nav = document.querySelector('.gruvbox-nav')
+  const collapse = document.querySelector('.nav-collapse')
 
   toggler?.addEventListener('click', () => {
     const expanded = toggler.getAttribute('aria-expanded') === 'true'
     toggler.setAttribute('aria-expanded', String(!expanded))
-    menu?.classList.toggle('is-open')
+    collapse?.classList.toggle('is-open')
   })
 
   // Cerrar menú al hacer click fuera
   document.addEventListener('click', (e) => {
-    if (!menu?.contains(e.target as Node) && !toggler?.contains(e.target as Node)) {
-      menu?.classList.remove('is-open')
+    if (!collapse?.contains(e.target as Node) && !toggler?.contains(e.target as Node)) {
+      collapse?.classList.remove('is-open')
       toggler?.setAttribute('aria-expanded', 'false')
     }
   })
 
   // Cerrar menú al cambiar tamaño a desktop
-  const mql = window.matchMedia('(min-width: 768px)')
+  const mql = window.matchMedia('(min-width: 992px)')
   mql.addEventListener('change', () => {
-    menu?.classList.remove('is-open')
+    collapse?.classList.remove('is-open')
     toggler?.setAttribute('aria-expanded', 'false')
   })
-
-  // Glass effect on scroll (estilo WP): navbar gana opacidad al bajar
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if (nav && !reducedMotion) {
-    const onScroll = () => {
-      if (window.scrollY > 20) {
-        nav.classList.add('is-scrolled')
-      } else {
-        nav.classList.remove('is-scrolled')
-      }
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-  }
 </script>

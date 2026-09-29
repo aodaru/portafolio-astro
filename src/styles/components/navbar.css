@@ -1,49 +1,30 @@
 /* ═══════════════════════════════════════════════════════
-   Navbar — Estilo WP Bootstrap adaptado a GruvBox
-   Glass effect: blur puro (sin background-color)
-   Scroll: gana contraste al hacer scroll
+   Navbar — Réplica fiel del WP adalgarcia.com
+   .main-nav: backdrop-filter blur(20px) sin saturate, sin scroll
+   Estructura: header > .navbar > .container-fluid > [brand, toggler, collapse]
    ═══════════════════════════════════════════════════════ */
 
-.gruvbox-nav {
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+.main-nav {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   background-color: transparent;
   border-bottom: 2px solid var(--gruvbox-yellow);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Estado scrolled: navbar más opaco para legibilidad */
-.gruvbox-nav.is-scrolled {
-  background-color: var(--gruvbox-nav-scrolled);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .gruvbox-nav {
-    transition: none;
-  }
-}
-
-/* ── Container centrado (estilo WP col-md-7) ──────── */
+/* ── Container interno (equivale a .col-md-7 del WP) ── */
 .nav-container {
   max-width: 740px;
   margin: 0 auto;
   padding: 0 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 56px;
+  justify-content: center;
+  height: 60px;
+  gap: 0.5rem;
 }
 
-@media (min-width: 768px) {
-  .nav-container {
-    justify-content: center;
-    gap: 2rem;
-  }
-}
-
-/* ── Brand ────────────────────────────────────────── */
+/* ── Brand ─────────────────────────────────────────── */
 .nav-brand {
   display: flex;
   align-items: center;
@@ -51,13 +32,16 @@
   text-decoration: none;
   font-family: "Mononoki", monospace;
   font-weight: 700;
-  font-size: 1.1rem;
-  color: var(--gruvbox-fg);
-  transition: color 0.2s ease;
+  font-size: 1.3rem;
+  color: var(--gruvbox-yellow);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-brand:hover {
-  color: var(--gruvbox-yellow);
+  color: var(--gruvbox-orange);
+  transform: scale(1.05);
 }
 
 .nav-brand-icon {
@@ -78,6 +62,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .nav-toggler:hover {
@@ -121,21 +106,21 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .nav-toggler {
     display: none;
   }
 }
 
-/* ── Menu (desktop: inline, mobile: dropdown) ─────── */
-.nav-menu {
+/* ── Nav collapse (mobile: dropdown, desktop: inline) ─ */
+.nav-collapse {
   display: none;
 }
 
-.nav-menu.is-open {
+.nav-collapse.is-open {
   display: block;
   position: absolute;
-  top: 56px;
+  top: 60px;
   left: 1rem;
   right: 1rem;
   background: var(--gruvbox-mobile-menu);
@@ -160,8 +145,8 @@
   }
 }
 
-@media (min-width: 768px) {
-  .nav-menu {
+@media (min-width: 992px) {
+  .nav-collapse {
     display: flex !important;
     position: static;
     background: transparent;
@@ -177,7 +162,7 @@
   }
 }
 
-/* ── Nav list ─────────────────────────────────────── */
+/* ── Nav list ──────────────────────────────────────── */
 .nav-list {
   list-style: none;
   padding: 0;
@@ -187,22 +172,23 @@
   gap: 0.25rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .nav-list {
     flex-direction: row;
     gap: 0.25rem;
     align-items: center;
+    margin-right: auto;
   }
 }
 
-/* ── Nav links ────────────────────────────────────── */
+/* ── Nav links (estilo WP .nav-link) ───────────────── */
 .nav-link {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.6rem 1rem;
+  padding: 0.5rem 1rem;
   font-family: "Mononoki", monospace;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   color: var(--gruvbox-fg);
   text-decoration: none;
@@ -212,7 +198,8 @@
   white-space: nowrap;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link:focus {
   color: var(--gruvbox-yellow);
   background: var(--gruvbox-card);
 }
@@ -222,23 +209,23 @@
   background: var(--gruvbox-card);
 }
 
-/* Underline indicator en desktop */
-@media (min-width: 768px) {
+/* Underline indicator en desktop (como WP .nav-link::after) */
+@media (min-width: 992px) {
   .nav-link::after {
     content: "";
     position: absolute;
-    bottom: 2px;
+    bottom: 0;
     left: 50%;
     width: 0;
     height: 2px;
     background: var(--gruvbox-yellow);
-    transition: width 0.2s ease;
+    transition: width 0.3s ease;
     transform: translateX(-50%);
   }
 
   .nav-link:hover::after,
   .nav-link.active::after {
-    width: 60%;
+    width: 80%;
   }
 }
 
@@ -273,7 +260,7 @@
   outline-offset: 2px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .theme-toggle {
     margin-left: 0.5rem;
   }
@@ -284,7 +271,7 @@
   .nav-toggler-icon span,
   .theme-toggle,
   .nav-link,
-  .nav-menu {
+  .nav-collapse {
     transition: none !important;
     animation: none !important;
   }
