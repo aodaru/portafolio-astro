@@ -69,6 +69,7 @@ const links = [
 <script>
   const toggler = document.querySelector('.nav-toggler')
   const menu = document.querySelector('.nav-menu')
+  const nav = document.querySelector('.gruvbox-nav')
 
   toggler?.addEventListener('click', () => {
     const expanded = toggler.getAttribute('aria-expanded') === 'true'
@@ -90,4 +91,18 @@ const links = [
     menu?.classList.remove('is-open')
     toggler?.setAttribute('aria-expanded', 'false')
   })
+
+  // Glass effect on scroll (estilo WP): navbar gana opacidad al bajar
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (nav && !reducedMotion) {
+    const onScroll = () => {
+      if (window.scrollY > 20) {
+        nav.classList.add('is-scrolled')
+      } else {
+        nav.classList.remove('is-scrolled')
+      }
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+  }
 </script>

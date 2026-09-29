@@ -1,13 +1,29 @@
 /* ═══════════════════════════════════════════════════════
    Navbar — Estilo WP Bootstrap adaptado a GruvBox
+   Glass effect: blur puro (sin background-color)
+   Scroll: gana contraste al hacer scroll
    ═══════════════════════════════════════════════════════ */
 
 .gruvbox-nav {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  background-color: var(--gruvbox-card);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background-color: transparent;
   border-bottom: 2px solid var(--gruvbox-yellow);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Estado scrolled: navbar más opaco para legibilidad */
+.gruvbox-nav.is-scrolled {
+  background-color: var(--gruvbox-nav-scrolled);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gruvbox-nav {
+    transition: none;
+  }
 }
 
 /* ── Container centrado (estilo WP col-md-7) ──────── */

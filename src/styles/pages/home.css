@@ -23,10 +23,10 @@
   margin: 0 auto 2rem;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(30px);
 }
 
 .wp-video.is-visible {
@@ -35,8 +35,8 @@
 }
 
 .wp-video:hover {
-  transform: scale(1.04);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.35);
+  transform: scale(1.05);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -57,11 +57,11 @@
   -webkit-backdrop-filter: blur(10px);
   border: 2px solid var(--gruvbox-yellow);
   border-radius: 16px;
-  padding: 1.75rem 2rem;
+  padding: 2rem;
   text-align: center;
   margin-bottom: 2rem;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(30px);
 }
 
 .wp-intro.is-visible {

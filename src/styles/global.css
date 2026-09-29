@@ -69,6 +69,7 @@
   --gruvbox-minimize: #fabd2f;
   --gruvbox-maximize: #8ec07c;
   --gruvbox-mobile-menu: #ebdbb2;
+  --gruvbox-nav-scrolled: rgba(251, 241, 199, 0.85);
 }
 
 [data-theme="dark"] {
@@ -82,6 +83,7 @@
   --gruvbox-card: rgba(235, 219, 178, 0.12);
   --gruvbox-header-from: rgba(80, 73, 69, 0.8);
   --gruvbox-header-to: rgba(60, 56, 54, 0.8);
+  --gruvbox-nav-scrolled: rgba(40, 40, 40, 0.85);
   --gruvbox-close: #cc241d;
   --gruvbox-minimize: #d79921;
   --gruvbox-maximize: #689d6a;
