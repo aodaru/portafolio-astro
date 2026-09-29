@@ -1,7 +1,8 @@
 /* ═══════════════════════════════════════════════════════
-   Navbar — Réplica fiel del WP adalgarcia.com
-   .main-nav: backdrop-filter blur(10px) sin saturate, sin scroll
-   Estructura: header.main-nav (full-width) > nav.navbar.col-md-7 (inner 58%) > container-fluid > [brand, toggler, collapse]
+   Navbar — Réplica fiel del WP adalgarcia.com (Bootstrap pattern)
+   Estructura: header.main-nav > nav.navbar.col-md-7 > .nav-container
+   Mobile: collapse vertical dentro del flow (no dropdown flotante)
+   Desktop: flex inline con brand izq + links/toggle der
    ═══════════════════════════════════════════════════════ */
 
 .main-nav {
@@ -12,17 +13,19 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* permite que el collapse crezca hacia abajo */
 }
 
-/* ── Container interno (equivale a .col-md-7 del WP) ── */
+/* ── Container interno (equivale a .navbar.col-md-7 + .container-fluid del WP) ── */
 .nav-container {
   width: 100%;
   max-width: 58.333%; /* equivalente a Bootstrap col-md-7 */
   padding: 8px 12px;
   display: flex;
+  flex-wrap: wrap; /* clave para que el collapse ocupe nueva línea en mobile */
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between; /* brand izq, toggler der */
+  gap: 0.25rem 1rem;
 }
 
 @media (max-width: 991.98px) {
@@ -44,7 +47,8 @@
   transition: all 0.3s ease;
   white-space: nowrap;
   flex-shrink: 0;
-  flex-grow: 1; /* empuja el resto a la derecha (como Bootstrap .me-auto) */
+  order: 1; /* brand siempre primero */
+  margin-right: auto; /* empuja lo que sigue a la derecha */
 }
 
 .nav-brand:hover {
@@ -57,24 +61,22 @@
   color: var(--gruvbox-yellow);
 }
 
-/* ── Mobile toggler (estilo WP Bootstrap) ─────────── */
+/* ── Mobile toggler (estilo WP Bootstrap navbar-toggler) ── */
 .nav-toggler {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  padding: 0.5rem;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  padding: 4px 12px;
   background: transparent;
-  border: 1px solid var(--gruvbox-gray);
+  border: 1px solid rgba(235, 219, 178, 0.15);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
   flex-shrink: 0;
+  order: 2; /* aparece después del brand */
 }
 
 .nav-toggler:hover {
-  background: var(--gruvbox-card);
   border-color: var(--gruvbox-yellow);
 }
 
@@ -84,10 +86,24 @@
 }
 
 .nav-toggler-icon {
-  display: flex;
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: middle;
+  background-image: var(--bs-navbar-toggler-icon-bg, none);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+}
+
+/* Fallback para cuando Bootstrap icon no esté disponible: líneas custom */
+.nav-toggler-icon {
+  display: inline-flex;
   flex-direction: column;
+  justify-content: center;
   gap: 5px;
   width: 22px;
+  height: 22px;
 }
 
 .nav-toggler-icon span {
@@ -120,70 +136,42 @@
   }
 }
 
-/* ── Nav collapse (mobile: dropdown, desktop: inline) ─ */
+/* ── Nav collapse (mobile: vertical dentro del flow, desktop: inline) ── */
 .nav-collapse {
   display: none;
+  flex-basis: 100%; /* ocupa nueva línea debajo de brand+toggler */
+  order: 3;
 }
 
+/* Estado abierto en mobile: parte del flow, sin estilos de dropdown */
 .nav-collapse.is-open {
   display: block;
-  position: absolute;
-  top: 60px;
-  left: 1rem;
-  right: 1rem;
-  background: var(--gruvbox-mobile-menu);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--gruvbox-yellow);
-  border-radius: 8px;
-  padding: 0.75rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-  animation: menuSlideIn 0.25s ease-out;
-  z-index: 100;
-}
-
-@keyframes menuSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 @media (min-width: 992px) {
   .nav-collapse {
     display: flex !important;
-    position: static;
-    background: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    border: none;
-    border-radius: 0;
-    padding: 0;
-    box-shadow: none;
-    animation: none;
+    flex-basis: auto; /* inline en desktop */
     align-items: center;
     gap: 0.25rem;
+    order: 2; /* entre brand (order:0) y theme toggle */
   }
 }
 
-/* ── Nav list ──────────────────────────────────────── */
+/* ── Nav list (.navbar-nav) ────────────────────────── */
 .nav-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 8px;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  align-items: flex-start;
 }
 
 @media (min-width: 992px) {
   .nav-list {
     flex-direction: row;
-    gap: 0.25rem;
+    margin: 0;
     align-items: center;
   }
 }
@@ -193,13 +181,12 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.5rem 0.75rem;
+  padding: 8px 0;
   font-family: "Mononoki", monospace;
   font-size: 1.1rem;
   font-weight: 400;
   color: var(--gruvbox-fg);
   text-decoration: none;
-  border-radius: 6px;
   transition: color 0.2s ease;
   position: relative;
   white-space: nowrap;
@@ -217,8 +204,10 @@
   opacity: 1;
 }
 
-/* Underline indicator en desktop (como WP .nav-link::after) */
 @media (min-width: 992px) {
+  .nav-link {
+    padding: 8px 12px;
+  }
   .nav-link::after {
     content: "";
     position: absolute;
@@ -230,7 +219,6 @@
     transition: width 0.3s ease;
     transform: translateX(-50%);
   }
-
   .nav-link:hover::after,
   .nav-link.active::after {
     width: 80%;
@@ -255,6 +243,8 @@
   transition: all 0.3s ease;
   flex-shrink: 0;
   font-family: inherit;
+  margin-left: auto; /* en mobile empuja al final */
+  order: 1;
 }
 
 .theme-toggle:hover {
@@ -269,6 +259,7 @@
 @media (min-width: 992px) {
   .theme-toggle {
     margin-left: 0.5rem;
+    order: 3;
   }
 }
 
@@ -276,9 +267,7 @@
 @media (prefers-reduced-motion: reduce) {
   .nav-toggler-icon span,
   .theme-toggle,
-  .nav-link,
-  .nav-collapse {
+  .nav-link {
     transition: none !important;
-    animation: none !important;
   }
 }
