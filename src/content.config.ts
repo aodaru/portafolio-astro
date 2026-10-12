@@ -7,9 +7,13 @@ const blog = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.date(),
+    updated: z.date().optional(),
+    author: z.string().default('Adal Michael García'),
     tags: z.array(z.string()).default([]),
     image: z.string().optional(),
     draft: z.boolean().default(false),
+    lang: z.enum(['es', 'en']).default('es'),
+    translationKey: z.string().optional(),
   }),
 })
 
@@ -21,8 +25,12 @@ const projects = defineCollection({
     date: z.date(),
     tags: z.array(z.string()).default([]),
     image: z.string().optional(),
-    url: z.string().optional(),
+    /** Enlace al proyecto desplegado. Vacío u omitido si no es público. */
+    url: z.string().default(''),
+    /** Enlace al repositorio público. Vacío u omitido si es privado. */
+    repo: z.string().default(''),
     draft: z.boolean().default(false),
+    lang: z.enum(['es', 'en']).default('es'),
   }),
 })
 

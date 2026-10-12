@@ -1,13 +1,26 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import PostNav from '../../components/PostNav.astro'
 import { getCollection, getEntry, render } from 'astro:content'
+import {
+  blogIndexPath,
+  blogPath,
+  countWords,
+  formatDate,
+  formatReadingTime,
+  getLangFromId,
+  getSlugFromId,
+  postAlternates,
+  tagPath,
+} from '../../i18n/content'
+import { useTranslations } from '../../i18n/utils'
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
   return posts
-    .filter((post) => !post.data.draft)
+    .filter((post) => !post.data.draft && getLangFromId(post.id) === 'es')
     .map((post) => ({
-      params: { slug: post.id },
+      params: { slug: getSlugFromId(post.id) },
       props: { id: post.id },
     }))
 }
@@ -15,54 +28,49 @@ export async function getStaticPaths() {
 const { id } = Astro.props
 const post = await getEntry('blog', id)
 if (!post) return new Response(null, { status: 404 })
-const { Content } = await render(post)
+const { Content, headings } = await render(post)
+
+const lang = getLangFromId(post.id)
+const slug = getSlugFromId(post.id)
+const t = useTranslations(lang)
+
+// Solo los posts del mismo idioma para prev/next y relacionados.
+const siblings = (await getCollection('blog'))
+  .filter((p) => !p.data.draft && getLangFromId(p.id) === lang)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+
+const words = countWords(post.body)
+const readingTime = formatReadingTime(words)
+
+const tocHeadings = headings.filter((h) => h.depth === 2)
+const showToc = tocHeadings.length >= 3
+
+const alternates = postAlternates(siblings, post.id, Astro.site ?? new URL('https://teapartydev.com'))
 ---
 
 <BaseLayout
-  title={`${post.data.title} — Blog — Teapartydev`}
+  title={`${post.data.title} — Blog`}
   description={post.data.description}
+  lang={lang}
+  path={blogPath(lang, slug)}
+  image={post.data.image}
+  type="article"
+  publishedDate={post.data.date}
+  alternates={alternates}
 >
   <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
     <a
-      href="/blog"
-      class="inline-flex items-center gap-1 mb-6 no-underline transition-all duration-300 hover:opacity-80"
+      href={blogIndexPath(lang)}
+      class="inline-flex items-center gap-1 mb-6 no-underline transition-opacity duration-300 hover:opacity-80"
       style="color: var(--gruvbox-blue);"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
       </svg>
-      Volver al blog
+      {t('blog.back')}
     </a>
 
     <article>
-      <header class="mb-8">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
-            {new Date(post.data.date).toLocaleDateString('es-ES', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </span>
-        </div>
-        <h1 class="text-3xl font-bold mb-4" style="color: var(--gruvbox-yellow); font-family: 'Courier New', monospace;">
-          {post.data.title}
-        </h1>
-        {post.data.tags.length > 0 && (
-          <div class="flex flex-wrap gap-2 mb-4">
-            {post.data.tags.map((tag) => (
-              <a
-                href={`/blog/tags/${tag}`}
-                class="text-xs px-2 py-1 rounded no-underline transition-all duration-300 hover:opacity-80"
-                style="background: var(--gruvbox-card); color: var(--gruvbox-blue); border: 1px solid var(--gruvbox-blue);"
-              >
-                #{tag}
-              </a>
-            ))}
-          </div>
-        )}
-      </header>
-
       <div class="terminal-card">
         <div class="terminal-header">
           <div class="terminal-dots">
@@ -70,17 +78,224 @@ const { Content } = await render(post)
             <span class="terminal-dot minimize"></span>
             <span class="terminal-dot maximize"></span>
           </div>
-          <span class="terminal-title">adalgarcia@portfolio: ~/blog/{post.id}</span>
+          <span class="terminal-title">adalgarcia@portfolio: ~/blog/{slug}.md</span>
         </div>
-        <div class="terminal-body prose-styles">
-          <Content />
+
+        <div class="terminal-body">
+          <header class="post-header">
+            <h1 class="post-title">{post.data.title}</h1>
+            <p class="post-lede">{post.data.description}</p>
+
+            <div class="post-meta">
+              <span class="post-meta-item">
+                <span class="post-meta-dot" style="background: var(--gruvbox-gray);"></span>
+                <time datetime={post.data.date.toISOString()}>
+                  {formatDate(post.data.date, lang)}
+                </time>
+              </span>
+              <span class="post-meta-item">
+                <span class="post-meta-dot" style="background: var(--gruvbox-blue);"></span>
+                {readingTime} {t('blog.read')}
+              </span>
+              <span class="post-meta-item">
+                <span class="post-meta-dot" style="background: var(--gruvbox-green);"></span>
+                {words.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')} {t('blog.words')}
+              </span>
+              <span class="post-meta-item">
+                <span class="post-meta-dot" style="background: var(--gruvbox-orange);"></span>
+                {post.data.author}
+              </span>
+            </div>
+
+            {post.data.tags.length > 0 && (
+              <div class="post-tags">
+                {post.data.tags.map((tag) => (
+                  <a
+                    href={tagPath(lang, tag)}
+                    class="post-tag no-underline transition-opacity duration-300 hover:opacity-80"
+                  >
+                    #{tag}
+                  </a>
+                ))}
+              </div>
+            )}
+          </header>
+
+          {post.data.image && (
+            <figure class="post-hero">
+              <img
+                src={post.data.image}
+                alt={post.data.title}
+                loading="eager"
+                decoding="async"
+                width="1200"
+                height="675"
+              />
+            </figure>
+          )}
+
+          <div class="prose-styles">
+            <Content />
+          </div>
+
+          {post.data.updated && (
+            <p class="post-updated">
+              {lang === 'en' ? 'Last updated' : 'Última actualización'}:{' '}
+              {formatDate(post.data.updated, lang)}
+            </p>
+          )}
         </div>
       </div>
+
+      {showToc && (
+        <nav class="post-toc" aria-label="Tabla de contenidos">
+          <span class="post-toc-heading">
+            <span style="color: var(--gruvbox-green);">$</span>
+            <span style="color: var(--gruvbox-yellow); margin-left: 0.5rem;">
+              {lang === 'en' ? 'contents' : 'toc'}
+            </span>
+          </span>
+          <ul>
+            {tocHeadings.map((h) => (
+              <li><a href={`#${h.slug}`}>{h.text}</a></li>
+            ))}
+          </ul>
+        </nav>
+      )}
+
+      <PostNav
+        current={post}
+        siblings={siblings}
+        lang={lang}
+        relatedLabel={t('blog.related')}
+      />
     </article>
   </div>
 </BaseLayout>
 
 <style>
+  .post-header {
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--gruvbox-gray);
+  }
+
+  .post-title {
+    color: var(--gruvbox-yellow);
+    font-family: "MesloLG", "Courier New", monospace;
+    font-size: clamp(1.5rem, 4vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.9rem;
+  }
+
+  .post-lede {
+    color: var(--gruvbox-fg);
+    opacity: 0.85;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.4rem;
+    font-size: 0.8rem;
+    color: var(--gruvbox-gray);
+    margin-bottom: 1.1rem;
+  }
+
+  .post-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .post-meta-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .post-tag {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    background: var(--gruvbox-card);
+    color: var(--gruvbox-blue);
+    border: 1px solid var(--gruvbox-blue);
+  }
+
+  .post-hero {
+    margin: 0 0 1.75rem;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid var(--gruvbox-gray);
+  }
+
+  .post-hero img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .post-updated {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--gruvbox-gray);
+    font-size: 0.8rem;
+    color: var(--gruvbox-gray);
+  }
+
+  .post-toc {
+    margin-top: 2rem;
+    padding: 1rem 1.25rem;
+    border: 2px dashed var(--gruvbox-gray);
+    border-radius: 8px;
+    background: var(--gruvbox-card);
+  }
+
+  .post-toc-heading {
+    display: block;
+    font-family: "MesloLG", "Courier New", monospace;
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .post-toc ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .post-toc a {
+    color: var(--gruvbox-blue);
+    text-decoration: none;
+    font-size: 0.88rem;
+  }
+
+  .post-toc a:hover {
+    color: var(--gruvbox-yellow);
+  }
+
+  .post-toc a::before {
+    content: '▸ ';
+    color: var(--gruvbox-green);
+  }
+
+  /* --- prosa --- */
   .prose-styles {
     line-height: 1.8;
     font-size: 1rem;
@@ -156,7 +371,12 @@ const { Content } = await render(post)
   .prose-styles :global(pre code) {
     background: none;
     padding: 0;
-    color: var(--gruvbox-fg);
+    font-size: 0.85rem;
+  }
+
+  .prose-styles :global(pre .line) {
+    display: block;
+    min-height: 1.2em;
   }
 
   .prose-styles :global(img) {
@@ -203,5 +423,18 @@ const { Content } = await render(post)
     border: none;
     border-top: 2px solid var(--gruvbox-gray);
     margin: 2rem 0;
+  }
+
+  /* Shiki: cambia el fondo del bloque según el tema activo. */
+  .prose-styles :global(pre.shiki),
+  .prose-styles :global(pre.shiki span) {
+    color: var(--shiki-dark, inherit);
+    background-color: var(--shiki-dark-bg, rgba(0, 0, 0, 0.3));
+  }
+
+  :global([data-theme='light']) .prose-styles :global(pre.shiki),
+  :global([data-theme='light']) .prose-styles :global(pre.shiki span) {
+    color: var(--shiki-light, inherit);
+    background-color: var(--shiki-light-bg, rgba(0, 0, 0, 0.3));
   }
 </style>

@@ -93,11 +93,15 @@
 ## Fase 6: Internacionalización
 **Soporte bilingüe español/inglés**
 
-- [ ] Traducciones base (navegación, footer, títulos de secciones)
-- [ ] Archivos JSON por idioma: `src/i18n/es.json`, `src/i18n/en.json`
-- [ ] Ruteo `/es/...` y `/en/...` para contenido localizado
-- [ ] Selector de idioma en navegación
-- [ ] Posts en ambos idiomas con relación entre versiones
+- [x] Traducciones base (navegación, footer, títulos de secciones) — `src/i18n/ui.ts` (es/en)
+- [x] Helpers i18n: `src/i18n/utils.ts` (UI: `getLangFromUrl`, `useTranslations`, `useTranslatedPath`, `formatDate`, `getAlternateUrls`) + `src/i18n/content.ts` (contenido: `getLangFromId`, `getSlugFromId`, `blogPath`, `tagPath`, `postAlternates`, `countWords`, `formatReadingTime`)
+- [x] Ruteo ES en raíz + `/en/...` para inglés (`prefixDefaultLocale: false`; se descartó `/es/...` con redirect para evitar breaking change de URLs existentes)
+- [x] Selector de idioma en navegación (ES | EN, con idioma activo resaltado)
+- [x] Posts en ambos idiomas con mismo slug (`src/content/blog/es/` + `src/content/blog/en/`)
+- [x] Proyectos en ambos idiomas (`src/content/projects/es/` + `src/content/projects/en/`)
+- [x] Bio por idioma (`src/i18n/bio-es.json`, `src/i18n/bio-en.json`; eliminado `src/data/bio.json`)
+- [x] `hreflang` (es/en/x-default, o condicional vía prop `alternates` en posts) + `<html lang>` dinámico en `BaseLayout.astro`
+- [x] `README.md` con manual de posts/proyectos bilingües
 
 **Entregable**: Sitio completamente navegable en español e inglés.
 
@@ -106,19 +110,50 @@
 ## Fase 7: SEO + Performance
 **Optimización para motores de búsqueda y velocidad**
 
-- [ ] Meta tags dinámicos (title, description, OG) por página
+- [x] Meta tags dinámicos (title, description, OG, Twitter Card, canonical) por página — `BaseLayout.astro`
 - [x] Sitemap.xml automático (`@astrojs/sitemap`)
-- [ ] RSS feed para blog (`@astrojs/rss`)
-- [ ] Imágenes optimizadas con `astro:assets` y WebP
-- [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices)
-- [ ] Google Tag Manager integrado (via Partytown)
+- [x] RSS feed para blog (endpoints propios `rss.xml.ts` bilingües ES/EN, enlaces con rutas limpias `/blog/<slug>`)
+- [x] Imágenes optimizadas con `astro:assets` y WebP (`og:image` vía `src/utils/images.ts`)
+- [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices) — seguimiento Fase 9: re-medir en deploy preview (local: 90 desk / 60 mob, A11y/BP/SEO 100)
+- [ ] Google Tag Manager integrado (via Partytown) — diferido D1
 - [x] `robots.txt`
+- [x] Favicon de la taza (SVG + PNG 192/512 + apple-touch)
 
 **Entregable**: Sitio optimizado y listo para indexación.
 
 ---
 
-## Fase 8: Polish & Deploy
+## Fase 8: Rediseño Home — Fidelidad WP + Rediseño de post
+**Evolución visual de la landing manteniendo la identidad GruvBox**
+
+> Spec: `specs/2026-09-28-fase-8-rediseno-home/` (`requirements.md`, `plan.md`, `validation.md`)
+>
+> **Nota de reconciliación:** la spec describe la variante "terminal refinado"
+> (`inicio8`/`hero8`/`sec8`, Prioridades 1–7). La iteración final tomó otra
+> dirección — copia fiel del tema WordPress original (`wp-layout`: video de la
+> taza, intro, identidad con avatar, cards de Trabajos/Bio/Pasatiempos/Contacto,
+> JSON-LD `Person`) — que es lo que quedó implementado en `src/pages/index.astro`.
+> Las dos versiones convivieron en ramas divergentes y se unificaron en
+> `feat/fase-8-port-i18n`.
+
+- [x] Prioridad 1 — Romper uniformidad de secciones (fondos con tinte por sección, paddings 7→7→5→8rem)
+- [x] Prioridad 2 — Enriquecer cards de proyecto (grid vertical, thumb con gradiente, hover rico)
+- [x] Prioridad 3 — Evolucionar hero (full-bleed, stagger, eyebrow verde, keywords azules, CTA naranja→amarillo)
+- [x] Prioridad 4 — Jerarquía tipográfica (variables `--fs-*` en `global.css`)
+- [x] Prioridad 5 — Pulir CTA (gradiente dorado, cursor `█`, sociales con prefijo `→`)
+- [x] Prioridad 6 — Microinteracciones (chips en ciclo blue/orange/yellow, labels por sección)
+- [x] Prioridad 7 — Container breathing room (1140px, padding 3rem en desktop)
+- [x] Estrategia: página temporal `/preview` para comparar, luego portar a `index.astro` y eliminar preview
+- [x] Rediseño del post individual: hero image, lede, metadata (fecha · lectura · palabras), TOC automática, navegación anterior/siguiente y relacionados (`PostNav.astro`)
+- [x] Shiki con temas Gruvbox claro/oscuro conmutados por `data-theme`
+- [x] Favicon de la taza (SVG + PNG 192/512 + apple-touch + mask-icon)
+- [x] Unificar con la Fase 6: home bilingüe, navbar fiel al WP con selector ES|EN, posts con `hreflang` condicional
+
+**Entregable**: Home con secciones distinguibles, cards con gancho visual y hero con "momento", sin dependencias nuevas. Post individual con navegación y metadatos. Todo bilingüe.
+
+---
+
+## Fase 9: Polish & Deploy
 **Detalles finales y puesta en producción**
 
 - [ ] Página 404 personalizada
@@ -132,7 +167,7 @@
 
 ---
 
-## Fase 9: Post-lanzamiento (futuro)
+## Fase 10: Post-lanzamiento (futuro)
 Mejoras posteriores al MVP
 
 - [ ] Comentarios en blog (opción: Webmentions, Giscus)
