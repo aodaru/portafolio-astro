@@ -172,35 +172,16 @@
   transform: translateY(-1px);
 }
 
-/* ── Stagger animation ─────────────────────────────── */
+/* ── Stagger animation ───────────────────────────────
+   La entrada la aporta la utilidad `.stagger-in` de `src/styles/motion.css`
+   (con `--reveal-delay` en línea), compartida con trabajos y tags. */
 .blog-card {
-  animation: blogCardIn 0.5s ease forwards;
-  opacity: 0;
+  opacity: 1;
 }
-
-@keyframes blogCardIn {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.blog-card:nth-child(1) { animation-delay: 0.05s; }
-.blog-card:nth-child(2) { animation-delay: 0.1s; }
-.blog-card:nth-child(3) { animation-delay: 0.15s; }
-.blog-card:nth-child(4) { animation-delay: 0.2s; }
-.blog-card:nth-child(5) { animation-delay: 0.25s; }
-.blog-card:nth-child(6) { animation-delay: 0.3s; }
 
 /* ── Reduced motion ────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .blog-card {
-    animation: none !important;
-    opacity: 1 !important;
     transition: none !important;
   }
 

@@ -16,6 +16,7 @@ const email = 'hola@teapartydev.com'
   title={t('home.title')}
   description={t('home.description')}
   lang={lang}
+  preloadImage="/img/taza-cafe-poster.webp"
 >
   <div class="wp-layout">
     <!-- Video de la taza -->
@@ -141,7 +142,7 @@ const email = 'hola@teapartydev.com'
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Adal Michael García",
-  "url": "https://teapartydev.com",
+  "url": "https://adalgarcia.com",
   "jobTitle": "Ingeniero Informático",
   "address": {
     "@type": "PostalAddress",
@@ -155,20 +156,4 @@ const email = 'hola@teapartydev.com'
     "https://www.linkedin.com/in/adal-garcia-471889197/"
   ]
 }
-</script>
-
-<script>
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
-  );
-
-  document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
 </script>

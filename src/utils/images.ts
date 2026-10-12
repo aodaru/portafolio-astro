@@ -39,6 +39,26 @@ export function resolveContentImage(image?: string): ImageMetadata | null {
 }
 
 /**
+ * URL lista para un `<img>` simple (tarjetas del listado, miniaturas de
+ * "relacionados"): los estáticos de `src/assets/` se optimizan a WebP con el
+ * ancho pedido; los GIF (y cualquier ruta pública) se devuelven tal cual para
+ * no perder la animación.
+ *
+ * Existe porque usar `post.data.image` directo daba 404: el frontmatter guarda
+ * la ruta pública histórica y los jpg/png solo viven en `src/assets/`.
+ */
+export async function resolveImageUrl(
+  image: string | undefined,
+  width = 600
+): Promise<string | undefined> {
+  if (!image) return undefined
+  const asset = resolveContentImage(image)
+  if (!asset) return image
+  const optimized = await getImage({ src: asset, format: 'webp', width })
+  return optimized.src
+}
+
+/**
  * URL relativa lista para `og:image`:
  * - Imagen en `src/assets/` → variante WebP optimizada vía `getImage()`
  *   (`/_astro/...` + hash, 1200 px de ancho para OG).

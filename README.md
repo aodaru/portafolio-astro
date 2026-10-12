@@ -1,7 +1,8 @@
-# Portafolio — teapartydev.com
+# Portafolio — adalgarcia.com
 
 Portafolio personal bilingüe (ES/EN) construido con **Astro 7** (SSG estático),
-Tailwind CSS 4 y estética terminal GruvBox.
+Tailwind CSS 4 y estética terminal GruvBox. Se publica en Hostinger por SFTP
+desde GitHub Actions.
 
 > Documentación de proceso (roadmap, specs por fase): [`specs/`](specs/)
 > Reglas para agentes: [`AGENTS.md`](AGENTS.md)
@@ -27,6 +28,8 @@ Usar **pnpm**. El proyecto es ESM (`"type": "module"`).
 - Español (default, sin prefijo): `/`, `/blog`, `/trabajos`, `/contacto`
 - Inglés (prefijo `/en`): `/en/`, `/en/blog`, `/en/trabajos`, `/en/contacto`
 - Selector ES | EN en el Navbar; `<html lang>` y `hreflang` automáticos vía `src/layouts/BaseLayout.astro`.
+- 404 bilingüe: `src/pages/404.astro` (ES → `dist/404.html`) y
+  `src/pages/en/404.astro` (EN → `dist/en/404/`); ambas con `noindex`.
 
 ---
 
@@ -144,6 +147,33 @@ omitirlo** — no enlazar a un repo inaccesible.
 - La imagen por defecto para OG/Twitter es `/img/Avatar.webp`; el detalle de blog/trabajo usa su `image` (con `article:published_time`).
 - Feeds RSS por idioma: `/rss.xml` (solo `lang: es`) y `/en/rss.xml` (solo `lang: en`), con autodiscovery en el `<head>` según idioma.
 
+`resolveImageUrl()` (`src/utils/images.ts`) es el helper para un `<img>` simple
+(tarjetas del listado, miniaturas de "relacionados"): resuelve los estáticos de
+`src/assets/` a WebP optimizado y deja los GIF en su ruta pública. Usar
+`post.data.image` directo da 404 para los jpg/png.
+
+---
+
+## Fuentes y peso
+
+Las fuentes de `public/fonts/` son **subsets** generados con `pyftsubset` desde
+los TTF de `themeWp/fonts/` (Mononoki y MesloLG vienen parcheados con +10 000
+codepoints de Nerd Fonts y pesaban ~2 MB en total; el subset baja a ~186 KB).
+
+Para regenerarlas:
+
+```bash
+pyftsubset themeWp/fonts/Mononoki-Regular.ttf \
+  --output-file=public/fonts/Mononoki-Regular.woff2 \
+  --flavor=woff2 --layout-features='*' --name-IDs='*' --drop-tables+=DSIG \
+  --unicodes="U+0000-00FF,U+0100-017F,U+2000-206F,U+20A0-20BF,U+2190-21FF,U+2500-257F,U+2580-259F,U+25A0-25FF,U+2600-26FF,U+2700-27BF" \
+  --text-file=<archivo con los caracteres usados en src/>
+```
+
+Los glifos de Nerd Fonts que usa el Navbar viven aparte, en
+`nerd-symbols-subset.woff2` (2 glifos). Si añades un glifo exótico (fuera de esos
+rangos) verifica que se vea y amplía los rangos si hace falta.
+
 ---
 
 ## Traducciones de UI
@@ -170,3 +200,73 @@ omitirlo** — no enlazar a un repo inaccesible.
 - Autodiscovery del RSS del idioma actual
 
 Para pasar `path`, `image` o `alternates`, ver los props en `layouts/BaseLayout.astro`.
+
+El sitemap excluye las páginas 404 (`astro.config.ts` → `sitemap.filter`) y el
+prop `noindex` añade `<meta name="robots" content="noindex, follow">` cuando se
+necesita.
+
+---
+
+## Navegación y animaciones
+
+- `BaseLayout.astro` monta `<ClientRouter />` (View Transitions de Astro): la
+  navegación entre páginas es client-side y no recarga el documento.
+- Astro **reemplaza los atributos de `<html>`** en cada navegación, así que el
+  script de tema usa `data-astro-rerun` y todo lo demás (tema, reveals, video
+  diferido de la taza, menú mobile) se enlaza en `astro:page-load`. Si añades un
+  script con listeners al DOM, hazlo igual: con `ClientRouter` los scripts ya
+  ejecutados no vuelven a correr.
+- Utilidades de animación compartidas en `src/styles/motion.css`
+  (`.stagger-in` con `--reveal-delay`, `.reveal` para reveals al hacer scroll).
+  Todas se desactivan con `prefers-reduced-motion: reduce`.
+
+---
+
+## Deploy (Hostinger por SFTP)
+
+El sitio es estático: el workflow `.github/workflows/deploy.yml` construye con
+`pnpm` y sube el contenido de `dist/` al hosting por SFTP. Se dispara **solo** con
+push a `main` o a mano (`workflow_dispatch`, con un input `target_dir` para
+probar otra carpeta sin tocar secretos).
+
+### Requisitos en el hosting
+
+1. Una clave SSH de deploy (ed25519) cuya **pública** esté en
+   `~/.ssh/authorized_keys` del usuario de hosting.
+2. La carpeta destino debe **existir**: se sube con `sftp_only: true`, que no crea
+   directorios. Ej.: `public_html/astro-staging/`.
+
+### Secretos del repositorio
+
+| Secreto | Obligatorio | Contenido |
+|---|---|---|
+| `SFTP_HOST` | sí | Host o IP del hosting |
+| `SFTP_USERNAME` | sí | Usuario SSH |
+| `SFTP_SSH_KEY` | sí | Clave privada completa, **con el salto de línea final** |
+| `SFTP_TARGET_DIR` | sí | Ruta remota destino (staging primero) |
+| `SFTP_PORT` | no | Puerto SSH (por defecto 22) |
+
+Ninguno se imprime en los logs: el workflow comprueba que existan antes de subir.
+
+### Pasar de staging a producción
+
+1. Deploy manual a una subcarpeta (`workflow_dispatch` con `target_dir`) y
+   verificar que el sitio carga y que las rutas inexistentes devuelven la 404.
+2. Cambiar el secreto `SFTP_TARGET_DIR` a `public_html/` **después de hacer
+   backup del WordPress actual** y confirmar el cambio de DNS.
+
+> ⚠️ El workflow no borra archivos remotos (`delete_remote_files: false`): nunca
+> elimina lo que no sube. Un borrado se hace a mano y con backup.
+
+### Publicar contenido
+
+1. Editar el Markdown en `src/content/{blog,projects}/{es,en}/`.
+2. `pnpm build` en local para verificar.
+3. Commit + push a `main`; el workflow construye y sube. Sin subida manual.
+
+### 404 en el hosting
+
+`public/.htaccess` define `ErrorDocument 404 /404.html`, compresión y caché de
+estáticos; `public/en/.htaccess` sirve `/en/404/index.html` para rutas
+desconocidas bajo `/en/`. El workflow sube el `.htaccess` de la raíz en un paso
+aparte porque el glob de `sftp` omite los dotfiles de primer nivel.

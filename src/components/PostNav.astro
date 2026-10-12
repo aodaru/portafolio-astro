@@ -1,6 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import { blogPath, formatDate, type Lang } from '../i18n/content'
+import { useTranslations } from '../i18n/utils'
+import { resolveImageUrl } from '../utils/images'
 
 export interface Props {
   /** Post actual, para excluirlo de los relacionados. */
@@ -31,14 +33,21 @@ const relatedFallback = related.length > 0
   : siblings.filter((p) => p.id !== current.id).slice(0, 3)
 
 const link = (p: CollectionEntry<'blog'>) => blogPath(lang, slug(p))
+
+const t = useTranslations(lang)
+
+// Cada tarjeta necesita su URL resuelta (src/assets/ → WebP, GIF → public/).
+const relatedImages = await Promise.all(
+  relatedFallback.map((p) => resolveImageUrl(p.data.image, 400))
+)
 ---
 
 {
   (newer || older) && (
-    <nav class="post-nav" aria-label="Navegación entre artículos">
+    <nav class="post-nav" aria-label={t('blog.nav.label')}>
       {older ? (
         <a href={link(older)} class="post-nav-link post-nav-link--prev">
-          <span class="post-nav-dir">← Anterior</span>
+          <span class="post-nav-dir">{t('blog.prev')}</span>
           <span class="post-nav-title">{older.data.title}</span>
         </a>
       ) : (
@@ -46,7 +55,7 @@ const link = (p: CollectionEntry<'blog'>) => blogPath(lang, slug(p))
       )}
       {newer && (
         <a href={link(newer)} class="post-nav-link post-nav-link--next">
-          <span class="post-nav-dir">Siguiente →</span>
+          <span class="post-nav-dir">{t('blog.next')}</span>
           <span class="post-nav-title">{newer.data.title}</span>
         </a>
       )}
@@ -64,10 +73,17 @@ const link = (p: CollectionEntry<'blog'>) => blogPath(lang, slug(p))
         <span class="terminal-cursor" />
       </h2>
       <div class="post-related-grid">
-        {relatedFallback.map((p) => (
+        {relatedFallback.map((p, i) => (
           <a href={link(p)} class="post-related-card">
-            {p.data.image ? (
-              <img class="post-related-img" src={p.data.image} alt="" loading="lazy" />
+            {relatedImages[i] ? (
+              <img
+                class="post-related-img"
+                src={relatedImages[i]}
+                alt=""
+                width="400"
+                height="225"
+                loading="lazy"
+              />
             ) : null}
             <div class="post-related-body">
               <span class="post-related-date">{formatDate(p.data.date, lang)}</span>

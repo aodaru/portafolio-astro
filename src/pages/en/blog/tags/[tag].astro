@@ -59,8 +59,8 @@ const posts = allPosts
     {posts.map((post, i) => (
       <a
         href={`${translatePath('/blog')}/${post.id.split('/').pop()}`}
-        class="block no-underline"
-        style={`animation: fadeInUp 0.6s ease-out ${i * 0.12}s both;`}
+        class="block no-underline stagger-in"
+        style={`--reveal-delay: ${i * 0.12}s`}
       >
         <article class="terminal-card cursor-pointer">
           <div class="terminal-header">

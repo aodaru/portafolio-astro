@@ -1,0 +1,54 @@
+# ═══════════════════════════════════════════════════════
+# Hostinger (Apache/LiteSpeed) — reglas del sitio Astro
+#
+# Se copia desde `public/` en cada build, así que cualquier edición manual
+# en el hosting se pierde en el próximo deploy: el repo es la fuente de
+# verdad. Antes del primer deploy a `public_html/`, haz backup del
+# `.htaccess` de WordPress si quieres conservarlo.
+# ═══════════════════════════════════════════════════════
+
+# ── 404 con el diseño del sitio ───────────────────────
+# Las rutas en /en/ usan su propio ErrorDocument (ver public/en/.htaccess).
+ErrorDocument 404 /404.html
+
+# ── Compresión ────────────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE application/xml image/svg+xml
+</IfModule>
+
+# ── Cache de estáticos ────────────────────────────────
+# El HTML no se cachea (cada deploy publica contenido nuevo); los assets
+# llevan hash en el nombre (`/_astro/...`) y pueden cachearse indefinidamente.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 hour"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType video/webm "access plus 1 year"
+</IfModule>
+
+# ── MIME correctos ────────────────────────────────────
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType image/webp .webp
+  AddType video/webm .webm
+</IfModule>
+
+# ── Rutas limpias de Astro ────────────────────────────
+# Astro genera carpetas (`/blog/index.html`); si el hosting no resuelve
+# `DirectoryIndex`, se sirve el index de la carpeta.
+<IfModule mod_dir.c>
+  DirectoryIndex index.html
+</IfModule>
+
+# ── Sin listado de directorios ────────────────────────
+Options -Indexes

@@ -14,6 +14,7 @@ import {
   tagPath,
 } from '../../../i18n/content'
 import { useTranslations } from '../../../i18n/utils'
+import { resolveImageUrl } from '../../../utils/images'
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
@@ -45,7 +46,11 @@ const readingTime = formatReadingTime(words)
 const tocHeadings = headings.filter((h) => h.depth === 2)
 const showToc = tocHeadings.length >= 3
 
-const alternates = postAlternates(siblings, post.id, Astro.site ?? new URL('https://teapartydev.com'))
+const alternates = postAlternates(siblings, post.id, Astro.site ?? new URL('https://adalgarcia.com'))
+
+// Los estáticos viven en `src/assets/` (se optimizan a WebP); los GIF en
+// `public/`. Usar `post.data.image` directo daba 404 en las jpg/png.
+const heroImage = await resolveImageUrl(post.data.image, 1200)
 ---
 
 <BaseLayout
@@ -121,10 +126,10 @@ const alternates = postAlternates(siblings, post.id, Astro.site ?? new URL('http
             )}
           </header>
 
-          {post.data.image && (
+          {heroImage && (
             <figure class="post-hero">
               <img
-                src={post.data.image}
+                src={heroImage}
                 alt={post.data.title}
                 loading="eager"
                 decoding="async"
@@ -148,7 +153,7 @@ const alternates = postAlternates(siblings, post.id, Astro.site ?? new URL('http
       </div>
 
       {showToc && (
-        <nav class="post-toc" aria-label="Tabla de contenidos">
+        <nav class="post-toc" aria-label={t('blog.toc.label')}>
           <span class="post-toc-heading">
             <span style="color: var(--gruvbox-green);">$</span>
             <span style="color: var(--gruvbox-yellow); margin-left: 0.5rem;">

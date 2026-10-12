@@ -1,0 +1,184 @@
+/* ═══════════════════════════════════════════════════════
+   404 — Ventana de terminal con la ruta que falló
+   ═══════════════════════════════════════════════════════ */
+
+.err-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+}
+
+@media (min-width: 768px) {
+  .err-page {
+    padding: 4rem 2rem 6rem;
+  }
+}
+
+/* Código grande, arriba de la terminal */
+.err-code {
+  font-family: "Mononoki", monospace;
+  font-weight: 700;
+  font-size: clamp(4rem, 18vw, 8rem);
+  line-height: 1;
+  text-align: center;
+  color: var(--gruvbox-orange);
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.05em;
+  text-shadow: 0 4px 24px rgba(214, 93, 14, 0.25);
+}
+
+.err-terminal {
+  margin-bottom: 2rem;
+  animation: err-rise 0.5s ease-out both;
+}
+
+.err-terminal:hover {
+  transform: none;
+}
+
+.err-heading {
+  font-family: "Mononoki", monospace;
+  font-weight: 700;
+  font-size: var(--fs-section);
+  color: var(--gruvbox-fg);
+  margin: 0 0 0.75rem;
+}
+
+.err-text {
+  font-family: "MesloLG", monospace;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--gruvbox-fg);
+  opacity: 0.85;
+  margin: 0 0 1.5rem;
+}
+
+/* Bloque de la salida de `cat` */
+.err-output {
+  background: rgba(0, 0, 0, 0.18);
+  border-left: 3px solid var(--gruvbox-close);
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.75rem;
+  overflow-x: auto;
+}
+
+[data-theme="light"] .err-output {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.err-output-code {
+  font-family: "MesloLG", monospace;
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: var(--gruvbox-red);
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* En móvil la ruta larga se envuelve en vez de quedar recortada. */
+@media (max-width: 640px) {
+  .err-output-code {
+    white-space: normal;
+    word-break: break-word;
+  }
+}
+
+/* Lista de rutas sugeridas */
+.err-hint {
+  font-family: "MesloLG", monospace;
+  font-size: var(--fs-small);
+  /* `--gruvbox-gray` no llega a 4.5:1 sobre el fondo claro; el fg atenuado sí. */
+  color: var(--gruvbox-fg);
+  opacity: 0.72;
+  margin: 0 0 0.75rem;
+}
+
+.err-links {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media (min-width: 480px) {
+  .err-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.err-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "MesloLG", monospace;
+  font-size: var(--fs-small);
+  color: var(--gruvbox-fg);
+  text-decoration: none;
+  background: var(--gruvbox-card);
+  border: 1px solid var(--gruvbox-gray);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  transition:
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.err-link:hover,
+.err-link:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--gruvbox-yellow);
+  color: var(--gruvbox-yellow);
+}
+
+.err-link-arrow {
+  color: var(--gruvbox-yellow);
+}
+
+/* Enlace al otro idioma */
+.err-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  font-family: "MesloLG", monospace;
+  font-size: var(--fs-small);
+  color: var(--gruvbox-blue);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.err-lang:hover,
+.err-lang:focus-visible {
+  color: var(--gruvbox-orange);
+  border-bottom-color: currentColor;
+}
+
+@keyframes err-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .err-terminal {
+    animation: none;
+  }
+  .err-link,
+  .err-lang {
+    transition: none;
+  }
+  .err-link:hover,
+  .err-link:focus-visible {
+    transform: none;
+  }
+}

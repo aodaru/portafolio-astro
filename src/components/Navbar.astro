@@ -25,8 +25,10 @@ function isActive(href: string): boolean {
 
 <header class="main-nav fixed top-0 inset-x-0 z-50">
   <nav class="nav-container">
-    <!-- Brand (estilo WP navbar-brand con icono nf-md-tea) -->
-    <a href={translatePath('/')} class="nav-brand" aria-label={t('nav.home')}>
+    <!-- Brand (estilo WP navbar-brand con icono nf-md-tea).
+         Sin `aria-label`: el nombre accesible debe coincidir con el texto
+         visible (WCAG 2.5.3, auditoría Lighthouse), y el icono ya es decorativo. -->
+    <a href={translatePath('/')} class="nav-brand">
       <span class="nf nf-md-tea nav-brand-icon" aria-hidden="true"></span>
       <span class="nav-brand-name">Adal Michael García</span>
     </a>
@@ -79,11 +81,15 @@ function isActive(href: string): boolean {
           return (
             <a
               href={href}
+              hreflang={code}
               class={`nav-link text-xs ${lang === code ? 'lang-active' : 'lang-inactive'}`}
-              aria-label={name}
               aria-current={lang === code ? 'true' : undefined}
             >
-              {code.toUpperCase()}
+              {/* El código visible (ES/EN) se oculta al lector: el nombre
+               * accesible es el nombre completo, y así no choca con la regla
+               * de "el nombre accesible incluye el texto visible". */}
+              <span aria-hidden="true">{code.toUpperCase()}</span>
+              <span class="sr-only">{name}</span>
             </a>
           )
         })}
@@ -100,8 +106,22 @@ function isActive(href: string): boolean {
 </header>
 
 <script>
-  const toggler = document.querySelector<HTMLElement>('.nav-toggler')
-  const collapse = document.querySelector<HTMLElement>('.nav-collapse')
+  /**
+   * Fase 9 — View Transitions: con `ClientRouter` el navbar se reconstruye en
+   * cada navegación, así que los listeners se vuelven a enlazar en
+   * `astro:page-load`. Los listeners que viven en objetos persistentes
+   * (`document`, `matchMedia`) se registran una sola vez vía flags en `<html>`,
+   * y consultan el DOM en el momento del evento para no quedar apuntando a
+   * nodos desmontados.
+   */
+  const root = document.documentElement
+  const DESKTOP_MQL = '(min-width: 992px)'
+
+  function getNav() {
+    const toggler = document.querySelector<HTMLElement>('.nav-toggler')
+    const collapse = document.querySelector<HTMLElement>('.nav-collapse')
+    return toggler && collapse ? { toggler, collapse } : null
+  }
 
   /**
    * Anima la altura del collapse (estilo Bootstrap collapse).
@@ -109,8 +129,7 @@ function isActive(href: string): boolean {
    * Después de abrir: `collapsing` con scrollHeight + transition height 0.35s
    * Al terminar: clase `show`, altura auto, overflow visible
    */
-  function toggleCollapse() {
-    if (!collapse) return
+  function toggleCollapse(collapse: HTMLElement) {
     const isOpen = collapse.classList.contains('show')
 
     if (isOpen) {
@@ -140,47 +159,58 @@ function isActive(href: string): boolean {
 
     this.classList.remove('collapsing')
     this.classList.add('collapse')
-    if (isOpening) {
-      this.classList.add('show')
-      this.style.height = ''
-      this.style.overflow = ''
-    } else {
-      this.classList.remove('show')
-      this.style.height = ''
-      this.style.overflow = ''
-    }
+    this.classList.remove('show')
+    this.style.height = ''
+    this.style.overflow = ''
+    if (isOpening) this.classList.add('show')
   }
 
-  collapse?.addEventListener('transitionend', onTransitionEnd)
+  // Listeners persistentes: una sola vez por sesión del documento.
+  if (root.dataset.navDocInit !== 'true') {
+    root.dataset.navDocInit = 'true'
 
-  toggler?.addEventListener('click', () => {
-    const expanded = toggler.getAttribute('aria-expanded') === 'true'
-    toggler.setAttribute('aria-expanded', String(!expanded))
-    toggleCollapse()
-  })
+    // Cerrar menú al hacer click fuera
+    document.addEventListener('click', (e) => {
+      const nav = getNav()
+      if (!nav) return
+      const target = e.target as Node
+      if (
+        nav.collapse.classList.contains('show') &&
+        !nav.collapse.contains(target) &&
+        !nav.toggler.contains(target)
+      ) {
+        nav.toggler.setAttribute('aria-expanded', 'false')
+        toggleCollapse(nav.collapse)
+      }
+    })
 
-  // Cerrar menú al hacer click fuera
-  document.addEventListener('click', (e) => {
-    const target = e.target as Node
-    if (
-      collapse?.classList.contains('show') &&
-      !collapse.contains(target) &&
-      !toggler?.contains(target)
-    ) {
-      toggler?.setAttribute('aria-expanded', 'false')
-      toggleCollapse()
-    }
-  })
+    // Cerrar menú al cambiar tamaño a desktop
+    window.matchMedia(DESKTOP_MQL).addEventListener('change', () => {
+      const nav = getNav()
+      if (!nav) return
+      if (nav.collapse.classList.contains('show')) {
+        nav.collapse.classList.remove('show', 'collapsing')
+        nav.collapse.classList.add('collapse')
+        nav.collapse.style.height = ''
+        nav.collapse.style.overflow = ''
+      }
+      nav.toggler.setAttribute('aria-expanded', 'false')
+    })
+  }
 
-  // Cerrar menú al cambiar tamaño a desktop
-  const mql = window.matchMedia('(min-width: 992px)')
-  mql.addEventListener('change', () => {
-    if (collapse?.classList.contains('show')) {
-      collapse.classList.remove('show', 'collapsing')
-      collapse.classList.add('collapse')
-      collapse.style.height = ''
-      collapse.style.overflow = ''
-    }
-    toggler?.setAttribute('aria-expanded', 'false')
-  })
+  function initNav() {
+    const nav = getNav()
+    if (!nav || nav.toggler.dataset.astroInit === 'true') return
+    nav.toggler.dataset.astroInit = 'true'
+
+    nav.collapse.addEventListener('transitionend', onTransitionEnd)
+    nav.toggler.addEventListener('click', () => {
+      const expanded = nav.toggler.getAttribute('aria-expanded') === 'true'
+      nav.toggler.setAttribute('aria-expanded', String(!expanded))
+      toggleCollapse(nav.collapse)
+    })
+  }
+
+  initNav()
+  document.addEventListener('astro:page-load', initNav)
 </script>

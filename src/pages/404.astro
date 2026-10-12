@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { useTranslatedPath, useTranslations } from '../i18n/utils'
+import '../styles/pages/error.css'
+
+const t = useTranslations('es')
+const translatePath = useTranslatedPath('es')
+
+// Ruta pedida: se muestra en la salida del `cat` para que el error sea legible
+// (`/blog/post-inexistente` en vez de un 404 genérico). Se limita a 60 chars
+// para no romper el layout con URLs largas.
+const requested = Astro.url.pathname.replace(/\/$/, '') || '/'
+const shownPath = requested.length > 60 ? `${requested.slice(0, 60)}…` : requested
+
+const routes = [
+  { href: translatePath('/'), label: t('error.404.home') },
+  { href: translatePath('/blog'), label: t('error.404.blog') },
+  { href: translatePath('/trabajos'), label: t('error.404.works') },
+  { href: translatePath('/contacto'), label: t('error.404.contact') },
+]
+---
+
+<BaseLayout
+  title={t('error.404.title')}
+  description={t('error.404.description')}
+  lang="es"
+  noindex
+  alternates={[
+    { lang: 'es', href: '/404.html' },
+    { lang: 'en', href: '/en/404/' },
+  ]}
+>
+  <div class="err-page">
+    <p class="err-code" aria-hidden="true">404</p>
+
+    <section class="terminal-card err-terminal">
+      <header class="terminal-header">
+        <span class="terminal-dots" aria-hidden="true">
+          <span class="terminal-dot close"></span>
+          <span class="terminal-dot minimize"></span>
+          <span class="terminal-dot maximize"></span>
+        </span>
+        <span class="terminal-title">{t('error.404.window')}</span>
+      </header>
+
+      <div class="terminal-body">
+        <h1 class="err-heading">{t('error.404.heading')}</h1>
+        <p class="err-text">{t('error.404.text')}</p>
+
+        <div class="err-output">
+          <p class="terminal-command">
+            <span class="terminal-prompt" aria-hidden="true"></span>
+            {t('error.404.command', { path: shownPath })}
+          </p>
+          <p class="err-output-code">{t('error.404.output', { path: shownPath })}</p>
+        </div>
+
+        <p class="err-hint">{t('error.404.hint')}</p>
+        <ul class="err-links">
+          {routes.map(({ href, label }) => (
+            <li>
+              <a class="err-link" href={href}>
+                <span class="err-link-arrow" aria-hidden="true">→</span>
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <a class="err-lang" href="/en/404/" lang="en" hreflang="en">
+          <span aria-hidden="true">🌐</span>
+          {t('error.404.lang')}
+        </a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
