@@ -1,3 +1,68 @@
+# Review — Fase 9: Polish & Deploy
+
+**Fecha:** 2026-10-12
+**Veredicto:** IMPLEMENTADA (build 41 páginas, `check` 0 errores, Lighthouse local 100 desk / 97 mob)
+
+## Contexto
+
+Última fase del MVP: cerrar detalles (404 bilingüe, View Transitions,
+animaciones, responsive) y dejar el deploy automático al Hostinger existente por
+SFTP. En el camino aparecieron dos regresiones serias de fases anteriores y el
+pendiente de Lighthouse de la Fase 7.
+
+## Decisiones y cambios
+
+- **`site` → `https://adalgarcia.com`.** Se corrigieron también `robots.txt`
+  (que apuntaba al dominio viejo) y el `Person.url` del JSON-LD de la home.
+- **404 bilingüe** con `noindex` (nuevo prop de `BaseLayout`) y hreflang propio
+  `/404.html` ↔ `/en/404/`. Se excluyó la 404 del sitemap con
+  `sitemap({ filter })`.
+- **View Transitions** con `ClientRouter`. Astro reemplaza los atributos de
+  `<html>` en cada navegación (`swapRootAttributes` en `swap-functions.js`), así
+  que el script inline del tema necesita `data-astro-rerun`, y los listeners
+  (tema, reveals, video diferido, menú mobile) se enlazan en `astro:page-load`
+  con guardas `data-astro-init` para no duplicar en la primera carga.
+- **Animaciones unificadas** en `src/styles/motion.css`: `.stagger-in` (con
+  `--reveal-delay`) reemplaza los `nth-child` duplicados de `blog.css` y las
+  animaciones inline de las páginas de tags (que ignoraban
+  `prefers-reduced-motion`). Se añade foco visible consistente por teclado.
+- **Deploy**: `.github/workflows/deploy.yml` con
+  `wlixcc/SFTP-Deploy-Action@v1.2.6` (SFTP con clave SSH, `sftp_only: true`),
+  destino por secreto `SFTP_TARGET_DIR` o input `target_dir`, preflight de
+  secretos y `delete_remote_files: false` para no tocar el WordPress vivo.
+- **`.htaccess`** (raíz y `/en/`) para la 404 por idioma, compresión y caché de
+  estáticos; el de la raíz se sube en un paso aparte porque el glob de `sftp`
+  omite los dotfiles.
+
+## Bugs encontrados y corregidos
+
+| Bug | Detalle |
+|---|---|
+| Video del hero nunca cargaba | La Fase 8 reescribió `index.astro` y perdió el script que inyectaba el `<source>` de `data-taza-defer`: el hero era una caja vacía. Ahora el defer vive en `BaseLayout` y respeta `prefers-reduced-motion` |
+| Imágenes 404 en blog | Tarjetas del listado, hero del post y "relacionados" usaban `post.data.image` (ruta pública) mientras los jpg/png viven en `src/assets/` → 6 requests 404 por página. Se resolvió con `resolveImageUrl()` en `utils/images.ts` |
+| Textos ES en páginas EN | `PostNav` ("← Anterior"/"Siguiente →") y el `aria-label` del TOC estaban hardcodeados; ahora salen de `ui.ts` |
+| Accesibilidad (tema claro) | Contraste < 4.5:1 en `.wp-role`, `.wp-card-subtitle`, encabezados de card y brand del navbar; nombres accesibles que no contenían el texto visible (brand e idioma). Corregido con `--gruvbox-yellow-ink` y ajustes por tema |
+| Lighthouse mobile 59 | Las fuentes pesaban 1,98 MB (build Nerd Font con +10 000 codepoints). Subset con `pyftsubset` → 186 KB; `poster` del hero y preload del LCP. Mobile 59 → 97, desktop 88 → 100 |
+
+## Verificación
+
+- `pnpm check` → 0 errors, 0 warnings
+- `pnpm build` → 41 páginas, `dist/404.html` + `dist/en/404/index.html`,
+  sitemap sin 404, canonical/robots/RSS en `adalgarcia.com`
+- Navegador: 21 combinaciones (7 rutas × 375/768/1280 px) sin overflow
+  horizontal; tab order lógico con foco visible; View Transitions persisten el
+  tema y reejecutan reveals y video; 404 ES/EN en ambos temas
+- Lighthouse (local, `pnpm preview`): Perf 100 desk / 97 mob, A11y/BP/SEO 100 en
+  `/` y `/en/`, sin auditorías binarias fallidas
+
+## Pendiente del dueño
+
+1. Cargar los secretos `SFTP_HOST`, `SFTP_USERNAME`, `SFTP_SSH_KEY` y
+   `SFTP_TARGET_DIR` (más la clave pública en `authorized_keys`) y correr el
+   workflow contra una subcarpeta de staging.
+2. Backup del WordPress y cambiar el DNS a `adalgarcia.com`; re-medir Lighthouse
+   sobre la URL pública.
+
 # Review — Reconciliación de ramas divergentes (Fase 6 + Fase 8)
 
 **Fecha:** 2026-10-12

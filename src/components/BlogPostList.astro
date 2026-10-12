@@ -9,6 +9,7 @@ import {
   tagsIndexPath,
   type Lang,
 } from '../i18n/content'
+import { resolveImageUrl } from '../utils/images'
 
 export interface Props {
   posts: import('astro:content').CollectionEntry<'blog'>[]
@@ -19,6 +20,10 @@ export interface Props {
 
 const { posts, currentPage, totalPages, lang } = Astro.props
 const t = useTranslations(lang)
+
+// Las tarjetas se alimentan de `src/assets/` (WebP optimizado) o de `public/`
+// (GIF animados): usar `post.data.image` directo daba 404 para los estáticos.
+const postImages = await Promise.all(posts.map((post) => resolveImageUrl(post.data.image, 600)))
 
 function pageUrl(n: number): string {
   const base = blogIndexPath(lang)
@@ -69,17 +74,19 @@ function getPostIcon(title: string): string {
 
   {posts.length > 0 && (
     <div class="blog-grid">
-      {posts.map((post) => (
+      {posts.map((post, i) => (
         <a
           href={postUrl(post.id)}
-          class="blog-card"
+          class="blog-card stagger-in"
+          style={`--reveal-delay: ${i * 0.06}s`}
         >
           <div class="blog-card-image">
-            {post.data.image ? (
+            {postImages[i] ? (
               <img
-                src={post.data.image}
+                src={postImages[i]}
                 alt={post.data.title}
-                loading="lazy"
+                loading={i === 0 ? 'eager' : 'lazy'}
+                fetchpriority={i === 0 ? 'high' : 'auto'}
                 width="600"
                 height="340"
               />

@@ -43,7 +43,7 @@
   font-family: "Mononoki", monospace;
   font-weight: 700;
   font-size: 1.25rem; /* equivalente a fs-5 de Bootstrap */
-  color: var(--gruvbox-yellow);
+  color: var(--gruvbox-yellow-ink);
   transition: all 0.3s ease;
   white-space: nowrap;
   flex-shrink: 0;
@@ -58,7 +58,7 @@
 
 .nav-brand-icon {
   font-size: 1.3rem;
-  color: var(--gruvbox-yellow);
+  color: var(--gruvbox-yellow-ink);
 }
 
 /* ── Mobile toggler (estilo WP Bootstrap navbar-toggler) ── */

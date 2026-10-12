@@ -7,6 +7,7 @@
 @import "./components/avatar.css";
 @import "./components/bio.css";
 @import "./components/blog.css";
+@import "./motion.css";
 
 @theme {
   --font-site: "Mononoki", "MesloLG", "Courier New", monospace;
@@ -90,9 +91,13 @@
   --gruvbox-fg: #282828;
   --gruvbox-yellow: #d79921;
   --gruvbox-orange: #d65d0e;
+  --gruvbox-red: #cc241d;
   --gruvbox-green: #689d6a;
   --gruvbox-blue: #458588;
   --gruvbox-gray: #928374;
+  /* Ámbar legible sobre el fondo claro (el `yellow` se queda en 2.2:1).
+   * Se usa donde el amarillo es texto y no decoración. */
+  --gruvbox-yellow-ink: #b57614;
   --gruvbox-card: rgba(191, 175, 135, 0.3);
   --gruvbox-header-from: rgba(189, 174, 147, 0.8);
   --gruvbox-header-to: rgba(168, 153, 132, 0.8);
@@ -107,9 +112,11 @@
   --gruvbox-fg: #ebdbb2;
   --gruvbox-yellow: #fabd2f;
   --gruvbox-orange: #fe8019;
+  --gruvbox-red: #fb4934;
   --gruvbox-green: #8ec07c;
   --gruvbox-blue: #83a598;
   --gruvbox-gray: #928374;
+  --gruvbox-yellow-ink: #fabd2f;
   --gruvbox-card: rgba(235, 219, 178, 0.12);
   --gruvbox-header-from: rgba(80, 73, 69, 0.8);
   --gruvbox-header-to: rgba(60, 56, 54, 0.8);

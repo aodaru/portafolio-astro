@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css'
+import { ClientRouter } from 'astro:transitions'
 import Navbar from '../components/Navbar.astro'
 import Footer from '../components/Footer.astro'
 import { getAlternateUrls } from '../i18n/utils'
@@ -18,6 +19,10 @@ export interface Props {
   publishedDate?: Date
   /** Ruta canónica con prefijo de sitio, p. ej. `/blog/omarchy`. */
   path?: string
+  /** Evita la indexación de la página (p. ej. 404). */
+  noindex?: boolean
+  /** Imagen crítica de la página (elemento LCP) a precargar con prioridad alta. */
+  preloadImage?: string
   /**
    * Pares hreflang ya resueltos (ver `postAlternates`): solo los idiomas que
    * realmente tienen versión. Si se omite, se emiten es/en/x-default.
@@ -33,6 +38,8 @@ const {
   type = 'website',
   publishedDate,
   path,
+  noindex = false,
+  preloadImage,
   alternates,
 } = Astro.props
 
@@ -82,6 +89,7 @@ const rssTitle = lang === 'en' ? 'Blog — Teapartydev (EN)' : 'Blog — Teapart
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={metaDescription} />
     <meta name="author" content="Adal Michael García" />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
     {hreflangLinks.map((alt) => (
       <link rel="alternate" hreflang={alt.lang} href={alt.href} />
@@ -110,14 +118,19 @@ const rssTitle = lang === 'en' ? 'Blog — Teapartydev (EN)' : 'Blog — Teapart
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
     <link rel="mask-icon" href="/favicon.svg" color="#fabd2f" />
     <link rel="alternate" type="application/rss+xml" title={rssTitle} href={new URL(rssHref, `${site}/`).toString()} />
-    {/* Fase 7 perf fino (sin cambio visual): preload solo de la fuente del
-      * camino crítico (Mononoki Regular 400, texto base/FCP) + poster del
-      * hero (Avatar.webp 12 KB, LCP diferido). No precargar Bold/MesloLG/
-      * NerdFonts: coste de preload injustificado; van con font-display: swap. */}
+    {/* Fase 7/9 perf: preload solo de la fuente del camino crítico (Mononoki
+      * Regular 400, texto base/FCP) y de la imagen LCP de la página, que cada
+      * página declara vía `preloadImage` (en el inicio, el poster del hero).
+      * No precargar Bold/MesloLG/NerdFonts: coste de preload injustificado;
+      * van con font-display: swap. */}
     <link rel="preload" href="/fonts/Mononoki-Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/img/Avatar.webp" as="image" fetchpriority="high" />
+    {preloadImage && <link rel="preload" href={preloadImage} as="image" fetchpriority="high" />}
     <title>{fullTitle}</title>
-    <script is:inline>
+    {/* Fase 9: View Transitions. Astro reemplaza los atributos de <html> en cada
+      * navegación, así que el tema debe reaplicarse: `data-astro-rerun` fuerza
+      * la reejecución de este script inline tras cada swap. */}
+    <ClientRouter />
+    <script is:inline data-astro-rerun>
       (function () {
         try {
           const saved = localStorage.getItem('theme')
@@ -145,26 +158,118 @@ const rssTitle = lang === 'en' ? 'Blog — Teapartydev (EN)' : 'Blog — Teapart
     <Footer />
 
     <script>
-      const themeToggle = document.querySelector('.theme-toggle')
-      const themeIcon = document.querySelector('#themeIcon')
-      const html = document.documentElement
+      /**
+       * Fase 9 — View Transitions.
+       *
+       * Con `ClientRouter` el DOM de <body> se reemplaza en cada navegación y
+       * los scripts ya ejecutados no se vuelven a correr, así que los listeners
+       * se pierden. Todo se registra en `astro:page-load` (que Astro dispara
+       * también en la carga inicial) y además se inicializa en el primer render.
+       * Cada elemento se marca con `data-astro-init` para no duplicar listeners
+       * cuando ambas rutas coinciden en la primera carga.
+       */
+      const THEME_KEY = 'theme'
+      const prefersReducedMotion = () =>
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-      function updateIcon(theme: string) {
-        if (!themeIcon) return
-        themeIcon.setAttribute('href', theme === 'dark' ? '#sun' : '#moon')
+      function initTheme() {
+        const html = document.documentElement
+        const toggle = document.querySelector<HTMLButtonElement>('.theme-toggle')
+        const icon = document.querySelector<SVGUseElement>('#themeIcon')
+
+        const updateIcon = (theme: string) => {
+          icon?.setAttribute('href', theme === 'dark' ? '#sun' : '#moon')
+        }
+
+        // El <use> se recrea en cada navegación: siempre hay que resincronizarlo.
+        updateIcon(html.getAttribute('data-theme') ?? 'dark')
+
+        if (!toggle || toggle.dataset.astroInit === 'true') return
+        toggle.dataset.astroInit = 'true'
+        toggle.addEventListener('click', () => {
+          const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
+          html.setAttribute('data-theme', next)
+          try {
+            localStorage.setItem(THEME_KEY, next)
+          } catch {}
+          updateIcon(next)
+        })
       }
 
-      updateIcon(html.getAttribute('data-theme') ?? 'dark')
+      /** Reveals al hacer scroll (`data-reveal` / `.reveal` → `is-visible`). */
+      function initReveals() {
+        const targets = document.querySelectorAll<HTMLElement>(
+          '[data-reveal]:not(.is-visible), .reveal:not(.is-visible)'
+        )
+        if (targets.length === 0) return
 
-      themeToggle?.addEventListener('click', () => {
-        const current = html.getAttribute('data-theme')
-        const next = current === 'dark' ? 'light' : 'dark'
-        html.setAttribute('data-theme', next)
-        try {
-          localStorage.setItem('theme', next)
-        } catch {}
-        updateIcon(next)
-      })
+        // Sin animación no hay observer: se marcan visibles de inmediato.
+        if (prefersReducedMotion()) {
+          targets.forEach((el) => el.classList.add('is-visible'))
+          return
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return
+              entry.target.classList.add('is-visible')
+              observer.unobserve(entry.target)
+            })
+          },
+          { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+        )
+
+        targets.forEach((el) => observer.observe(el))
+      }
+
+      /**
+       * Video de la taza diferido: el markup se sirve sin `src` y con
+       * `preload="none"` (Fase 7, performance), así que los ~246 KB se piden en
+       * idle, fuera del camino crítico. Con `prefers-reduced-motion` se carga el
+       * primer fotograma pero no se reproduce solo.
+       */
+      function initDeferredMedia() {
+        const videos = document.querySelectorAll<HTMLVideoElement>(
+          'video[data-taza-src]:not([data-taza-loaded])'
+        )
+        videos.forEach((video) => {
+          video.dataset.tazaLoaded = 'true'
+          const src = video.dataset.tazaSrc
+          if (!src) return
+
+          const load = () => {
+            if (video.dataset.tazaLoaded === 'loading') return
+            video.dataset.tazaLoaded = 'loading'
+            video.preload = 'metadata'
+            video.src = src
+            video.load()
+            if (!prefersReducedMotion()) {
+              void video.play().catch(() => {})
+            }
+          }
+
+          // `requestIdleCallback` no está en todos los navegadores (Safari
+          // lo añadió tarde): fallback a un timeout prudente.
+          const idleWindow = window as Window & {
+            requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
+          }
+          if (typeof idleWindow.requestIdleCallback === 'function') {
+            idleWindow.requestIdleCallback(load, { timeout: 2500 })
+          } else {
+            window.setTimeout(load, 600)
+          }
+        })
+      }
+
+      function init() {
+        initTheme()
+        initReveals()
+        initDeferredMedia()
+      }
+
+      init()
+      document.addEventListener('astro:page-load', init)
     </script>
   </body>
 </html>

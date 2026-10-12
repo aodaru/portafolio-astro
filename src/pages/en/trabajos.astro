@@ -39,10 +39,11 @@ const projects = allProjects
 
     {projects.length > 0 && (
       <div class="project-grid">
-        {projects.map((project) => (
+        {projects.map((project, i) => (
           <a
             href={`${translatePath('/trabajos')}/${getSlugFromId(project.id)}`}
-            class="project-card"
+            class="project-card stagger-in"
+            style={`--reveal-delay: ${i * 0.08}s`}
           >
             <div class="project-card-thumb">
               <span class="project-card-icon">

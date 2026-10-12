@@ -1,0 +1,104 @@
+name: Deploy a Hostinger (SFTP)
+
+# D3: solo `main` publica, más un disparo manual para pruebas.
+# El destino es configurable: secreto `SFTP_TARGET_DIR` (por defecto una
+# subcarpeta de staging) y, en el disparo manual, el input `target_dir` tiene
+# prioridad para probar `public_html/` sin tocar secretos.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      target_dir:
+        description: 'Ruta remota destino (vacío = usar el secreto SFTP_TARGET_DIR)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+# Un solo deploy a la vez; si llega otro push, se encola sin cancelar el actual.
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build y deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # pnpm (no npm/npx en ninguna parte del flujo)
+      - name: Instalar pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      # Falla temprano con un mensaje claro en vez de intentar un deploy a ciegas.
+      # Nunca se imprimen los valores: solo su presencia.
+      - name: Comprobar secretos de deploy
+        env:
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
+          SFTP_SSH_KEY: ${{ secrets.SFTP_SSH_KEY }}
+          TARGET_DIR: ${{ github.event.inputs.target_dir || secrets.SFTP_TARGET_DIR }}
+        run: |
+          missing=""
+          [ -n "$SFTP_HOST" ] || missing="$missing SFTP_HOST"
+          [ -n "$SFTP_USERNAME" ] || missing="$missing SFTP_USERNAME"
+          [ -n "$SFTP_SSH_KEY" ] || missing="$missing SFTP_SSH_KEY"
+          [ -n "$TARGET_DIR" ] || missing="$missing SFTP_TARGET_DIR"
+          if [ -n "$missing" ]; then
+            echo "::error::Faltan secretos de deploy:$missing (ver README → Deploy)"
+            exit 1
+          fi
+          echo "Configuración de deploy presente."
+
+      # Contenido de dist/. El glob de sftp omite los dotfiles de primer nivel,
+      # por eso el .htaccess de la raíz va en su propio paso.
+      - name: Subir el sitio por SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+        with:
+          server: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          port: ${{ secrets.SFTP_PORT || 22 }}
+          ssh_private_key: ${{ secrets.SFTP_SSH_KEY }}
+          local_path: './dist/*'
+          remote_path: ${{ github.event.inputs.target_dir || secrets.SFTP_TARGET_DIR }}
+          sftp_only: true
+          # Sin borrado: el hosting puede tener archivos que no controlamos
+          # (p. ej. el WordPress vivo) y el plan prohíbe un deploy destructivo.
+          delete_remote_files: false
+          sftpArgs: '-o ConnectTimeout=10'
+
+      - name: Subir el .htaccess de la raíz
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+        with:
+          server: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          port: ${{ secrets.SFTP_PORT || 22 }}
+          ssh_private_key: ${{ secrets.SFTP_SSH_KEY }}
+          local_path: './dist/.htaccess'
+          remote_path: ${{ github.event.inputs.target_dir || secrets.SFTP_TARGET_DIR }}
+          sftp_only: true
+          delete_remote_files: false
+          sftpArgs: '-o ConnectTimeout=10'
+
+      - name: Resumen
+        run: |
+          echo "### Deploy completado" >> $GITHUB_STEP_SUMMARY
+          echo "- Sitio: https://adalgarcia.com" >> $GITHUB_STEP_SUMMARY
+          echo "- Build: \`dist/\` ($(find dist -type f | wc -l) archivos)" >> $GITHUB_STEP_SUMMARY
+          echo "- Recordatorio: si el destino es una subcarpeta de staging, la URL depende de ella." >> $GITHUB_STEP_SUMMARY

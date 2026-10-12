@@ -114,7 +114,7 @@
 - [x] Sitemap.xml automático (`@astrojs/sitemap`)
 - [x] RSS feed para blog (endpoints propios `rss.xml.ts` bilingües ES/EN, enlaces con rutas limpias `/blog/<slug>`)
 - [x] Imágenes optimizadas con `astro:assets` y WebP (`og:image` vía `src/utils/images.ts`)
-- [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices) — seguimiento Fase 9: re-medir en deploy preview (local: 90 desk / 60 mob, A11y/BP/SEO 100)
+- [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices) — Fase 9: 100 desk / 97 mob en `/` y `/en/` con `pnpm preview`; A11y/BP/SEO 100. Falta re-medir en la URL pública tras el DNS
 - [ ] Google Tag Manager integrado (via Partytown) — diferido D1
 - [x] `robots.txt`
 - [x] Favicon de la taza (SVG + PNG 192/512 + apple-touch)
@@ -156,12 +156,20 @@
 ## Fase 9: Polish & Deploy
 **Detalles finales y puesta en producción**
 
-- [ ] Página 404 personalizada
-- [ ] Transiciones de página (View Transitions API)
-- [ ] Animaciones sutiles (entrada de elementos, hover states)
-- [ ] Responsive testing (mobile, tablet, desktop)
-- [ ] Deploy a Cloudflare Pages / GitHub Pages
-- [ ] Dominio personalizado y HTTPS
+> Spec: `specs/2026-10-12-fase-9-polish-deploy/` (`requirements.md`, `plan.md`, `validation.md`)
+>
+> Hosting: Hostinger existente con deploy desde GitHub Actions (SFTP), en lugar de Cloudflare Pages. Dominio: `adalgarcia.com`.
+
+- [x] `site` cambiado a `https://adalgarcia.com` (canonical, sitemap, RSS, robots.txt y JSON-LD)
+- [x] Página 404 personalizada bilingüe (`/404.html` ES + `/en/404/` EN, con `noindex`)
+- [x] Transiciones de página (View Transitions API, `ClientRouter`) + reinicialización de scripts en `astro:page-load`
+- [x] Animaciones sutiles (entrada escalonada `.stagger-in`, reveals, hover) con `prefers-reduced-motion`
+- [x] Responsive testing (375 / 768 / 1280 px) sin overflow en home, blog, trabajos, contacto, post y proyecto
+- [x] Deploy con GitHub Actions a Hostinger por SFTP (`.github/workflows/deploy.yml`, destino en secretos)
+- [x] Reglas de `.htaccess` para que la 404 se sirva por idioma en el hosting
+- [x] Performance: fuentes subseteadas (1,98 MB → 186 KB), poster del hero, preload del LCP
+- [ ] Dominio personalizado y HTTPS — lo hace el dueño al cambiar el DNS (fuera de alcance de la fase)
+- [ ] Re-medición de Lighthouse sobre la URL pública tras el cambio de DNS (local: 100 desk / 97 mob)
 
 **Entregable**: Sitio en producción, accesible públicamente.
 

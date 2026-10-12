@@ -131,7 +131,10 @@
 .wp-role {
   font-family: "MesloLG", monospace;
   font-size: 1rem;
-  color: var(--gruvbox-gray);
+  /* `--gruvbox-gray` daba 4.01:1 sobre el fondo (WCAG pide 4.5:1);
+     el fg atenuado mantiene la jerarquía y pasa en ambos temas. */
+  color: var(--gruvbox-fg);
+  opacity: 0.75;
   display: block;
 }
 
@@ -308,6 +311,21 @@
   text-decoration-color: rgba(0, 0, 0, 0.3);
 }
 
+/* Tema claro: los encabezados de color con texto crema no llegaban a 4.5:1
+ * (azul 3.7:1, verde 4.0:1). Se oscurece el azul y el título usa el fg oscuro,
+ * salvo en el encabezado azul (que ya es oscuro) donde se queda el crema. */
+[data-theme="light"] .wp-card-header--work {
+  background: #076678; /* azul oscuro de la paleta GruvBox light */
+}
+
+[data-theme="light"] .wp-card-header .wp-card-title {
+  color: var(--gruvbox-fg);
+}
+
+[data-theme="light"] .wp-card-header--work .wp-card-title {
+  color: var(--gruvbox-bg);
+}
+
 /* ── Card body ────────────────────────────────────── */
 .wp-card-body {
   padding: 1.25rem;
@@ -317,7 +335,9 @@
   font-family: "Mononoki", monospace;
   font-weight: 700;
   font-size: 0.95rem;
-  color: var(--gruvbox-blue);
+  /* El azul de la paleta se queda en 4.02:1 sobre el card; el fg pasa. */
+  color: var(--gruvbox-fg);
+  opacity: 0.85;
   margin-bottom: 0.75rem;
 }
 

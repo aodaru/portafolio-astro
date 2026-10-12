@@ -1,0 +1,9 @@
+# ═══════════════════════════════════════════════════════
+# 404 en inglés para las rutas bajo /en/
+#
+# Apache/LiteSpeed usa el ErrorDocument del directorio más específico, así
+# que `/en/ruta-inexistente` sirve `dist/en/404/index.html` (EN) mientras el
+# resto del sitio usa `dist/404.html` (ES). Se copia desde `public/en/`.
+# ═══════════════════════════════════════════════════════
+
+ErrorDocument 404 /en/404/index.html
