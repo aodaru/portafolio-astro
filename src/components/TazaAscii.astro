@@ -33,8 +33,7 @@ const dimension = sizeMap[size]
 
 <div class={`taza taza-${variant} taza-size-${size} ${className}`} style={`--taza-size: ${dimension};`} role="img" aria-label={label}>
   {variant === 'webm' && (
-    <video autoplay muted loop playsinline class="taza-media" data-taza-play>
-      <source src="/img/taza-cafe-compressed.webm" type="video/webm" />
+    <video muted loop playsinline preload="none" class="taza-media" data-taza-defer data-taza-src="/img/taza-cafe-compressed.webm">
     </video>
   )}
 

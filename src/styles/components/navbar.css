@@ -1,107 +1,297 @@
-.gruvbox-nav {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  background-color: var(--gruvbox-card);
+/* ═══════════════════════════════════════════════════════
+   Navbar — Réplica fiel del WP adalgarcia.com (Bootstrap pattern)
+   Estructura: header.main-nav > nav.navbar.col-md-7 > .nav-container
+   Mobile: collapse vertical dentro del flow (no dropdown flotante)
+   Desktop: flex inline con brand izq + links/toggle der
+   ═══════════════════════════════════════════════════════ */
+
+.main-nav {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: transparent;
+  border-bottom: 2px solid var(--gruvbox-yellow);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* permite que el collapse crezca hacia abajo */
 }
 
-.gruvbox-nav .nav-logo {
+/* ── Container interno (equivale a .navbar.col-md-7 + .container-fluid del WP) ── */
+.nav-container {
+  width: 100%;
+  max-width: 58.333%; /* equivalente a Bootstrap col-md-7 */
+  padding: 8px 12px;
+  display: flex;
+  flex-wrap: wrap; /* clave para que el collapse ocupe nueva línea en mobile */
+  align-items: center;
+  justify-content: space-between; /* brand izq, toggler der */
+  gap: 0.25rem 1rem;
+}
+
+@media (max-width: 991.98px) {
+  .nav-container {
+    max-width: 100%;
+  }
+}
+
+/* ── Brand ─────────────────────────────────────────── */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  font-family: "Mononoki", monospace;
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.25rem; /* equivalente a fs-5 de Bootstrap */
   color: var(--gruvbox-yellow);
   transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  order: 1; /* brand siempre primero */
+  margin-right: auto; /* empuja lo que sigue a la derecha */
 }
 
-.gruvbox-nav .nav-logo:hover {
+.nav-brand:hover {
   color: var(--gruvbox-orange);
   transform: scale(1.05);
 }
 
-.gruvbox-nav .nav-link {
-  color: var(--gruvbox-fg);
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  position: relative;
-  font-family: "Mononoki", "MesloLG", "Courier New", monospace;
-}
-
-.gruvbox-nav .nav-link::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: var(--gruvbox-yellow);
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
-}
-
-.gruvbox-nav .nav-link:hover::after {
-  width: 80%;
-}
-
-.gruvbox-nav .nav-link:hover,
-.gruvbox-nav .nav-link.active {
-  background-color: var(--gruvbox-card);
+.nav-brand-icon {
+  font-size: 1.3rem;
   color: var(--gruvbox-yellow);
 }
 
-.gruvbox-nav .nav-link.active::after {
-  width: 80%;
+/* ── Mobile toggler (estilo WP Bootstrap navbar-toggler) ── */
+.nav-toggler {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  padding: 4px 12px;
+  background: transparent;
+  border: 1px solid rgba(235, 219, 178, 0.15);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  order: 2; /* aparece después del brand */
 }
 
-.gruvbox-nav .nav-dev-group {
+.nav-toggler:hover {
+  border-color: var(--gruvbox-yellow);
+}
+
+.nav-toggler:focus-visible {
+  outline: 2px solid var(--gruvbox-yellow);
+  outline-offset: 2px;
+}
+
+.nav-toggler-icon {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: middle;
+  background-image: var(--bs-navbar-toggler-icon-bg, none);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+}
+
+/* Fallback para cuando Bootstrap icon no esté disponible: líneas custom */
+.nav-toggler-icon {
   display: inline-flex;
-  align-items: center;
-  gap: 0.15rem;
-  margin-left: 0.5rem;
-  padding-left: 0.5rem;
-  border-left: 1px dashed var(--gruvbox-card);
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 22px;
+  height: 22px;
 }
 
-.gruvbox-nav .nav-link-dev {
-  font-size: 0.72rem;
-  padding: 0.3rem 0.55rem;
-  color: var(--gruvbox-gray);
-  opacity: 0.7;
-  font-family: "MesloLG", monospace;
-  letter-spacing: 0.05em;
+.nav-toggler-icon span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--gruvbox-fg);
+  border-radius: 1px;
+  transition: all 0.3s ease;
+  transform-origin: center;
 }
 
-.gruvbox-nav .nav-link-dev:hover,
-.gruvbox-nav .nav-link-dev.active {
-  opacity: 1;
-  color: var(--gruvbox-orange);
-  background-color: transparent;
+/* Animación a X cuando está abierto */
+.nav-toggler[aria-expanded="true"] .nav-toggler-icon span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
 }
 
-.gruvbox-nav .nav-link-dev::after {
+.nav-toggler[aria-expanded="true"] .nav-toggler-icon span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.nav-toggler[aria-expanded="true"] .nav-toggler-icon span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (min-width: 992px) {
+  .nav-toggler {
+    display: none;
+  }
+}
+
+/* ── Nav collapse (mobile: vertical con animación Bootstrap, desktop: inline) ── */
+.nav-collapse {
+  display: block; /* el JS controla visibilidad con .collapse/.collapsing/.show */
+  flex-basis: 100%;
+  order: 3;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.35s ease;
+}
+
+/* Bootstrap-style collapse: oculto por defecto */
+.nav-collapse.collapse:not(.show) {
   display: none;
 }
 
-.gruvbox-nav .nav-menu.absolute {
-  background-color: var(--gruvbox-mobile-menu);
+/* Estado de transición: altura animada, overflow hidden */
+.nav-collapse.collapsing {
+  display: block;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.35s ease;
 }
 
+/* Estado abierto: visible, altura auto */
+.nav-collapse.collapse.show {
+  display: block;
+  height: auto;
+  overflow: visible;
+}
+
+@media (min-width: 992px) {
+  .nav-collapse,
+  .nav-collapse.collapse,
+  .nav-collapse.collapsing,
+  .nav-collapse.collapse.show {
+    display: flex !important;
+    flex-basis: auto;
+    align-items: center;
+    gap: 0.25rem;
+    order: 2;
+    height: auto;
+    overflow: visible;
+    transition: none;
+  }
+}
+
+/* ── Nav list (.navbar-nav) ────────────────────────── */
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@media (min-width: 992px) {
+  .nav-list {
+    flex-direction: row;
+    margin: 0;
+    align-items: center;
+  }
+}
+
+/* ── Nav links (estilo WP .nav-link) ───────────────── */
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 8px 0;
+  font-family: "Mononoki", monospace;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--gruvbox-fg);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+  opacity: 0.75;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: var(--gruvbox-yellow);
+  opacity: 1;
+}
+
+.nav-link.active {
+  color: var(--gruvbox-yellow);
+  opacity: 1;
+}
+
+@media (min-width: 992px) {
+  .nav-link {
+    padding: 8px 12px;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--gruvbox-yellow);
+    transition: width 0.3s ease;
+    transform: translateX(-50%);
+  }
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    width: 80%;
+  }
+}
+
+.nav-link-text {
+  font-size: 0.85rem;
+}
+
+/* ── Theme toggle (estilo WP rectangular) ────────── */
 .theme-toggle {
   background: var(--gruvbox-yellow);
   color: var(--gruvbox-bg);
   border: none;
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
+  border-radius: 8px;
+  padding: 4px 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+  font-family: inherit;
+  margin-left: auto; /* en mobile empuja al final */
+  order: 1;
 }
 
 .theme-toggle:hover {
-  transform: rotate(180deg) scale(1.1);
   background: var(--gruvbox-orange);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--gruvbox-fg);
+  outline-offset: 2px;
+}
+
+@media (min-width: 992px) {
+  .theme-toggle {
+    margin-left: 0.5rem;
+    order: 3;
+  }
+}
+
+/* ── Reduced motion ───────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .nav-toggler-icon span,
+  .theme-toggle,
+  .nav-link {
+    transition: none !important;
+  }
 }

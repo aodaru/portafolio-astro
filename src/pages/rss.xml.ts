@@ -1,6 +1,7 @@
 import rss from '@astrojs/rss'
 import { getCollection } from 'astro:content'
 import type { APIContext } from 'astro'
+import { blogPath, getLangFromId, getSlugFromId } from '../i18n/content'
 
 export const GET = async (context: APIContext) => {
   const posts = await getCollection('blog')
@@ -16,7 +17,7 @@ export const GET = async (context: APIContext) => {
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.description,
-      link: `/blog/${post.id}/`,
+      link: blogPath(getLangFromId(post.id), getSlugFromId(post.id)),
     })),
   })
 }
