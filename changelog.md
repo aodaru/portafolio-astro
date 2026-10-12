@@ -1,3 +1,81 @@
+# Review — Reconciliación de ramas divergentes (Fase 6 + Fase 8)
+
+**Fecha:** 2026-10-12
+**Veredicto:** APROBADO (build 38 páginas, check 0 errores, verificado en navegador)
+
+## Contexto
+
+El roadmap de la rama de trabajo marcaba la Fase 6 como pendiente, pero ya estaba
+cerrada: vivía en `feat/internacionalizacion`, divergente desde `main` (eb0ba5e)
+de `feat/fase-8-rediseno-home`. Dos líneas con trabajo exclusivo cada una:
+
+| Rama | Entregables |
+|---|---|
+| `feat/internacionalizacion` (base) | Fase 6 bilingüe + Fase 7 SEO/performance |
+| `feat/fase-8-rediseno-home` | navbar fiel al WP, rediseño del post, home WP-style, favicon |
+
+Base: la rama i18n (más fases cerradas y ya pusheada). 17 archivos en conflicto.
+
+## Decisiones
+
+- **Helpers sin duplicar.** `src/i18n/utils.ts` (cadenas de UI) y
+  `src/i18n/content.ts` (colecciones) se conservan con responsabilidades
+  separadas; `content.ts` re-exporta `Lang`, `formatDate` y `getLangFromUrl`
+  desde `utils.ts`. Se descarta el `utils.ts` de la Fase 8, que traducía inline
+  y chocaba de firma (`AstroGlobal` vs `URL`) — ese choque rompió el build en
+  `blog/tags/index.astro`.
+- **Navbar**: markup WP-fidelity de la Fase 8 + selector ES|EN y
+  `translatePath()`, que el markup WP había perdido.
+- **Home**: markup `wp-layout` (coincide con el `home.css` que trajo el merge)
+  cableado a `useTranslations`; claves `home.intro` y `home.card.*` añadidas a
+  `ui.ts`. Se pasa `lang={lang}` a `BaseLayout`.
+- **Post individual**: diseño rico de la Fase 8 + `useTranslations`, y filtro por
+  idioma en `getStaticPaths` — sin él `/blog/<slug>` colisionaba entre ES y EN.
+- **Trabajos/contacto/tags**: tarjetas de la Fase 8 con i18n; URLs vía
+  `getSlugFromId` porque los proyectos viven ahora en `projects/{es,en}/`.
+- **BaseLayout**: API de la i18n + favicons completos, `fullTitle` y prop
+  `alternates` para hreflang condicional. **No** se recupera el CDN de
+  nerdfonts: los símbolos ya son un subset local.
+- **Páginas `/en/`**: regeneradas desde su par en la raíz (mismo archivo,
+  imports un nivel más profundos, filtro de colección en `'en'`).
+
+## Bugs encontrados y corregidos
+
+| Bug | Detalle |
+|---|---|
+| Firma de `getLangFromUrl` | El archivo de la Fase 8 llamaba `getLangFromUrl(Astro)`; el helper maduro recibe `URL`. Rompía el build de `/blog/tags` |
+| Colisión de rutas ES/EN | `getStaticPaths` sin filtro de idioma: `es/omarchy` y `en/omarchy` → mismo `/blog/omarchy` |
+| Objeto inline renderizado | Resto del objeto `t` de la Fase 8 colgando entre el frontmatter y `<BaseLayout>`; se imprimía como texto en la home. Detectado en snapshot de accesibilidad |
+| Home EN desalineada | `src/pages/en/index.astro` mantenía el diseño `inicio8`, cuya CSS ya no existe tras el merge |
+
+## Archivos
+
+17 en conflicto + 10 regeneraciones de `/en/`. decisión por decisión en el
+mensaje del commit de merge (`b1fade4`).
+
+## Verificación
+
+- `pnpm build` → 38 páginas HTML, 0 errores
+- `pnpm astro check` → 0 errors, 0 warnings (24 hints preexistentes de `z`)
+- Navegador: home ES/EN con el mismo diseño `wp-layout` y traducidas; navbar
+  fijo con brand WP y selector ES|EN (ES→`/`, EN→`/en/`); toggle mobile con
+  animación Bootstrap (`collapsing`, 232px, 6 enlaces); post con hero, lede,
+  metadata, TOC de 3-4 ítems, relacionados y Shiki GruvBox dual-theme; trabajos
+  con 3 cards en ES y EN; contacto con 4 cards + email
+- Sin overflow horizontal a 375px en `/`, `/blog`, `/blog/omarchy`,
+  `/trabajos`, `/contacto`, `/en/`
+- Toggle de tema oscuro/claro con persistencia
+
+## observaciones pendientes (no tocadas)
+
+- `Avatar.webp` se precarga en todas las páginas vía `BaseLayout` pero solo se
+  usa en la home → warning de preload no usado en el resto (preexistente, Fase 7)
+- Las fechas se renderizan en zona horaria local, así que un `date: 2026-01-01`
+  (medianoche UTC) se muestra como 31 de diciembre en UTC-5 (preexistente)
+- El roadmap documenta la Fase 8 con la dirección "terminal refinado"
+  (`inicio8`), pero la iteración final fue la fidelidad WP (`wp-layout`); queda
+  anotado en `specs/roadmap.md` con una nota de reconciliación
+
 # Review — Rediseño del post individual, SEO base y favicon
 
 **Fecha:** 2026-10-12
