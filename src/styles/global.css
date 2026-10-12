@@ -92,7 +92,9 @@ body {
   font-family: "Mononoki", "MesloLG", "Courier New", monospace;
   background-color: var(--gruvbox-bg);
   color: var(--gruvbox-fg);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 ::-webkit-scrollbar {
@@ -117,8 +119,14 @@ body {
 }
 
 @keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes fadeInUp {

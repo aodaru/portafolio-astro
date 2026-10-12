@@ -24,7 +24,7 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  transition: 0.3s ease;
   opacity: 0;
   transform: translateY(30px);
 }
@@ -143,13 +143,13 @@
   overflow: hidden;
   border: 4px solid var(--gruvbox-yellow);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   flex-shrink: 0;
 }
 
 .wp-avatar-wrap::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: -4px;
   border-radius: 50%;
@@ -160,8 +160,12 @@
     var(--gruvbox-orange),
     var(--gruvbox-green)
   );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0;
@@ -182,6 +186,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transform: scale(1.5);
 }
 
 @media (max-width: 767px) {
@@ -230,7 +235,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .wp-card {
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
     opacity: 1 !important;
     transform: none !important;
   }
@@ -241,6 +248,8 @@
   padding: 0.6rem 1.25rem;
   display: flex;
   align-items: center;
+  position: relative;
+  color: var(--gruvbox-bg);
 }
 
 .wp-card-title {
@@ -251,7 +260,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  text-decoration-line: underline;
+  /* text-decoration-line: underline; */
   text-underline-offset: 4px;
   text-decoration-thickness: 3px;
 }
@@ -263,7 +272,6 @@
 /* Colores por sección (GruvBox) */
 .wp-card-header--work {
   background: var(--gruvbox-blue);
-  color: var(--gruvbox-bg);
 }
 
 .wp-card-header--work .wp-card-title {
@@ -275,7 +283,6 @@
   background: var(--gruvbox-green);
   color: var(--gruvbox-bg);
 }
-
 .wp-card-header--bio .wp-card-title {
   color: var(--gruvbox-bg);
   text-decoration-color: rgba(255, 255, 255, 0.4);
@@ -345,7 +352,7 @@
 }
 
 .wp-list li::before {
-  content: '▸';
+  content: "▸";
   position: absolute;
   left: 0;
   color: var(--gruvbox-blue);

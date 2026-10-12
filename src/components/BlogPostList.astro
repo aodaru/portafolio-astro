@@ -72,7 +72,7 @@ function getPostIcon(title: string): string {
           <div class="blog-card-content">
             <span class="blog-card-date">{formatDate(post.data.date)}</span>
             <h2 class="blog-card-title">{post.data.title}</h2>
-            <p class="blog-card-desc">{post.data.description}</p>
+            <!-- <p class="blog-card-desc">{post.data.description}</p> -->
             {post.data.tags.length > 0 && (
               <div class="blog-card-tags">
                 {post.data.tags.map((tag) => (
