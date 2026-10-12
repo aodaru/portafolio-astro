@@ -7,19 +7,27 @@
 - **Modo:** ES modules (`"type": "module"`)
 - **Idioma:** Español (con i18n ES/EN planificado)
 
-## Estado actual (pre-scaffolding)
-- No existe `src/` — hay que crearlo
-- No existe `astro.config.ts` — hay que crearlo
-- `package.json` solo tiene placeholder `"test"` — no hay scripts dev/build
-- No hay TypeScript configurado (`tsconfig.json` ausente)
-- No hay linter, formatter ni typecheck
+## Estado actual
+- Astro 7 + Tailwind 4 configurados; `src/` completo
+- Fases 1–8 del roadmap completas; Fase 9 (polish + deploy) pendiente
+- **La variante en inglés no existe todavía**: no hay `src/pages/en/` ni
+  `src/content/blog/en/`. El código ya soporta ambos (helpers en
+  `src/i18n/content.ts`, hreflang condicional), pero falta el contenido.
+- Sin linter ni formatter. Typecheck vía `astro check`
 
-## Comandos (pendientes de definir en package.json)
-Una vez configurado Astro:
-- `pnpm astro dev` — servidor de desarrollo
-- `pnpm astro build` — build a `dist/`
-- `pnpm astro check` — typecheck Astro
-- `pnpm astro sync` — regenerar tipos
+## Comandos
+- `pnpm dev` — servidor de desarrollo
+- `pnpm build` — build a `dist/`
+- `pnpm preview` — sirve el build
+- `pnpm check` — typecheck
+- `pnpm sync` — regenerar tipos
+
+## Documentación
+- `README.md` — estructura y **guía para escribir posts y proyectos**
+  (qué campos va en el frontmatter, qué es opcional)
+- `specs/roadmap.md` — fases y entregables
+- `specs/<fecha>-<fase>/` — requirements, plan y validation por fase
+- `changelog.md` — bitácora de revisiones con veredicto
 
 ## Assets a migrar
 - `themeWp/` contiene el tema WordPress original (GruvBox, Bootstrap, SCSS)

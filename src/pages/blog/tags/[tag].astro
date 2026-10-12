@@ -1,10 +1,24 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
+import {
+  blogIndexPath,
+  blogPath,
+  formatDate,
+  getLangFromId,
+  getSlugFromId,
+  tagsIndexPath,
+  type Lang,
+} from '../../../i18n/content'
+
+const UI = {
+  es: { back: 'Volver al blog', all: 'Ver todos los tags', one: 'artículo', many: 'artículos', none: 'No hay artículos con esta etiqueta.' },
+  en: { back: 'Back to blog', all: 'All tags', one: 'article', many: 'articles', none: 'No posts with this tag.' },
+} as const
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
-  const tags = new Set(posts.flatMap((post) => post.data.tags))
+  const tags = new Set(posts.filter((p) => !p.data.draft).flatMap((post) => post.data.tags))
   return Array.from(tags).map((tag) => ({
     params: { tag },
     props: { tag },
@@ -12,27 +26,36 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.props
+const lang = getLangFromId(`es/${tag}`) as Lang
+const t = UI[lang]
 
 const allPosts = await getCollection('blog')
 const posts = allPosts
-  .filter((post) => !post.data.draft && post.data.tags.includes(tag))
+  .filter(
+    (post) =>
+      !post.data.draft &&
+      getLangFromId(post.id) === lang &&
+      post.data.tags.includes(tag)
+  )
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 ---
 
 <BaseLayout
-  title={`#${tag} — Blog — Teapartydev`}
+  title={`#${tag} — Blog`}
   description={`Artículos etiquetados con #${tag}`}
+  lang={lang}
+  path={`/blog/tags/${tag}`}
 >
   <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
     <a
-      href="/blog"
-      class="inline-flex items-center gap-1 mb-6 no-underline transition-all duration-300 hover:opacity-80"
+      href={blogIndexPath(lang)}
+      class="inline-flex items-center gap-1 mb-6 no-underline transition-opacity duration-300 hover:opacity-80"
       style="color: var(--gruvbox-blue);"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
       </svg>
-      Volver al blog
+      {t.back}
     </a>
 
     <h1 class="text-3xl font-bold mb-2" style="font-family: 'Courier New', monospace;">
@@ -41,17 +64,25 @@ const posts = allPosts
       <span class="terminal-cursor"></span>
     </h1>
     <p class="mb-8 opacity-75">
-      {posts.length} artículo{posts.length !== 1 ? 's' : ''} con la etiqueta
+      {posts.length} {posts.length === 1 ? t.one : t.many} con la etiqueta
       <span style="color: var(--gruvbox-blue);">#{tag}</span>
     </p>
 
+    <a
+      href={tagsIndexPath(lang)}
+      class="inline-block mb-8 px-4 py-2 rounded border no-underline transition-all duration-300 hover:border-[var(--gruvbox-yellow)]"
+      style="border-color: var(--gruvbox-gray); color: var(--gruvbox-fg); font-family: 'MesloLG', monospace; font-size: var(--fs-small);"
+    >
+      {t.all} #
+    </a>
+
     {posts.length === 0 && (
-      <p class="opacity-75">No hay artículos con esta etiqueta.</p>
+      <p class="opacity-75">{t.none}</p>
     )}
 
     {posts.map((post, i) => (
       <a
-        href={`/blog/${post.id}`}
+        href={blogPath(lang, getSlugFromId(post.id))}
         class="block no-underline"
         style={`animation: fadeInUp 0.6s ease-out ${i * 0.12}s both;`}
       >
@@ -62,16 +93,12 @@ const posts = allPosts
               <span class="terminal-dot minimize"></span>
               <span class="terminal-dot maximize"></span>
             </div>
-            <span class="terminal-title">adalgarcia@portfolio: ~/blog/{post.id}</span>
+            <span class="terminal-title">adalgarcia@portfolio: ~/blog/{getSlugFromId(post.id)}</span>
           </div>
           <div class="terminal-body">
             <div class="flex items-center gap-2 mb-4 select-none">
               <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
-                {new Date(post.data.date).toLocaleDateString('es-ES', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
+                {formatDate(post.data.date, lang)}
               </span>
             </div>
             <h2 class="text-xl font-bold mb-2" style="color: var(--gruvbox-yellow);">

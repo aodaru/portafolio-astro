@@ -94,29 +94,30 @@
 **Soporte bilingüe español/inglés**
 
 - [x] Traducciones base (navegación, footer, títulos de secciones) — `src/i18n/ui.ts` (es/en)
-- [x] Helper i18n: `src/i18n/utils.ts` (`getLangFromUrl`, `useTranslations`, `useTranslatedPath`, `formatDate`, `getAlternateUrls`)
+- [x] Helper i18n: `src/i18n/content.ts` (`getLangFromUrl`, `getLangFromId`, `getSlugFromId`, `blogPath`, `tagPath`, `formatDate`, `postAlternates`)
 - [x] Ruteo ES en raíz + `/en/...` para inglés (`prefixDefaultLocale: false`; se descartó `/es/...` con redirect para evitar breaking change de URLs existentes)
-- [x] Selector de idioma en navegación (ES | EN, con idioma activo resaltado)
-- [x] Posts en ambos idiomas con mismo slug (`src/content/blog/es/` + `src/content/blog/en/`)
-- [x] Proyectos en ambos idiomas (`src/content/projects/es/` + `src/content/projects/en/`)
+- [ ] Selector de idioma en navegación (ES | EN, con idioma activo resaltado) — sin páginas `/en/` no hay a qué enlazar
+- [ ] Posts en ambos idiomas con mismo slug — falta `src/content/blog/en/`
+- [ ] Proyectos en ambos idiomas — falta `src/content/projects/en/`
 - [x] Bio por idioma (`src/i18n/bio-es.json`, `src/i18n/bio-en.json`; eliminado `src/data/bio.json`)
-- [x] `hreflang` (es/en/x-default) + `<html lang>` dinámico en `BaseLayout.astro`
-- [x] `README.md` con manual de posts/proyectos bilingües
+- [x] `hreflang` (es/x-default; se suma cada idioma que exista) + `<html lang>` dinámico en `BaseLayout.astro`
+- [x] `README.md` con manual de posts/proyectos
 
-**Entregable**: Sitio completamente navegable en español e inglés.
+**Entregable**: Pendiente. La infraestructura está; falta el contenido en inglés.
 
 ---
 
 ## Fase 7: SEO + Performance
 **Optimización para motores de búsqueda y velocidad**
 
-- [x] Meta tags dinámicos (title, description, OG) por página
+- [x] Meta tags dinámicos (title, description, OG, Twitter Card, canonical) por página — `BaseLayout.astro`
 - [x] Sitemap.xml automático (`@astrojs/sitemap`)
-- [x] RSS feed para blog (endpoints propios `rss.xml.ts` bilingües ES/EN, no `@astrojs/rss`)
+- [x] RSS feed para blog (endpoint propio `rss.xml.ts`, enlaces con rutas limpias `/blog/<slug>`)
 - [x] Imágenes optimizadas con `astro:assets` y WebP
 - [ ] Lighthouse 90+ (performance, accessibility, SEO, best practices) — seguimiento Fase 9: re-medir en deploy preview (local: 90 desk / 60 mob, A11y/BP/SEO 100)
 - [ ] Google Tag Manager integrado (via Partytown) — diferido D1
 - [x] `robots.txt`
+- [x] Favicon de la taza (SVG + PNG 192/512 + apple-touch)
 
 **Entregable**: Sitio optimizado y listo para indexación.
 

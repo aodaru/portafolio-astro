@@ -15,8 +15,9 @@ const posts = publishedPosts.slice(0, pageSize)
 ---
 
 <BaseLayout
-  title="Blog — Teapartydev"
+  title="Blog"
   description="Artículos y tutoriales de Adal Michael García sobre desarrollo, sistemas y tecnología"
+  path="/blog"
 >
   <BlogPostList posts={posts} currentPage={currentPage} totalPages={totalPages} />
 </BaseLayout>

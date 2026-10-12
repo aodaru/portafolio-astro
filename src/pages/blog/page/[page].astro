@@ -28,8 +28,9 @@ const totalPages = props.page.totalPages
 ---
 
 <BaseLayout
-  title={currentPage === 1 ? 'Blog — Teapartydev' : `Blog — Página ${currentPage} — Teapartydev`}
+  title={currentPage === 1 ? 'Blog' : `Blog — Página ${currentPage}`}
   description="Artículos y tutoriales de Adal Michael García sobre desarrollo, sistemas y tecnología"
+  path={currentPage === 1 ? '/blog' : `/blog/page/${currentPage}`}
 >
   <BlogPostList posts={posts} currentPage={currentPage} totalPages={totalPages} />
 </BaseLayout>
