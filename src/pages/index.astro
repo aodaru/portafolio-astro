@@ -1,168 +1,172 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import TazaAscii from '../components/TazaAscii.astro'
-import bio from '../i18n/bio-es.json'
-import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils'
+import bioEs from '../i18n/bio-es.json'
+import bioEn from '../i18n/bio-en.json'
+import { getLangFromUrl, useTranslations } from '../i18n/utils'
 import '../styles/pages/home.css'
 
 const lang = getLangFromUrl(Astro.url)
+const bio = lang === 'en' ? bioEn : bioEs
 const t = useTranslations(lang)
-const translatePath = useTranslatedPath(lang)
+const email = 'hola@teapartydev.com'
 ---
 
-<BaseLayout title={t('home.title')} description={t('home.description')} lang={lang}>
-  <div class="inicio8">
-    <section class="hero8">
-      <div class="hero8-bg" aria-hidden="true">
-        <video muted loop playsinline preload="none" poster="/img/Avatar.webp" class="hero8-video" data-taza-defer data-taza-src="/img/taza-cafe-compressed.webm">
-        </video>
-        <div class="hero8-overlay"></div>
+    work: 'Work',
+    bio: 'Bio',
+    hobbies: 'Hobbies',
+    contact: 'Contact',
+    email: 'hola@teapartydev.com',
+  },
+}[lang]
+---
+
+<BaseLayout
+  title={t('home.title')}
+  description={t('home.description')}
+  lang={lang}
+>
+  <div class="wp-layout">
+    <!-- Video de la taza -->
+    <section class="wp-video" data-reveal>
+      <TazaAscii variant="webm" size="md" label={t('home.taza.label')} />
+    </section>
+
+    <!-- Intro card -->
+    <section class="wp-intro" data-reveal>
+      <p class="wp-intro-text">{t('home.intro')}</p>
+    </section>
+
+    <!-- Nombre + Avatar -->
+    <section class="wp-identity" data-reveal>
+      <div class="wp-identity-text">
+        <h1 class="wp-name">Adal Michael García</h1>
+        <small class="wp-role">{bio.role}</small>
       </div>
-
-      <div class="hero8-grid">
-        <div class="hero8-text">
-          <div class="hero8-eyebrow">{t('home.eyebrow', { role: bio.role })}</div>
-
-          <h1 class="hero8-title">
-            <span class="hero8-line">Adal</span>
-            <span class="hero8-line hero8-line-accent">Michael</span>
-            <span class="hero8-line">García</span>
-          </h1>
-
-          <p class="hero8-sub" set:html={t('home.subtitle')} />
-
-          <div class="hero8-cta">
-            <a href={translatePath('/trabajos')} class="hero8-btn hero8-btn-primary">
-              {t('home.cta.work')}
-              <span class="hero8-btn-arrow">→</span>
-            </a>
-            <a href={translatePath('/contacto')} class="hero8-btn hero8-btn-ghost">{t('home.cta.contact')}</a>
-          </div>
-
-          <div class="hero8-meta">
-            <span><span class="hero8-meta-key">role</span> {t('home.meta.role')}</span>
-            <span><span class="hero8-meta-key">{t('home.meta.since')}</span> 2012</span>
-            <span><span class="hero8-meta-key">based</span> {t('home.meta.based')}</span>
-          </div>
-        </div>
-
-        <aside class="hero8-taza-wrap">
-          <TazaAscii variant="svg" size="lg" label={t('home.taza.label')} class="hero8-taza" />
-          <div class="hero8-taza-caption">
-            <span class="hero8-cup-icon">☕</span>
-            <span>{t('home.taza.caption')}</span>
-          </div>
-        </aside>
+      <div class="wp-avatar-wrap">
+        <img
+          src="/img/Avatar.webp"
+          alt="Adal Michael García — portrait"
+          class="wp-avatar"
+          width="150"
+          height="150"
+          loading="eager"
+        />
       </div>
     </section>
 
-    <section class="sec8" data-reveal>
-      <div class="sec8-label">{t('home.about.label')}</div>
-      <div class="sec8-content">
-        <h2 class="sec8-h2">{t('home.about.title')}</h2>
-        <p class="sec8-p" set:html={t('home.about.text')} />
-        <a href={translatePath('/blog')} class="sec8-link">{t('home.about.link')}</a>
+    <!-- Card: Trabajos -->
+    <section class="wp-card wp-card--work" data-reveal>
+      <div class="wp-card-header wp-card-header--work">
+        <h2 class="wp-card-title">
+          <span class="wp-card-icon">💼</span>
+          {t('home.card.work')}
+        </h2>
+      </div>
+      <div class="wp-card-body">
+        <div class="wp-card-subtitle">Adal Michael García | {bio.role}</div>
+        <p class="wp-card-text">{bio.summary}</p>
+        <ul class="wp-list">
+          {bio.highlights.map((item) => {
+            const sep = lang === 'en' ? ' that ' : ' que '
+            const parts = item.split(sep)
+            return (
+              <li>
+                <strong>{parts[0]}</strong>{sep}{parts[1] ?? ''}
+              </li>
+            )
+          })}
+        </ul>
       </div>
     </section>
 
-    <section class="sec8" data-reveal>
-      <div class="sec8-label">{t('home.work.label')}</div>
-      <div class="sec8-content">
-        <h2 class="sec8-h2">{t('home.work.title')}</h2>
-        <p class="sec8-p sec8-p-sm">{t('home.work.subtitle')}</p>
-
-        <div class="proj8-grid">
-          <a href={translatePath('/trabajos')} class="proj8-card">
-            <span class="proj8-num">01</span>
-            <h3 class="proj8-title">{t('home.work.01.title')}</h3>
-            <p class="proj8-desc">{t('home.work.01.desc')}</p>
-            <span class="proj8-arrow">→</span>
-          </a>
-
-          <a href={translatePath('/trabajos')} class="proj8-card">
-            <span class="proj8-num">02</span>
-            <h3 class="proj8-title">{t('home.work.02.title')}</h3>
-            <p class="proj8-desc">{t('home.work.02.desc')}</p>
-            <span class="proj8-arrow">→</span>
-          </a>
-
-          <a href={translatePath('/trabajos')} class="proj8-card">
-            <span class="proj8-num">03</span>
-            <h3 class="proj8-title">{t('home.work.03.title')}</h3>
-            <p class="proj8-desc">{t('home.work.03.desc')}</p>
-            <span class="proj8-arrow">→</span>
-          </a>
-        </div>
+    <!-- Card: Bio -->
+    <section class="wp-card wp-card--bio" data-reveal>
+      <div class="wp-card-header wp-card-header--bio">
+        <h2 class="wp-card-title">
+          <span class="wp-card-icon">🧬</span>
+          {t('home.card.bio')}
+        </h2>
       </div>
-    </section>
-
-    <section class="sec8" data-reveal>
-      <div class="sec8-label">{t('home.hobby.label')}</div>
-      <div class="sec8-content">
-        <h2 class="sec8-h2">{t('home.hobby.title')}</h2>
-        <p class="sec8-p">{t('home.hobby.text')}</p>
-        <div class="hobby8-grid">
-          {bio.hobbies.map((hobby) => (
-            <span class="hobby8-chip">{hobby}</span>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <section class="sec8 sec8-cta" data-reveal>
-      <div class="cta8">
-        <h2 class="cta8-h2">{t('home.contact.title')}</h2>
-        <p class="cta8-p">{t('home.contact.text')}</p>
-        <div class="cta8-actions">
-          <a href="mailto:hi@teapartydev.com" class="hero8-btn hero8-btn-primary">
-            {t('home.contact.cta')}
-            <span class="hero8-btn-arrow">→</span>
-          </a>
-          <div class="cta8-socials">
-            <a href="https://github.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta8-social">{t('home.contact.github')}</a>
-            <a href="https://twitter.com/aodaru" target="_blank" rel="noopener noreferrer" class="cta8-social">{t('home.contact.twitter')}</a>
-            <a href="https://www.linkedin.com/in/adal-garcia-471889197/" target="_blank" rel="noopener noreferrer" class="cta8-social">{t('home.contact.linkedin')}</a>
+      <div class="wp-card-body">
+        {bio.timeline.map((item) => (
+          <div class="wp-bio-item">
+            <span class="wp-bio-year">{item.year}</span>
+            {item.description}
           </div>
-        </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Card: Pasatiempos -->
+    <section class="wp-card wp-card--hobbies" data-reveal>
+      <div class="wp-card-header wp-card-header--hobbies">
+        <h2 class="wp-card-title">
+          <span class="wp-card-icon">🎮</span>
+          {t('home.card.hobbies')}
+        </h2>
+      </div>
+      <div class="wp-card-body">
+        <p class="wp-card-text">{bio.hobbies.join(', ')}</p>
+      </div>
+    </section>
+
+    <!-- Card: Contacto -->
+    <section class="wp-card wp-card--contact" data-reveal>
+      <div class="wp-card-header wp-card-header--contact">
+        <h2 class="wp-card-title">
+          <span class="wp-card-icon">☕</span>
+          {t('home.card.contact')}
+        </h2>
+      </div>
+      <div class="wp-card-body">
+        <a href="https://github.com/aodaru" target="_blank" rel="noopener noreferrer" class="wp-social-btn" aria-label="GitHub @aodaru">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          @aodaru
+        </a>
+        <a href="https://twitter.com/aodaru" target="_blank" rel="noopener noreferrer" class="wp-social-btn" aria-label="Twitter / X @aodaru">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/></svg>
+          @aodaru
+        </a>
+        <a href="https://www.instagram.com/aodarug/" target="_blank" rel="noopener noreferrer" class="wp-social-btn" aria-label="Instagram @aodarug">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.478 2.478 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/></svg>
+          @aodarug
+        </a>
+        <a href="https://www.linkedin.com/in/adal-garcia-471889197/" target="_blank" rel="noopener noreferrer" class="wp-social-btn" aria-label="LinkedIn @adalgarcia">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
+          @adalgarcia
+        </a>
+        <a href={`mailto:${email}`} class="wp-social-btn wp-social-btn--email" aria-label={`Email ${email}`}>
+          <span>✉</span>
+          {email}
+        </a>
       </div>
     </section>
   </div>
 </BaseLayout>
 
+<script is:inline type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Adal Michael García",
+  "url": "https://teapartydev.com",
+  "jobTitle": "Ingeniero Informático",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Chiriquí",
+    "addressCountry": "PA"
+  },
+  "sameAs": [
+    "https://github.com/aodaru",
+    "https://twitter.com/aodaru",
+    "https://www.instagram.com/aodarug/",
+    "https://www.linkedin.com/in/adal-garcia-471889197/"
+  ]
+}
+</script>
+
 <script>
-  // Hero diferido (Fase 7, performance): el `.webm` (241 KB) no se descarga en
-  // el camino crítico. Tras `window load` (o idle) se inyecta el `<source>` y
-  // se reproduce, salvo `prefers-reduced-motion: reduce` (queda el poster).
-  function loadDeferredHeroVideos() {
-    let reduceMotion = false
-    try {
-      reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    } catch {}
-    if (reduceMotion) return
-    document.querySelectorAll('video[data-taza-defer]').forEach((video) => {
-      if (!(video instanceof HTMLVideoElement)) return
-      if (video.querySelector('source')) return
-      const src = video.getAttribute('data-taza-src')
-      if (!src) return
-      const source = document.createElement('source')
-      source.src = src
-      source.type = 'video/webm'
-      video.appendChild(source)
-      video.load()
-      video.play().catch(() => {})
-    })
-  }
-
-  if (document.readyState === 'complete') {
-    loadDeferredHeroVideos()
-  } else {
-    window.addEventListener('load', loadDeferredHeroVideos, { once: true })
-  }
-  try {
-    const ric = (window as unknown as { requestIdleCallback?: (cb: () => void) => void }).requestIdleCallback
-    if (typeof ric === 'function') ric.call(window, loadDeferredHeroVideos)
-  } catch {}
-
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -172,7 +176,7 @@ const translatePath = useTranslatedPath(lang)
         }
       });
     },
-    { threshold: 0.12, rootMargin: '0px 0px -80px 0px' }
+    { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
   );
 
   document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));

@@ -12,6 +12,16 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
+  markdown: {
+    shikiConfig: {
+      themes: {
+        light: 'gruvbox-light-medium',
+        dark: 'gruvbox-dark-medium',
+      },
+      defaultColor: false,
+      wrap: true,
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
   },
