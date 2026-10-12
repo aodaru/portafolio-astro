@@ -46,10 +46,13 @@ src/
 │   ├── ui.ts       # diccionarios es/en de textos de UI
 │   └── bio-*.json  # bio por idioma
 ├── utils/
-│   └── images.ts   # assets → WebP para og:image
-├── layouts/        # BaseLayout.astro (head, SEO, navbar, footer)
-├── pages/          # rutas ES en raíz + espejo en en/
-└── styles/         # global.css + components/ + pages/
+│   └── images.ts   # assets → WebP para og:image y para las tarjetas
+├── layouts/        # BaseLayout.astro (head, SEO, navbar, footer, ClientRouter)
+├── pages/          # rutas ES en raíz + espejo en en/ + 404.astro
+└── styles/         # global.css, motion.css + components/ + pages/
+
+.github/workflows/  # deploy.yml → Hostinger por SFTP
+public/             # favicon, fuentes (subsets), imágenes, robots.txt, .htaccess
 ```
 
 ---
