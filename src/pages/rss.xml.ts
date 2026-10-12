@@ -1,11 +1,12 @@
 import rss from '@astrojs/rss'
 import { getCollection } from 'astro:content'
 import type { APIContext } from 'astro'
+import { blogPath, getLangFromId, getSlugFromId } from '../i18n/content'
 
 export const GET = async (context: APIContext) => {
   const posts = await getCollection('blog')
   const published = posts
-    .filter((post) => !post.data.draft && post.data.lang === 'es')
+    .filter((post) => !post.data.draft)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 
   return rss({
@@ -16,7 +17,7 @@ export const GET = async (context: APIContext) => {
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.description,
-      link: `/blog/${post.id.split('/').slice(1).join('/')}/`,
+      link: blogPath(getLangFromId(post.id), getSlugFromId(post.id)),
     })),
   })
 }

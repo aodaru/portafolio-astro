@@ -9,8 +9,8 @@ const translatePath = useTranslatedPath(lang)
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
-  const enPosts = posts.filter((post) => !post.data.draft && post.data.lang === 'en')
-  const tags = new Set(enPosts.flatMap((post) => post.data.tags))
+  const esPosts = posts.filter((post) => !post.data.draft && post.data.lang === 'en')
+  const tags = new Set(esPosts.flatMap((post) => post.data.tags))
   return Array.from(tags).map((tag) => ({
     params: { tag },
     props: { tag },

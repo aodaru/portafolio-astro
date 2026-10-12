@@ -7,8 +7,8 @@ const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)
 const currentPath = Astro.url.pathname
 
+// Sin "Inicio": vive como brand en el markup (icono nf-md-tea).
 const links = [
-  { href: translatePath('/'), label: t('nav.home'), key: 'home' },
   { href: translatePath('/blog'), label: t('nav.blog'), key: 'blog' },
   { href: translatePath('/trabajos'), label: t('nav.works'), key: 'works' },
   { href: translatePath('/contacto'), label: t('nav.contact'), key: 'contact' },
@@ -23,43 +23,65 @@ function isActive(href: string): boolean {
 }
 ---
 
-<header class="gruvbox-nav fixed top-0 inset-x-0 z-50">
-  <nav class="mx-auto px-4 h-16 flex items-center justify-center">
-    <button class="mobile-toggle md:hidden p-2 text-[var(--gruvbox-fg)] hover:text-[var(--gruvbox-yellow)] transition-colors" aria-label={t('nav.menu') as string} type="button">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="6" x2="21" y2="6"/>
-        <line x1="3" y1="12" x2="21" y2="12"/>
-        <line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
+<header class="main-nav fixed top-0 inset-x-0 z-50">
+  <nav class="nav-container">
+    <!-- Brand (estilo WP navbar-brand con icono nf-md-tea) -->
+    <a href={translatePath('/')} class="nav-brand" aria-label={t('nav.home')}>
+      <span class="nf nf-md-tea nav-brand-icon" aria-hidden="true"></span>
+      <span class="nav-brand-name">Adal Michael García</span>
+    </a>
+
+    <!-- Mobile toggle (estilo WP Bootstrap navbar-toggler) -->
+    <button
+      class="nav-toggler"
+      type="button"
+      aria-label={t('nav.menu')}
+      aria-expanded="false"
+      aria-controls="nav-collapse"
+    >
+      <span class="nav-toggler-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
     </button>
 
-    <div class="nav-menu hidden md:flex items-center gap-1">
-      {links.map(({ href, label, key }) => (
-        <a href={href} class={`nav-link ${isActive(href) ? 'active' : ''}`} aria-label={key === 'home' ? label : undefined}>
-          {key === 'home' ? <span class="nf nf-md-tea text-xl" aria-hidden="true"></span> : label}
-        </a>
-      ))}
-      <a
-        href="https://github.com/aodaru"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="nav-link inline-flex items-center gap-1"
-      >
-        <span class="nf nf-fa-github" aria-hidden="true"></span>
-        <span class="hidden sm:inline">{t('nav.repo')}</span>
-      </a>
+    <!-- Nav collapse (estilo WP navbar-collapse) -->
+    <div class="nav-collapse" id="nav-collapse">
+      <ul class="nav-list">
+        {links.map(({ href, label, key }) => (
+          <li class="nav-item">
+            <a href={href} class={`nav-link ${isActive(href) ? 'active' : ''}`} aria-label={key === 'home' ? label : undefined}>
+              {label}
+            </a>
+          </li>
+        ))}
+        <li class="nav-item">
+          <a
+            href="https://github.com/aodaru"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="nav-link"
+            aria-label="GitHub repo"
+          >
+            <span class="nf nf-fa-github" aria-hidden="true"></span>
+            <span class="nav-link-text">{t('nav.repo')}</span>
+          </a>
+        </li>
+      </ul>
 
-      <div class="lang-switcher inline-flex items-center gap-1 ml-2">
+      <!-- Selector de idioma (ES | EN) -->
+      <div class="lang-switcher">
         {Object.entries(languages).map(([code, name]) => {
-          // Obtener la ruta actual sin el prefijo de idioma
-          const pathWithoutLang = currentPath.replace(/^\/(es|en)/, '') || '/'
+          const pathWithoutLang = currentPath.replace(/^\/(es|en)(?=\/|$)/, '') || '/'
           const targetLang = code as keyof typeof languages
           const href = translatePath(pathWithoutLang, targetLang)
           return (
             <a
               href={href}
-              class={`nav-link text-xs px-1.5 py-0.5 rounded ${lang === code ? 'opacity-100 font-bold' : 'opacity-50'}`}
+              class={`nav-link text-xs ${lang === code ? 'lang-active' : 'lang-inactive'}`}
               aria-label={name}
+              aria-current={lang === code ? 'true' : undefined}
             >
               {code.toUpperCase()}
             </a>
@@ -67,7 +89,8 @@ function isActive(href: string): boolean {
         })}
       </div>
 
-      <button class="theme-toggle ml-1" aria-label={t('nav.theme') as string} type="button">
+      <!-- Theme toggle (se mantiene como estaba) -->
+      <button class="theme-toggle" aria-label={t('nav.theme')} type="button">
         <svg class="bi" width="24" height="24" fill="currentColor">
           <use href="#sun" id="themeIcon"/>
         </svg>
@@ -77,20 +100,87 @@ function isActive(href: string): boolean {
 </header>
 
 <script>
-  const toggle = document.querySelector('.mobile-toggle')
-  const menu = document.querySelector('.nav-menu')
+  const toggler = document.querySelector<HTMLElement>('.nav-toggler')
+  const collapse = document.querySelector<HTMLElement>('.nav-collapse')
 
-  toggle?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden')
-    menu?.classList.toggle('flex')
-    menu?.classList.toggle('flex-col')
-    menu?.classList.toggle('absolute')
-    menu?.classList.toggle('top-16')
-    menu?.classList.toggle('inset-x-4')
-    menu?.classList.toggle('p-4')
-    menu?.classList.toggle('rounded-lg')
-    menu?.classList.toggle('border')
-    menu?.classList.toggle('border-[var(--gruvbox-yellow)]')
-    menu?.classList.toggle('shadow-lg')
+  /**
+   * Anima la altura del collapse (estilo Bootstrap collapse).
+   * Antes de abrir: `collapsing` con altura actual (0) + overflow hidden
+   * Después de abrir: `collapsing` con scrollHeight + transition height 0.35s
+   * Al terminar: clase `show`, altura auto, overflow visible
+   */
+  function toggleCollapse() {
+    if (!collapse) return
+    const isOpen = collapse.classList.contains('show')
+
+    if (isOpen) {
+      // Cerrar: altura actual → 0
+      collapse.style.height = `${collapse.scrollHeight}px`
+      // Force reflow
+      void collapse.offsetHeight
+      collapse.style.height = '0px'
+      collapse.style.overflow = 'hidden'
+      collapse.classList.remove('show')
+      collapse.classList.add('collapsing')
+    } else {
+      // Abrir: 0 → scrollHeight
+      collapse.style.height = '0px'
+      collapse.style.overflow = 'hidden'
+      collapse.classList.remove('collapse')
+      collapse.classList.add('collapsing')
+      // Force reflow
+      void collapse.offsetHeight
+      collapse.style.height = `${collapse.scrollHeight}px`
+    }
+  }
+
+  function onTransitionEnd(this: HTMLElement, e: TransitionEvent) {
+    if (e.propertyName !== 'height') return
+    const isOpening = this.style.height !== '0px' && this.style.height !== ''
+
+    this.classList.remove('collapsing')
+    this.classList.add('collapse')
+    if (isOpening) {
+      this.classList.add('show')
+      this.style.height = ''
+      this.style.overflow = ''
+    } else {
+      this.classList.remove('show')
+      this.style.height = ''
+      this.style.overflow = ''
+    }
+  }
+
+  collapse?.addEventListener('transitionend', onTransitionEnd)
+
+  toggler?.addEventListener('click', () => {
+    const expanded = toggler.getAttribute('aria-expanded') === 'true'
+    toggler.setAttribute('aria-expanded', String(!expanded))
+    toggleCollapse()
+  })
+
+  // Cerrar menú al hacer click fuera
+  document.addEventListener('click', (e) => {
+    const target = e.target as Node
+    if (
+      collapse?.classList.contains('show') &&
+      !collapse.contains(target) &&
+      !toggler?.contains(target)
+    ) {
+      toggler?.setAttribute('aria-expanded', 'false')
+      toggleCollapse()
+    }
+  })
+
+  // Cerrar menú al cambiar tamaño a desktop
+  const mql = window.matchMedia('(min-width: 992px)')
+  mql.addEventListener('change', () => {
+    if (collapse?.classList.contains('show')) {
+      collapse.classList.remove('show', 'collapsing')
+      collapse.classList.add('collapse')
+      collapse.style.height = ''
+      collapse.style.overflow = ''
+    }
+    toggler?.setAttribute('aria-expanded', 'false')
   })
 </script>
