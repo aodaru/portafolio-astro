@@ -8,9 +8,9 @@
 - **Idioma:** Español como idioma base; i18n ES/EN completo
 
 ## Estado actual
-- Fases 1–9 del roadmap implementadas. La Fase 9 (polish + deploy) está en PR,
-  pendiente de merge; su spec tiene el detalle en
-  `specs/2026-10-12-fase-9-polish-deploy/`.
+- Fases 1–9 del roadmap implementadas y **mergeadas en `main`**. El sitio está
+  publicado y verificado en `https://adalgarcia.com`. La spec de la Fase 9 está
+  en `specs/2026-10-12-fase-9-polish-deploy/`.
 - **Sitio bilingüe funcionando**: español en la raíz (`/`, `/blog`, `/trabajos`,
   `/contacto`) e inglés bajo `/en/...`. Contenido real en ambos idiomas en
   `src/content/blog/{es,en}/` y `src/content/projects/{es,en}/`.
@@ -49,7 +49,13 @@
   aplicar el estado final en JS, no solo anular la transición en CSS — si no,
   `transitionend` no dispara y el panel se queda a media altura.
 - **Deploy**: `.htaccess` de la raíz y de `/en/` (se copian desde `public/`); el
-  workflow los sube aparte porque el glob de `sftp` omite los dotfiles.
+  workflow los sube aparte porque el glob de `sftp` omite los dotfiles. El de la
+  raíz define `ErrorDocument 404 /404.html`: si se borra, las 404 pasan a ser las
+  genéricas del hosting.
+- **Rewrite de `astro.adalgarcia.com`**: su `.htaccess` de `public_html/`
+  reescribe todo hacia `/adalgarciaweb/`. Desplegar en la raíz de ese dominio
+  deja el sitio inalcanzable. Este proyecto va en `adalgarcia.com/public_html/`,
+  donde ese rewrite no aplica.
 
 ## Comandos
 - `pnpm dev` — servidor de desarrollo
@@ -68,10 +74,28 @@
 
 ## Deploy
 - Hosting: **Hostinger**, por SFTP desde `.github/workflows/deploy.yml`
-  (solo `main` o `workflow_dispatch`). Dominio: `adalgarcia.com`.
+  (solo `main` o `workflow_dispatch`). Publicado en `https://adalgarcia.com`
+  (ES) y `/en/` (EN).
+- Destino real: `/home/user/domains/adalgarcia.com/public_html/` — la
+  **raíz**, sin subcarpeta ni rewrite. Hosting en `127.0.0.1:<SFTP_PORT>`,
+  usuario `user`.
 - Secretos requeridos: `SFTP_HOST`, `SFTP_USERNAME`, `SFTP_SSH_KEY`,
   `SFTP_TARGET_DIR` (opcional `SFTP_PORT`). Nunca versionar credenciales.
+- **La clave SSH debe ser RSA en PEM** (`BEGIN RSA PRIVATE KEY`), no ed25519:
+  el action usa libcrypto y con el formato OpenSSH moderno falla con
+  `error in libcrypto`. `ssh-keygen -t rsa -b 4096 -m PEM -N "" -f <archivo>`.
+  Receta completa en el README, sección "Formato de la clave".
+- Otros sitios del mismo hosting que **no** son este proyecto:
+  `astro.adalgarcia.com/.../adalgarciaweb/` (Astro v5, respaldo),
+  `ssr.adalgarcia.com/` (Angular), `olive-wildcat-*.hostingersite.com`
+  (WordPress). Los `*.hostingersite.com` son placeholders de Hostinger, no
+  destinos de deploy.
+- El dominio debe existir en hPanel → Dominios antes de que el DNS signifique
+  algo: sin carpeta en `domains/` el vhost responde 403. Y Cloudflare proxied
+  sin SSL da **525**: proxy en gris hasta que el certificado esté emitido.
 - `delete_remote_files: false`: el workflow **no borra nada** del hosting.
+- `gh workflow run deploy.yml` falla con `workflow not found on the default
+  branch` mientras `deploy.yml` no haya llegado a `main`.
 
 ## Assets de referencia
 - `themeWp/` contiene el tema WordPress original (GruvBox, Bootstrap, SCSS), ya
