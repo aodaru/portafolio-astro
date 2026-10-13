@@ -67,6 +67,7 @@
 ## Documentación
 - `README.md` — estructura, guía corta para escribir posts y proyectos, deploy y fuentes
 - `docs/escribir-contenido.md` — manual de contenido: TOC, relacionados, imágenes, bilingüe
+- `docs/despliegue-hostinger.md` — manual de deploy paso a paso (clave RSA PEM, secretos, DNS/SSL, errores)
 - `specs/roadmap.md` — fases y entregables
 - `specs/<fecha>-<fase>/` — requirements, plan y validation por fase
 - `changelog.md` — bitácora de revisiones con veredicto
@@ -77,8 +78,8 @@
   (solo `main` o `workflow_dispatch`). Publicado en `https://adalgarcia.com`
   (ES) y `/en/` (EN).
 - Destino real: `/home/user/domains/adalgarcia.com/public_html/` — la
-  **raíz**, sin subcarpeta ni rewrite. Hosting en `127.0.0.1:<SFTP_PORT>`,
-  usuario `user`.
+  **raíz**, sin subcarpeta ni rewrite. Hosting por SFTP (host, puerto y usuario
+  viven en los secretos del repo; ver `docs/despliegue-hostinger.md`).
 - Secretos requeridos: `SFTP_HOST`, `SFTP_USERNAME`, `SFTP_SSH_KEY`,
   `SFTP_TARGET_DIR` (opcional `SFTP_PORT`). Nunca versionar credenciales.
 - **La clave SSH debe ser RSA en PEM** (`BEGIN RSA PRIVATE KEY`), no ed25519:

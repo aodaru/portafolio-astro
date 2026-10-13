@@ -6,6 +6,7 @@ desde GitHub Actions.
 
 > Documentación de proceso (roadmap, specs por fase): [`specs/`](specs/)
 > Reglas para agentes: [`AGENTS.md`](AGENTS.md)
+> Manual de deploy paso a paso: [`docs/despliegue-hostinger.md`](docs/despliegue-hostinger.md)
 
 ---
 
@@ -236,6 +237,9 @@ necesita.
 
 ## Deploy (Hostinger por SFTP)
 
+> Manual paso a paso (montaje, errores y cómo depurarlos):
+> [`docs/despliegue-hostinger.md`](docs/despliegue-hostinger.md).
+
 El sitio es estático: el workflow `.github/workflows/deploy.yml` construye con
 `pnpm` y sube el contenido de `dist/` al hosting por SFTP. Se dispara **solo** con
 push a `main` o a mano (`workflow_dispatch`, con un input `target_dir` para
@@ -283,7 +287,7 @@ directamente.
 | Secreto | Obligatorio | Contenido |
 |---|---|---|
 | `SFTP_HOST` | sí | IP del hosting (`127.0.0.1`) |
-| `SFTP_PORT` | no | Puerto SSH (aquí `<SFTP_PORT>`, no el 22) |
+| `SFTP_PORT` | no | Puerto SSH (no es el 22; el que provee Hostinger) |
 | `SFTP_USERNAME` | sí | Usuario SSH (`user`) |
 | `SFTP_SSH_KEY` | sí | Clave privada RSA en PEM, **con el salto de línea final** |
 | `SFTP_TARGET_DIR` | sí | `/home/user/domains/adalgarcia.com/public_html/` |
