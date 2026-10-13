@@ -2,9 +2,9 @@
 
 ## Estado de la fase
 
-**🟨 PARCIAL** — Grupos 1–5, 8 (local) y 9 hechos y verificados localmente.
-Grupo 6 **pendiente del deploy** (mide el estado publicado, que aún es `main`).
-Grupo 7 **bloqueado por el dueño** (falta el inventario de URLs del WordPress).
+**🟨 PARCIAL** — Grupos 1–6, 8 y 9 hechos y verificados (los de producción, tras
+el deploy). Grupo 7 **bloqueado por el dueño** (falta el inventario de URLs del
+WordPress).
 
 ## Criterios de éxito
 
@@ -89,24 +89,32 @@ Grupo 7 **bloqueado por el dueño** (falta el inventario de URLs del WordPress).
 
 ### 6. Lighthouse en la URL pública
 
-- [ ] Medición mobile y desktop sobre `/` y `/en/`
-- [ ] Resultados registrados en la tabla de abajo
-- [ ] Las 4 categorías en 90+ (o el desvío documentado con su causa)
+- [x] Medición mobile y desktop sobre `/` y `/en/`
+- [x] Resultados registrados en la tabla de abajo
+- [x] Las 4 categorías en 90+ (o el desvío documentado con su causa)
 
-> **Pendiente de que los cambios estén en producción.** Referencia local de este
-> cierre (`pnpm preview`, Lighthouse del navegador MCP, modo snapshot, ambos
-> temas): A11y 100, Best Practices 100 y SEO 100 en `/`, `/en/`, `/blog`,
-> `/en/blog`, `/blog/tags`, `/en/blog/tags`, `/blog/tags/Docker`,
-> `/blog/omarchy`, `/trabajos`, `/en/trabajos`, `/trabajos/portafolio`,
-> `/contacto` y `/en/contacto`. Performance no se mide local (decisión D8 de
-> `requirements.md`); en la Fase 9 fue 100 desktop / 97 mobile.
+> Medido el 2026-10-13 sobre `https://adalgarcia.com` con el PR ya desplegado
+> (deploy `38333801898` en verde). A11y/BP/SEO con Lighthouse del navegador
+> (modo snapshot, ambos temas); Performance con las métricas de laboratorio de
+> una traza sobre la URL pública (viewport móvil 390×844, CPU 4×) — Performance
+> **no da puntaje**, su audit está excluido de este Lighthouse y no se
+> reconstruye con una dependencia nueva solo para el número.
 
 | Página | Dispositivo | Performance | A11y | Best Practices | SEO |
 | ------ | ----------- | ----------- | ---- | -------------- | --- |
-| `/`    | Mobile      |             |      |                |     |
-| `/`    | Desktop     |             |      |                |     |
-| `/en/` | Mobile      |             |      |                |     |
-| `/en/` | Desktop     |             |      |                |     |
+| `/`    | Mobile      | LCP 0,89 s · CLS 0,00 | 100 | 100 | 100 |
+| `/`    | Desktop     | LCP 0,89 s · CLS 0,00 | 100 | 100 | 100 |
+| `/en/` | Mobile      | LCP 0,44 s · CLS 0,00 | 100 | 100 | 100 |
+| `/en/` | Desktop     | LCP 0,44 s · CLS 0,00 | 100 | 100 | 100 |
+
+> Nota: una corrida con Lighthouse completo desde el Chrome remoto (Browserless)
+> dio mobile **86 / 100 / 77 / 100**. El desvío no es del sitio: Cloudflare le
+> sirvió a ese navegador headless el reto `/cdn-cgi/challenge-platform/...`
+> (que aporta ~1,2 s de *script evaluation* → TBT 400 ms) y su beacon de
+> analytics (`static.cloudflareinsights.com`) falló con `ERR_CONNECTION_REFUSED`.
+> Los dos únicos fallos de Best Practices en esa corrida son justamente esos
+> scripts de Cloudflare, no código del sitio. Medición local del mismo código:
+> A11y/BP/SEO 100 en las 18 rutas auditadas.
 
 ### 7. Redirecciones 301
 
@@ -170,7 +178,7 @@ pnpm preview
 
 ## Criterio de merge a main
 
-- [ ] Todos los criterios marcados (los de producción, verificados tras el deploy)
+- [x] Los criterios de producción verificados tras el deploy (queda fuera el Grupo 7, bloqueado por el dueño)
 - [x] `pnpm check` y `pnpm build` en verde
 - [x] PR abierto
 - [x] Validación manual ejecutada (build, navegador, axe/Lighthouse)
@@ -186,7 +194,19 @@ pnpm preview
 - ✅ El contraste del tema oscuro no se degrada (solo sube: gray 2.95 → 4.97, blue 4.02 → 4.86)
 - ✅ Ninguna regla de `.htaccess` escrita a mano en hPanel
 
+## Verificación en producción (tras el deploy `38333801898`)
+
+- `/`, `/en/`, `/blog/`, `/en/blog/`, `/trabajos/`, `/contacto/`,
+  `/blog/omarchy/` y `/en/blog/docker/` → 200; ruta inexistente → 404 del sitio
+- El CSS publicado trae `backdrop-filter` **y** `-webkit-backdrop-filter`
+  (`/_astro/BaseLayout.CAVzI-ib.css`), más los tokens `--gruvbox-navbar-bg` y
+  `--gruvbox-*-ink`
+- `https://adalgarcia.com/en/blog` lista 4 posts; el `hreflang` de
+  `/en/blog/first-post` apunta a `/blog/primer-post` (ruta real)
+- Feeds: `/rss.xml` y `/en/rss.xml` con 4 items cada uno; el sitemap publica las
+  20 URLs de `/en/blog/`
+- Fecha del post en producción: `<time datetime="2026-01-01T00:00:00.000Z">1 de enero de 2026`
+
 ## Bloqueos externos
 
 - **Grupo 7** requiere el inventario de URLs indexadas del WordPress (Search Console o backup de la base). Sin él, las reglas no se inventan.
-- **Grupo 6** depende de que el sitio esté sirviendo la versión con los cambios del Grupo 3 para medir el estado final.

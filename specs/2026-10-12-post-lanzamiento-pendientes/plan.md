@@ -70,15 +70,18 @@ Marcar checkboxes al ejecutar.
 
 ## Grupo 6: Lighthouse sobre la URL pública
 
-> **Pendiente tras el deploy.** El sitio publicado todavía sirve la versión de
-> `main` (sin los cambios de los Grupos 3 y 4), así que medir ahora mediría el
-> estado viejo. Depende de que el PR entre a `main` y corra el workflow.
-> Referencia local de este cierre: A11y/BP/SEO 100 y 0 violaciones de contraste
-> (axe-core 4.10) en las 18 rutas auditadas × ambos temas con `pnpm preview`.
+> **Hecho tras el deploy** (`38333801898`): A11y/BP/SEO **100** en `/` y `/en/`,
+> mobile y desktop, sobre `https://adalgarcia.com`. Performance no da puntaje en
+> el Lighthouse disponible; se registran las métricas de laboratorio de la traza
+> (LCP 0,89 s en `/`, 0,44 s en `/en/`, CLS 0,00) y el desvío de la corrida desde
+> el Chrome remoto (challenge de Cloudflare). Detalle en `validation.md`.
 
-24. [ ] Medir Lighthouse mobile y desktop sobre `https://adalgarcia.com/` y `https://adalgarcia.com/en/`
-25. [ ] Registrar los resultados en `validation.md` (Performance, A11y, Best Practices, SEO)
-26. [ ] Si algo queda por debajo de 90, abrir la corrección correspondiente y re-medir
+24. [x] Medir Lighthouse mobile y desktop sobre `https://adalgarcia.com/` y `https://adalgarcia.com/en/`
+25. [x] Registrar los resultados en `validation.md` (Performance, A11y, Best Practices, SEO)
+26. [x] Si algo queda por debajo de 90, abrir la corrección correspondiente y re-medir
+    - Nada medible quedó por debajo: A11y/BP/SEO en 100 y LCP < 1 s, CLS 0.
+      El único desvío (86/100/77/100 desde el Chrome remoto) es el reto de
+      Cloudflare, no el sitio.
 
 ## Grupo 7: Redirecciones 301 del WordPress
 
