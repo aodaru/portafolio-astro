@@ -17,6 +17,7 @@ import { getImage } from 'astro:assets'
 import dockerImg from '../assets/posts/docker.jpg'
 import omarchyImg from '../assets/posts/omarchy.png'
 import primerPostImg from '../assets/posts/primer-post.jpg'
+import stackoverflowToIaImg from '../assets/posts/stackoverflowtoia.jpg'
 import intranetImg from '../assets/works/Intranet1_1.png'
 import webPageImg from '../assets/works/WebPage_8.png'
 
@@ -25,6 +26,7 @@ const assetsMap: Record<string, ImageMetadata> = {
   '/img/posts/docker.jpg': dockerImg,
   '/img/posts/omarchy.png': omarchyImg,
   '/img/posts/primer-post.jpg': primerPostImg,
+  '/img/posts/stackoverflowtoia.jpg': stackoverflowToIaImg,
   '/img/Works/Intranet1_1.png': intranetImg,
   '/img/Works/WebPage_8.png': webPageImg,
 }
