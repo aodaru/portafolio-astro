@@ -215,11 +215,77 @@ pendiente de Lighthouse de la Fase 7.
 
 ## Pendiente del dueño
 
-1. Cargar los secretos `SFTP_HOST`, `SFTP_USERNAME`, `SFTP_SSH_KEY` y
-   `SFTP_TARGET_DIR` (más la clave pública en `authorized_keys`) y correr el
-   workflow contra una subcarpeta de staging.
-2. Backup del WordPress y cambiar el DNS a `adalgarcia.com`; re-medir Lighthouse
-   sobre la URL pública.
+~~Cargar los secretos y correr el workflow~~ → **hecho 2026-10-13**, ver
+"Primer deploy a producción" más abajo.
+
+~~Backup del WordPress y cambiar el DNS a `adalgarcia.com`~~ → **hecho**: el
+dominio existe en hPanel, SSL emitido y DNS en Cloudflare apuntando a
+`127.0.0.1`.
+
+# Deploy — Primer deploy a producción
+
+**Fecha:** 2026-10-13
+**Veredicto:** PUBLICADO en `https://adalgarcia.com` (verificado ES/EN, 404, sitemap)
+
+## Contexto
+
+PR #4 mergeado en `main`, lo que disparó el primer deploy. La documentación
+(README, AGENTS.md, tech-stack) describía un destino y un dominio que no
+existían en el hosting, así que buena parte del trabajo fue descubrir el
+estado real antes de poder publicar.
+
+## Lo que había que verificar primero
+
+- **El dominio no existía.** `adalgarcia.com` no estaba en `domains/` del
+  hosting: el vhost respondía 403 y el `public_html` del home era un symlink
+  roto. Un dominio ausente en hPanel → Dominios no se arregla desde Cloudflare.
+- **Había tres sitios más en el mismo plan** (`astro.adalgarcia.com` con el
+  Astro v5 anterior, `ssr.adalgarcia.com` con Angular, y un WordPress en
+  `olive-wildcat-*.hostingersite.com`). Los `*.hostingersite.com` son
+  placeholders de Hostinger, no destinos de deploy.
+- **El `.htaccess` de `astro.adalgarcia.com/public_html/` reescribe todo hacia
+  `/adalgarciaweb/`**, así que desplegar en la raíz de ese dominio deja el
+  sitio inalcanzable. Este proyecto va en la raíz de `adalgarcia.com`, donde
+  ese rewrite no aplica.
+
+## Bugs encontrados y corregidos
+
+| Bug | Detalle |
+|---|---|
+| Deploy fallaba con `error in libcrypto` | La clave ed25519 de `ssh-keygen` está en formato OpenSSH moderno (`BEGIN OPENSSH PRIVATE KEY`), que SSH acepta pero `wlixcc/SFTP-Deploy-Action` no procesa. Resuelto con una clave **RSA 4096 en PEM**; la pública se añadió a `~/.ssh/authorized_keys` |
+| `gh workflow run` no encontraba el workflow | `deploy.yml` solo vivía en la rama feature. GitHub exige que el workflow esté en la rama por defecto para despacharlo: el primer merge a `main` es lo que lo habilita |
+| `adalgarcia.com` daba 525 | Cloudflare proxied sin certificado emitido. Proxy en gris hasta activar el SSL en hPanel |
+
+## Detalles que costaron tiempo
+
+- `ssh-keygen -p -m PEM` **no** convierte una ed25519 existente, y `-m PEM`
+  rechaza ed25519 al generar en OpenSSH 10.5: hay que generar RSA en PEM
+  directamente. La prueba local con `ssh`/`sftp` da OK con ed25519, así que
+  **el fallo solo se ve en el runner**.
+- 403 y 525 son fallos distintos con causas distintas: 403 = el dominio no está
+  en hPanel; 525 = el proxy de Cloudflare no negotiate TLS con el origen.
+- `sftp_only: true` no crea carpetas: el destino debe existir antes del deploy.
+
+## Verificación
+
+- Secretos: `SFTP_HOST=127.0.0.1`, `SFTP_PORT=<SFTP_PORT>`,
+  `SFTP_USERNAME=user`, `SFTP_TARGET_DIR` a la raíz de
+  `domains/adalgarcia.com/public_html/`
+- Deploy `#38329666049` en verde: 99 archivos, ambos `.htaccess` en su sitio
+- Producción: `/`, `/blog/`, `/trabajos/`, `/contacto/`, `/en/`, `/en/blog/` y
+  `/en/trabajos/` → 200; ruta inexistente → 404 con el diseño del sitio
+  (`<title>404 — Teapartydev</title>`), o sea que el `ErrorDocument` funciona en
+  ambos idiomas; `sitemap-index.xml` y `favicon.svg` → 200
+- Los 403 en `/_astro/` y `/fonts/` son correctos: `Options -Indexes` bloqueando
+  el listado de directorios
+
+## Pendiente
+
+- Lighthouse sobre la URL pública (el de la spec es local, con `pnpm preview`)
+- Redirecciones 301 de las URLs indexadas del WordPress
+- `default.php` de Hostinger queda bajo `index.html`: inofensivo, borrable a mano
+- `authorized_keys` tiene la ed25519 original además de la RSA en uso; la
+  ed25519 se puede quitar
 
 # Review — Reconciliación de ramas divergentes (Fase 6 + Fase 8)
 
