@@ -104,7 +104,7 @@ Marcar checkboxes al ejecutar.
 
 31. [x] Borrar las ramas locales ya mergeadas en `main`
     - `backup/fase-8-rediseno-home-20261012`, `feat/fase-5b-exploracion-disenos-home`, `feat/fase-8-port-i18n`, `feat/fase-8-rediseno-home`, `feat/fase-9-polish-deploy`, `feat/internacionalizacion`, `feat/seo-performance`
-32. [ ] Borrar las ramas remotas correspondientes ya mergeadas
+32. [x] Borrar las ramas remotas correspondientes ya mergeadas
 33. [x] Dejar registrado el pendiente de hosting que no se resuelve desde el repo
     - `default.php` de Hostinger bajo `index.html` (inofensivo, borrable a mano)
     - La clave ed25519 antigua sigue en `authorized_keys` junto a la RSA en uso
