@@ -6,7 +6,7 @@ import { blogPath, getLangFromId, getSlugFromId } from '../i18n/content'
 export const GET = async (context: APIContext) => {
   const posts = await getCollection('blog')
   const published = posts
-    .filter((post) => !post.data.draft)
+    .filter((post) => !post.data.draft && getLangFromId(post.id) === 'es')
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 
   return rss({

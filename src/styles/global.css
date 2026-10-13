@@ -95,10 +95,25 @@
   --gruvbox-green: #689d6a;
   --gruvbox-blue: #458588;
   --gruvbox-gray: #928374;
-  /* Ámbar legible sobre el fondo claro (el `yellow` se queda en 2.2:1).
-   * Se usa donde el amarillo es texto y no decoración. */
-  --gruvbox-yellow-ink: #b57614;
+  /* ── Tokens `*-ink`: la versión legible de cada acento ───────────────
+   * Los colores de la paleta GruvBox son acentos para bordes, iconos y
+   * fondos; como texto sobre el fondo claro varios no llegan a 4.5:1
+   * (yellow 2.2:1, gray 3.2:1, green 2.8:1, orange 3.4:1, blue 3.7:1).
+   * Donde el acento es texto se usa su `*-ink`, que no altera los colores
+   * de marca ni los bordes. En tema oscuro solo se corrigen los que no
+   * llegaban (gray y blue) para no degradar nada. */
+  --gruvbox-yellow-ink: #7d5600;
+  --gruvbox-gray-ink: #665c54;
+  --gruvbox-blue-ink: #046172;
+  --gruvbox-green-ink: #3d7050;
+  --gruvbox-orange-ink: #af3a03;
+  --gruvbox-red-ink: #b0180f;
   --gruvbox-card: rgba(191, 175, 135, 0.3);
+  /* Fondo del navbar: semitransparente para que el `backdrop-filter: blur()`
+   * se perciba cuando el contenido pasa por debajo. Réplica del WordPress
+   * (`rgba(var(--bs-secondary-bg-rgb), 0.5)`), pero como token y desde la
+   * paleta del sitio en lugar de un valor suelto. */
+  --gruvbox-navbar-bg: rgba(235, 219, 178, 0.5);
   --gruvbox-header-from: rgba(189, 174, 147, 0.8);
   --gruvbox-header-to: rgba(168, 153, 132, 0.8);
   --gruvbox-close: #fb4934;
@@ -117,7 +132,13 @@
   --gruvbox-blue: #83a598;
   --gruvbox-gray: #928374;
   --gruvbox-yellow-ink: #fabd2f;
+  --gruvbox-gray-ink: #bdae93;
+  --gruvbox-blue-ink: #a3c9c4;
+  --gruvbox-green-ink: #8ec07c;
+  --gruvbox-orange-ink: #fe8019;
+  --gruvbox-red-ink: #ff6f65;
   --gruvbox-card: rgba(235, 219, 178, 0.12);
+  --gruvbox-navbar-bg: rgba(60, 56, 54, 0.5);
   --gruvbox-header-from: rgba(80, 73, 69, 0.8);
   --gruvbox-header-to: rgba(60, 56, 54, 0.8);
   --gruvbox-close: #cc241d;

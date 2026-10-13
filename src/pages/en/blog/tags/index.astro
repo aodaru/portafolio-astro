@@ -40,7 +40,7 @@ const tags = [...counts.entries()].sort(
     <a
       href={blogIndexPath(lang)}
       class="inline-flex items-center gap-1 mb-6 no-underline transition-opacity duration-300 hover:opacity-80"
-      style="color: var(--gruvbox-blue);"
+      style="color: var(--gruvbox-blue-ink);"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
@@ -49,11 +49,11 @@ const tags = [...counts.entries()].sort(
     </a>
 
     <h1 class="text-3xl font-bold mb-2" style="font-family: 'Courier New', monospace;">
-      <span style="color: var(--gruvbox-green);">$</span>
-      <span style="color: var(--gruvbox-yellow); margin-left: 0.5rem;">ls</span> tags/
+      <span style="color: var(--gruvbox-green-ink);">$</span>
+      <span style="color: var(--gruvbox-yellow-ink); margin-left: 0.5rem;">ls</span> tags/
       <span class="terminal-cursor"></span>
     </h1>
-    <p class="mb-8 opacity-60" style="font-family: 'MesloLG', monospace; font-size: var(--fs-small);">
+    <p class="mb-8 opacity-80" style="font-family: 'MesloLG', monospace; font-size: var(--fs-small);">
       {t('blog.tags.count', {
         tags: tags.length,
         posts: posts.length,
@@ -79,7 +79,7 @@ const tags = [...counts.entries()].sort(
     </ul>
 
     <div class="mt-10">
-      <h2 class="font-bold mb-3" style="font-family: 'Courier New', monospace; color: var(--gruvbox-yellow); font-size: 1.1rem;">
+      <h2 class="font-bold mb-3" style="font-family: 'Courier New', monospace; color: var(--gruvbox-yellow-ink); font-size: 1.1rem;">
         {t('blog.tags.recent')}
       </h2>
       <ul class="tags-recent">
@@ -124,18 +124,18 @@ const tags = [...counts.entries()].sort(
   }
 
   .tags-cloud-hash {
-    color: var(--gruvbox-green);
+    color: var(--gruvbox-green-ink);
     font-family: "MesloLG", monospace;
   }
 
   .tags-cloud-name {
-    color: var(--gruvbox-blue);
+    color: var(--gruvbox-blue-ink);
     font-family: "MesloLG", monospace;
     font-size: 0.9rem;
   }
 
   .tags-cloud-count {
-    color: var(--gruvbox-gray);
+    color: var(--gruvbox-gray-ink);
     font-family: "MesloLG", monospace;
     font-size: 0.72rem;
   }
@@ -164,7 +164,7 @@ const tags = [...counts.entries()].sort(
   }
 
   .tags-recent-date {
-    color: var(--gruvbox-gray);
+    color: var(--gruvbox-gray-ink);
     font-family: "MesloLG", monospace;
     font-size: 0.72rem;
     white-space: nowrap;

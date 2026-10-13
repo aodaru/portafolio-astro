@@ -168,8 +168,8 @@
 - [x] Deploy con GitHub Actions a Hostinger por SFTP (`.github/workflows/deploy.yml`, destino en secretos)
 - [x] Reglas de `.htaccess` para que la 404 se sirva por idioma en el hosting
 - [x] Performance: fuentes subseteadas (1,98 MB → 186 KB), poster del hero, preload del LCP
-- [ ] Dominio personalizado y HTTPS — lo hace el dueño al cambiar el DNS (fuera de alcance de la fase)
-- [ ] Re-medición de Lighthouse sobre la URL pública tras el cambio de DNS (local: 100 desk / 97 mob)
+- [x] Dominio personalizado y HTTPS — `adalgarcia.com` en hPanel, SSL emitido y DNS por Cloudflare (hecho 2026-10-13)
+- [ ] Re-medición de Lighthouse sobre la URL pública tras el cambio de DNS (local: 100 desk / 97 mob) — pendiente de la spec `specs/2026-10-12-post-lanzamiento-pendientes/`
 
 **Entregable**: Sitio en producción, accesible públicamente.
 
@@ -177,6 +177,9 @@
 
 ## Fase 10: Post-lanzamiento (futuro)
 Mejoras posteriores al MVP
+
+> **En standby (decisión del dueño, 2026-10-12).** No se implementa ni se borra:
+> queda registrada la intención original. Ver `specs/2026-10-12-post-lanzamiento-pendientes/requirements.md` (D1).
 
 - [ ] Comentarios en blog (opción: Webmentions, Giscus)
 - [ ] Buscador interno de posts

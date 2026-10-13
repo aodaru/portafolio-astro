@@ -6,6 +6,7 @@ tags: ["Arch Linux", "Hyprland", "Linux", "Omarchy", "Productivity", "Wayland"]
 image: "/img/posts/omarchy.png"
 draft: false
 lang: es
+translationKey: "omarchy"
 ---
 
 Dentro del universo de las distribuciones GNU/Linux, Arch Linux siempre se ha erguido como el desafío definitivo. Es, sin duda, la distro que más retos representa, pero también la que mejor se adapta al usuario experto. En Arch, tienes el poder de armar un sistema componente a componente, exactamente como lo deseas; sin embargo, esa libertad tiene un precio: el tiempo.

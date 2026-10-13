@@ -67,9 +67,9 @@ const relatedImages = await Promise.all(
   relatedFallback.length > 0 && (
     <section class="post-related">
       <h2 class="post-related-heading">
-        <span style="color: var(--gruvbox-green);">$</span>
-        <span style="color: var(--gruvbox-yellow); margin-left: 0.5rem;">grep</span>
-        <span class="opacity-60">&nbsp;{relatedLabel}</span>
+        <span style="color: var(--gruvbox-green-ink);">$</span>
+        <span style="color: var(--gruvbox-yellow-ink); margin-left: 0.5rem;">grep</span>
+        <span class="opacity-80">&nbsp;{relatedLabel}</span>
         <span class="terminal-cursor" />
       </h2>
       <div class="post-related-grid">
@@ -129,13 +129,13 @@ const relatedImages = await Promise.all(
   .post-nav-dir {
     font-family: "MesloLG", "Courier New", monospace;
     font-size: var(--fs-small, 0.8rem);
-    color: var(--gruvbox-blue);
+    color: var(--gruvbox-blue-ink);
   }
 
   .post-nav-title {
     font-family: "MesloLG", "Courier New", monospace;
     font-size: 0.95rem;
-    color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow-ink);
     line-height: 1.35;
   }
 
@@ -193,7 +193,7 @@ const relatedImages = await Promise.all(
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--gruvbox-gray);
+    color: var(--gruvbox-gray-ink);
   }
 
   .post-related-title {

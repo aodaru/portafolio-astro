@@ -59,35 +59,63 @@ export function countWords(body: string | undefined): number {
     .filter(Boolean).length
 }
 
+/**
+ * Clave de emparejamiento de un post. `translationKey` es la fuente de verdad
+ * (el slug cambia entre idiomas: `primer-post` ↔ `first-post`); si el post no
+ * la declara se usa el slug como respaldo.
+ */
+function pairKey(post: CollectionEntry<'blog'>): string {
+  return post.data.translationKey ?? getSlugFromId(post.id)
+}
+
 /** ¿Existe la traducción de este post en otro idioma? */
 export function findTranslation(
   posts: CollectionEntry<'blog'>[],
   id: string
 ): CollectionEntry<'blog'> | undefined {
-  const slug = getSlugFromId(id)
-  return posts.find((post) => getSlugFromId(post.id) === slug && post.id !== id)
+  const post = posts.find((p) => p.id === id)
+  if (!post) return undefined
+  const key = pairKey(post)
+  return posts.find((p) => p.id !== id && pairKey(p) === key)
 }
 
 /**
- * hreflang para un post: solo incluye idiomas que realmente tienen versión.
- * Con un solo idioma disponible queda únicamente `x-default`.
+ * hreflang para un post: solo incluye idiomas que realmente tienen versión, con
+ * la ruta de cada versión (los slugs pueden diferir por idioma). Con un solo
+ * idioma disponible queda únicamente `x-default`.
+ *
+ * Recibe **todos** los posts publicados, no solo los del idioma actual: si se le
+ * pasa una lista ya filtrada por idioma nunca encuentra la otra versión y el
+ * `<link rel="alternate">` apunta a una ruta inexistente.
  */
 export function postAlternates(
   posts: CollectionEntry<'blog'>[],
   id: string,
   site: URL
 ): { lang: string; href: string }[] {
-  const slug = getSlugFromId(id)
-  const langs = LANGS.filter((lang) =>
-    posts.some((post) => getSlugFromId(post.id) === slug && getLangFromId(post.id) === lang)
-  )
-  const alternates: { lang: string; href: string }[] = langs.map((lang) => ({
-    lang,
-    href: new URL(blogPath(lang, slug), site).href,
-  }))
+  const post = posts.find((p) => p.id === id)
+  if (!post) return []
+
+  const key = pairKey(post)
+  const versions = posts.filter((p) => pairKey(p) === key)
+  const alternates: { lang: string; href: string }[] = []
+
+  for (const lang of LANGS) {
+    const version = versions.find((p) => getLangFromId(p.id) === lang)
+    if (!version) continue
+    alternates.push({
+      lang,
+      href: new URL(blogPath(lang, getSlugFromId(version.id)), site).href,
+    })
+  }
+
+  const fallback = versions.find((p) => getLangFromId(p.id) === 'es') ?? post
   alternates.push({
     lang: 'x-default',
-    href: new URL(blogPath('es', slug), site).href,
+    href: new URL(
+      blogPath(getLangFromId(fallback.id), getSlugFromId(fallback.id)),
+      site
+    ).href,
   })
   return alternates
 }

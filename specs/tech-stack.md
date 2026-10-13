@@ -21,6 +21,25 @@
 | Dark/Light | CSS custom properties + `prefers-color-scheme` + toggle con persistencia | Implementado |
 | Animación | CSS + `IntersectionObserver` y `ClientRouter` (View Transitions de Astro) | Implementado |
 
+### Minificación del CSS y prefijos de vendor
+Vite minifica el CSS con **Lightning CSS** y toma los targets de
+`vite.build.cssTarget` en `astro.config.ts` (`chrome111`, `firefox128`,
+`safari16.4`, los mismos que usa Tailwind v4). Sin targets, Lightning CSS no sabe
+qué navegadores siguen necesitando el prefijo y **colapsa las parejas
+`propiedad` + `-webkit-propiedad` a una sola declaración**. Por eso:
+
+- los prefijos **no se escriben a mano** en el CSS fuente (`backdrop-filter` va
+  sin `-webkit-`): los añade el minificador según los targets;
+- si se escribe el prefijo en el fuente, el build puede dejar solo el `-webkit-`
+  y el efecto desaparece en Chrome/Firefox.
+
+### Contraste
+Los acentos de GruvBox son para bordes, iconos y fondos; como texto sobre el
+fondo claro varios no llegan a 4.5:1. Donde el acento es **texto** se usa su
+token `*-ink` (en `src/styles/global.css`, por tema): `--gruvbox-yellow-ink`,
+`gray-ink`, `blue-ink`, `green-ink`, `orange-ink`, `red-ink`. Los colores base y
+los bordes no cambian.
+
 ## Contenido
 | Tipo | Formato | Ruta |
 |---|---|---|
@@ -33,7 +52,7 @@ Esquemas en `src/content.config.ts`; guía de frontmatter en el README.
 
 ## SEO & Performance
 - `@astrojs/sitemap` — sitemap automático (la 404 excluida por `filter`)
-- `@astrojs/rss` — feed por idioma (`/rss.xml`, `/en/rss.xml`)
+- `@astrojs/rss` — feed **por idioma** (`/rss.xml` solo ES, `/en/rss.xml` solo EN)
 - Meta tags OG/Twitter, canonical y `hreflang` por página (`BaseLayout.astro`)
 - Imágenes optimizadas con `astro:assets` (`sharp`); los estáticos de contenido
   viven en `src/assets/` y se resuelven con `resolveImageUrl()` / `ContentImage`
@@ -48,7 +67,10 @@ Esquemas en `src/content.config.ts`; guía de frontmatter en el README.
 - Content collections separadas por idioma (`src/content/blog/es`, `.../en`)
 - Diccionarios de UI en `src/i18n/ui.ts`; helpers en `utils.ts` y `content.ts`
 - `hreflang` y `<html lang>` automáticos; en posts es condicional según qué
-  versiones existan
+  versiones existan. El emparejamiento ES/EN se hace por **`translationKey`**
+  (no por slug: `primer-post` ↔ `first-post`), con el slug como respaldo. Las
+  fechas se formatean siempre en **UTC** (`formatDate` en `utils.ts`): las del
+  frontmatter son medianoche UTC y sin fijar la zona se renderizaban un día antes.
 
 ## Despliegue
 | Proveedor | Notas |
@@ -68,7 +90,10 @@ Deploy.
 2. **CMS** — solo Markdown; WordPress headless no está contemplado.
 3. **Analytics** — Plausible/Umami autohospedado está en Fase 10, junto con
    comentarios (Giscus/Webmentions), buscador interno, `/now` y modo print del CV.
-4. **Redirecciones 301** del WordPress vivo a las rutas de Astro: fuera del
-   alcance de la Fase 9; hay que revisar las URLs indexadas antes del cambio de DNS.
-5. **Contraste tema claro** fuera de `/` y `/en/`: títulos de post, fechas y tags
-   en `/blog`, `/trabajos` y tags siguen por debajo de 4.5:1.
+4. **Redirecciones 301** del WordPress anterior: **bloqueadas**. Las reglas van
+   versionadas en `public/.htaccess` (nunca a mano en hPanel, se pierden en el
+   próximo deploy), pero falta el inventario de URLs indexadas, que solo tiene el
+   dueño (Search Console o backup de la base). No se inventan reglas.
+5. **Limpieza de hosting** que no se hace desde el repo: `default.php` de
+   Hostinger bajo `index.html` (inofensivo, borrable a mano) y la clave ed25519
+   antigua que sigue en `authorized_keys` junto a la RSA en uso.

@@ -1,7 +1,6 @@
 .terminal-card {
   background: var(--gruvbox-card);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border: 2px solid var(--gruvbox-gray);
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -70,7 +69,7 @@
 .terminal-command {
   font-size: 1.3rem;
   font-weight: 700;
-  color: var(--gruvbox-yellow);
+  color: var(--gruvbox-yellow-ink);
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
@@ -79,13 +78,13 @@
 }
 
 .terminal-prompt {
-  color: var(--gruvbox-green);
+  color: var(--gruvbox-green-ink);
   font-weight: bold;
 }
 
 .terminal-prompt::before {
   content: '$ ';
-  color: var(--gruvbox-yellow);
+  color: var(--gruvbox-yellow-ink);
 }
 
 .terminal-cursor {
@@ -105,7 +104,7 @@
 
 .terminal-list li::before {
   content: '▸ ';
-  color: var(--gruvbox-yellow);
+  color: var(--gruvbox-yellow-ink);
   font-weight: bold;
   margin-right: 0.5rem;
 }
