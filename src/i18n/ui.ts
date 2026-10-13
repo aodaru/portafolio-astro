@@ -71,6 +71,7 @@ export const ui: Record<keyof typeof languages, Translations> = {
 
     'blog.title': 'Blog — Teapartydev',
     'blog.description': 'Artículos y tutoriales de Adal Michael García sobre desarrollo, sistemas y tecnología',
+    'blog.intro': 'Notas sobre sistemas, desarrollo y cosas que aprendí por el camino.',
     'blog.empty': 'No hay artículos publicados todavía.',
     'blog.prev': '← Anterior',
     'blog.next': 'Siguiente →',
@@ -91,6 +92,7 @@ export const ui: Record<keyof typeof languages, Translations> = {
 
     'works.title': 'Trabajos — Teapartydev',
     'works.description': 'Portafolio de proyectos de Adal Michael García',
+    'works.intro': 'Cosas que he construido y deployado recientemente.',
     'works.empty': 'No hay proyectos publicados todavía.',
     'works.back': 'Volver a trabajos',
     'works.visit': 'Visitar proyecto',
@@ -169,6 +171,7 @@ export const ui: Record<keyof typeof languages, Translations> = {
 
     'blog.title': 'Blog — Teapartydev',
     'blog.description': 'Articles and tutorials by Adal Michael García about development, systems and technology',
+    'blog.intro': 'Notes on systems, development and things I learned along the way.',
     'blog.empty': 'No articles published yet.',
     'blog.prev': '← Previous',
     'blog.next': 'Next →',
@@ -189,6 +192,7 @@ export const ui: Record<keyof typeof languages, Translations> = {
 
     'works.title': 'Works — Teapartydev',
     'works.description': 'Project portfolio by Adal Michael García',
+    'works.intro': 'Things I have recently built and deployed.',
     'works.empty': 'No projects published yet.',
     'works.back': 'Back to works',
     'works.visit': 'Visit project',

@@ -35,7 +35,7 @@ const translatePath = useTranslatedPath(lang)
     <a
       href={translatePath('/trabajos')}
       class="inline-flex items-center gap-1 mb-6 no-underline transition-all duration-300 hover:opacity-80"
-      style="color: var(--gruvbox-blue);"
+      style="color: var(--gruvbox-blue-ink);"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
@@ -46,11 +46,11 @@ const translatePath = useTranslatedPath(lang)
     <article>
       <header class="mb-8">
         <div class="flex items-center gap-2 mb-4">
-          <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
+          <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray-ink);">
             {formatDate(project.data.date, lang)}
           </span>
         </div>
-        <h1 class="text-3xl font-bold mb-4" style="color: var(--gruvbox-orange); font-family: 'Courier New', monospace;">
+        <h1 class="text-3xl font-bold mb-4" style="color: var(--gruvbox-orange-ink); font-family: 'Courier New', monospace;">
           {project.data.title}
         </h1>
         <p class="text-lg mb-4 opacity-80">{project.data.description}</p>
@@ -59,7 +59,7 @@ const translatePath = useTranslatedPath(lang)
             {project.data.tags.map((tag) => (
               <span
                 class="text-xs px-2 py-1 rounded"
-                style="background: var(--gruvbox-card); color: var(--gruvbox-blue); border: 1px solid var(--gruvbox-blue);"
+                style="background: var(--gruvbox-card); color: var(--gruvbox-blue-ink); border: 1px solid var(--gruvbox-blue);"
               >
                 #{tag}
               </span>
@@ -72,7 +72,7 @@ const translatePath = useTranslatedPath(lang)
             target="_blank"
             rel="noopener noreferrer"
             class="inline-flex items-center gap-2 px-4 py-2 rounded no-underline transition-all duration-300"
-            style="background: var(--gruvbox-yellow); color: var(--gruvbox-bg);"
+            style="background: var(--gruvbox-yellow-ink); color: var(--gruvbox-bg);"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
               <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
@@ -92,7 +92,7 @@ const translatePath = useTranslatedPath(lang)
             <span class="terminal-dot minimize"></span>
             <span class="terminal-dot maximize"></span>
           </div>
-          <span class="terminal-title">adalgarcia@portfolio: ~/proyectos/{project.id}</span>
+          <span class="terminal-title">adalgarcia@portfolio: ~/projects/{project.id}</span>
         </div>
         <div class="terminal-body prose-styles">
           <Content />
@@ -109,7 +109,7 @@ const translatePath = useTranslatedPath(lang)
   }
 
   .prose-styles :global(h2) {
-    color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow-ink);
     margin-top: 2rem;
     margin-bottom: 0.75rem;
     font-size: 1.5rem;
@@ -117,7 +117,7 @@ const translatePath = useTranslatedPath(lang)
   }
 
   .prose-styles :global(h3) {
-    color: var(--gruvbox-orange);
+    color: var(--gruvbox-orange-ink);
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
     font-size: 1.25rem;
@@ -141,7 +141,7 @@ const translatePath = useTranslatedPath(lang)
 
   .prose-styles :global(ul li::before) {
     content: '▸ ';
-    color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow-ink);
     font-weight: bold;
   }
 
@@ -155,7 +155,7 @@ const translatePath = useTranslatedPath(lang)
   }
 
   .prose-styles :global(strong) {
-    color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow-ink);
   }
 
   .prose-styles :global(code) {
@@ -163,7 +163,7 @@ const translatePath = useTranslatedPath(lang)
     padding: 0.15rem 0.4rem;
     border-radius: 4px;
     font-size: 0.875rem;
-    color: var(--gruvbox-green);
+    color: var(--gruvbox-green-ink);
   }
 
   .prose-styles :global(pre) {
@@ -198,7 +198,7 @@ const translatePath = useTranslatedPath(lang)
     text-align: left;
     padding: 0.5rem;
     border-bottom: 2px solid var(--gruvbox-orange);
-    color: var(--gruvbox-orange);
+    color: var(--gruvbox-orange-ink);
     font-weight: 700;
   }
 
@@ -208,7 +208,7 @@ const translatePath = useTranslatedPath(lang)
   }
 
   .prose-styles :global(a) {
-    color: var(--gruvbox-blue);
+    color: var(--gruvbox-blue-ink);
     text-decoration: underline;
     text-underline-offset: 2px;
   }

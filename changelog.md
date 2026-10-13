@@ -1,3 +1,100 @@
+# Review — Cierre de pendientes post-lanzamiento (fechas, glass, contraste, i18n)
+
+**Fecha:** 2026-10-13
+**Veredicto:** CORREGIDO (`check` 0 errores, build 54 páginas, 0 violaciones de
+contraste en 18 rutas × 2 temas, verificado en navegador)
+
+Spec: `specs/2026-10-12-post-lanzamiento-pendientes/`. Cierra casi todo lo que
+quedó abierto tras el lanzamiento; quedan fuera el Lighthouse sobre la URL
+pública (necesita el deploy) y las 301 del WordPress (necesitan el inventario
+de URLs, que solo tiene el dueño).
+
+## 1. Fechas: se formatean en UTC
+
+`date: 2026-01-01` en el frontmatter es medianoche UTC, así que
+`toLocaleDateString` sin zona lo renderizaba como **31 de diciembre** en
+cualquier locale al oeste de UTC. `formatDate()` fija `timeZone: 'UTC'`.
+
+Verificado con `TZ=America/Bogota`: post, listado y RSS coinciden (1 de enero de
+2026 / `Thu, 01 Jan 2026 00:00:00 GMT`) en ES y EN.
+
+## 2. Glass del navbar: el prefijo lo pone el minificador
+
+Dos causas, no una:
+
+- **El build recortaba las parejas de prefijos.** Vite minifica el CSS con
+  Lightning CSS y toma los targets de `vite.build.cssTarget`, que no estaba
+  configurado. Sin targets, Lightning CSS no sabe qué navegadores siguen
+  necesitando el prefijo y colapsa `backdrop-filter` + `-webkit-backdrop-filter`
+  a una sola declaración, y como en el fuente el `-webkit-` iba después, dejaba
+  **solo** el prefijo (efecto invisible en Chrome/Firefox). Fix: `cssTarget:
+  ['chrome111', 'firefox128', 'safari16.4']` en `astro.config.ts` y **no escribir
+  el prefijo a mano** en el CSS (9 archivos).
+- **El navbar tenía `background-color: transparent`**, así que el blur no se
+  percibía sobre el fondo plano. Se añade el token `--gruvbox-navbar-bg`
+  (`rgba(235,219,178,0.5)` en claro, `rgba(60,56,54,0.5)` en oscuro), la réplica
+  del `rgba(var(--bs-secondary-bg-rgb), 0.5)` del WordPress.
+
+Verificado en `dist/`: `backdrop-filter` y `-webkit-backdrop-filter` en las 4
+medidas (8/10/12/20 px), y capturas con contenido desplazado bajo el navbar en
+ambos temas.
+
+## 3. Contraste: tokens `*-ink` en todo el sitio
+
+Los acentos GruvBox no llegan a 4.5:1 como texto en tema claro. Se extiende el
+patrón de `--gruvbox-yellow-ink` con `gray-ink`, `blue-ink`, `green-ink`,
+`orange-ink` y `red-ink` (claro/oscuro), y se sustituyen **127 usos de `color:`
+como texto** en blog, tags, trabajos, contacto, home, error y los componentes
+compartidos. Los colores base, los bordes y los fondos no cambian.
+
+- En oscuro solo se corrigen los que no llegaban (gray 2.95 → 4.97, blue
+  4.02 → 4.86); el resto queda igual: sin regresión.
+- La medición con axe destapó casos que el cálculo sobre el fondo del `body` no
+  veía: chips `.post-tag` (4.46 → 4.80+ sobre el fondo del terminal), CTA
+  "Visitar proyecto" en `/trabajos/[slug]` (crema sobre amarillo, **2.18:1** →
+  5.78:1, ahora `--gruvbox-yellow-ink` de fondo), `.post-toc-heading` y
+  `.post-nav-title` (4.3 → 4.83), el párrafo del tag con `opacity-75` sobre un
+  span de color (3.55 → 5.82) y el `.err-output-code` de la 404 (3.76/3.99).
+- `opacity-60` → `opacity-80` en los párrafos introductorios (3.9:1 → 7.1:1).
+
+## 4. Contenido en inglés
+
+- Traducidos `docker`, `omarchy` y `terminal` a `src/content/blog/en/`.
+- **`translationKey` en los 4 pares ES/EN** (incluido `primer-post` ↔
+  `first-post`). `postAlternates()` emparejaba por **slug** y recibía solo los
+  posts del idioma actual: nunca encontraba la otra versión y el `x-default` de
+  `first-post` apuntaba a `/blog/first-post`, que no existe. Ahora empareja por
+  `translationKey` (con el slug de respaldo) y recibe las dos listas.
+- **Feeds por idioma**: `/en/rss.xml` publicaba los 8 posts (los 4 en español
+  incluidos) con la descripción en español. Ahora filtra por `lang`, y título y
+  descripción van en inglés.
+- Texto en español que quedaba en páginas EN: la intro de `/en/blog` y la de
+  `/en/trabajos` (claves `blog.intro` y `works.intro` nuevas), `ls -la proyectos/`
+  y `~/proyectos/` del terminal.
+
+## 5. Redirecciones 301 y limpieza
+
+- **Bloqueadas**: no hay copia de las URLs indexadas del WordPress en el repo
+  (`themeWp/` es la plantilla del tema, no el sitio). No se inventan reglas. En
+  `public/.htaccess` queda el bloque comentado con el formato y las advertencias;
+  el pendiente se anota en `specs/tech-stack.md`.
+- Borradas las 7 ramas locales mergeadas y sus 5 equivalentes en `origin`
+  (incluida `docs/fase-9-deploy-real`).
+- Documentada la limpieza de hosting que no se hace desde el repo: `default.php`
+  bajo `index.html` y la ed25519 antigua en `authorized_keys`.
+
+## Verificación
+
+- `pnpm check` → 0 errors, 0 warnings · `pnpm build` → 54 páginas
+- axe-core 4.10 (`color-contrast`) en 18 rutas × 2 temas (con las 404 de ambos
+  idiomas): 0 violaciones; pills del navbar 5.78:1 (claro) / 8.69:1 (oscuro)
+- Lighthouse del navegador (snapshot, ambos temas): A11y/BP/SEO 100 en `/`,
+  `/en/`, `/blog`, `/trabajos`, `/contacto` y sus pares y detalles
+- `/en/blog` lista 4 posts; `hreflang` correcto en los 4 pares; sitemap con las
+  rutas nuevas; `/en/rss.xml` con 4 items
+
+---
+
 # Review — Navbar: el selector de idioma pasa a un solo botón
 
 **Fecha:** 2026-10-12
@@ -215,11 +312,77 @@ pendiente de Lighthouse de la Fase 7.
 
 ## Pendiente del dueño
 
-1. Cargar los secretos `SFTP_HOST`, `SFTP_USERNAME`, `SFTP_SSH_KEY` y
-   `SFTP_TARGET_DIR` (más la clave pública en `authorized_keys`) y correr el
-   workflow contra una subcarpeta de staging.
-2. Backup del WordPress y cambiar el DNS a `adalgarcia.com`; re-medir Lighthouse
-   sobre la URL pública.
+~~Cargar los secretos y correr el workflow~~ → **hecho 2026-10-13**, ver
+"Primer deploy a producción" más abajo.
+
+~~Backup del WordPress y cambiar el DNS a `adalgarcia.com`~~ → **hecho**: el
+dominio existe en hPanel, SSL emitido y DNS en Cloudflare apuntando a
+`127.0.0.1`.
+
+# Deploy — Primer deploy a producción
+
+**Fecha:** 2026-10-13
+**Veredicto:** PUBLICADO en `https://adalgarcia.com` (verificado ES/EN, 404, sitemap)
+
+## Contexto
+
+PR #4 mergeado en `main`, lo que disparó el primer deploy. La documentación
+(README, AGENTS.md, tech-stack) describía un destino y un dominio que no
+existían en el hosting, así que buena parte del trabajo fue descubrir el
+estado real antes de poder publicar.
+
+## Lo que había que verificar primero
+
+- **El dominio no existía.** `adalgarcia.com` no estaba en `domains/` del
+  hosting: el vhost respondía 403 y el `public_html` del home era un symlink
+  roto. Un dominio ausente en hPanel → Dominios no se arregla desde Cloudflare.
+- **Había tres sitios más en el mismo plan** (`astro.adalgarcia.com` con el
+  Astro v5 anterior, `ssr.adalgarcia.com` con Angular, y un WordPress en
+  `olive-wildcat-*.hostingersite.com`). Los `*.hostingersite.com` son
+  placeholders de Hostinger, no destinos de deploy.
+- **El `.htaccess` de `astro.adalgarcia.com/public_html/` reescribe todo hacia
+  `/adalgarciaweb/`**, así que desplegar en la raíz de ese dominio deja el
+  sitio inalcanzable. Este proyecto va en la raíz de `adalgarcia.com`, donde
+  ese rewrite no aplica.
+
+## Bugs encontrados y corregidos
+
+| Bug | Detalle |
+|---|---|
+| Deploy fallaba con `error in libcrypto` | La clave ed25519 de `ssh-keygen` está en formato OpenSSH moderno (`BEGIN OPENSSH PRIVATE KEY`), que SSH acepta pero `wlixcc/SFTP-Deploy-Action` no procesa. Resuelto con una clave **RSA 4096 en PEM**; la pública se añadió a `~/.ssh/authorized_keys` |
+| `gh workflow run` no encontraba el workflow | `deploy.yml` solo vivía en la rama feature. GitHub exige que el workflow esté en la rama por defecto para despacharlo: el primer merge a `main` es lo que lo habilita |
+| `adalgarcia.com` daba 525 | Cloudflare proxied sin certificado emitido. Proxy en gris hasta activar el SSL en hPanel |
+
+## Detalles que costaron tiempo
+
+- `ssh-keygen -p -m PEM` **no** convierte una ed25519 existente, y `-m PEM`
+  rechaza ed25519 al generar en OpenSSH 10.5: hay que generar RSA en PEM
+  directamente. La prueba local con `ssh`/`sftp` da OK con ed25519, así que
+  **el fallo solo se ve en el runner**.
+- 403 y 525 son fallos distintos con causas distintas: 403 = el dominio no está
+  en hPanel; 525 = el proxy de Cloudflare no negotiate TLS con el origen.
+- `sftp_only: true` no crea carpetas: el destino debe existir antes del deploy.
+
+## Verificación
+
+- Secretos: `SFTP_HOST=127.0.0.1`, `SFTP_PORT=<SFTP_PORT>`,
+  `SFTP_USERNAME=user`, `SFTP_TARGET_DIR` a la raíz de
+  `domains/adalgarcia.com/public_html/`
+- Deploy `#38329666049` en verde: 99 archivos, ambos `.htaccess` en su sitio
+- Producción: `/`, `/blog/`, `/trabajos/`, `/contacto/`, `/en/`, `/en/blog/` y
+  `/en/trabajos/` → 200; ruta inexistente → 404 con el diseño del sitio
+  (`<title>404 — Teapartydev</title>`), o sea que el `ErrorDocument` funciona en
+  ambos idiomas; `sitemap-index.xml` y `favicon.svg` → 200
+- Los 403 en `/_astro/` y `/fonts/` son correctos: `Options -Indexes` bloqueando
+  el listado de directorios
+
+## Pendiente
+
+- Lighthouse sobre la URL pública (el de la spec es local, con `pnpm preview`)
+- Redirecciones 301 de las URLs indexadas del WordPress
+- `default.php` de Hostinger queda bajo `index.html`: inofensivo, borrable a mano
+- `authorized_keys` tiene la ed25519 original además de la RSA en uso; la
+  ed25519 se puede quitar
 
 # Review — Reconciliación de ramas divergentes (Fase 6 + Fase 8)
 

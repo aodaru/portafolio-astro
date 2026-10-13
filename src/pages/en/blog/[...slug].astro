@@ -40,13 +40,16 @@ const siblings = (await getCollection('blog'))
   .filter((p) => !p.data.draft && getLangFromId(p.id) === lang)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 
+// Para el `hreflang` sí hacen falta los posts de los dos idiomas.
+const publishedPosts = (await getCollection('blog')).filter((p) => !p.data.draft)
+
 const words = countWords(post.body)
 const readingTime = formatReadingTime(words)
 
 const tocHeadings = headings.filter((h) => h.depth === 2)
 const showToc = tocHeadings.length >= 3
 
-const alternates = postAlternates(siblings, post.id, Astro.site ?? new URL('https://adalgarcia.com'))
+const alternates = postAlternates(publishedPosts, post.id, Astro.site ?? new URL('https://adalgarcia.com'))
 
 // Los estáticos viven en `src/assets/` (se optimizan a WebP); los GIF en
 // `public/`. Usar `post.data.image` directo daba 404 en las jpg/png.
@@ -67,7 +70,7 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
     <a
       href={blogIndexPath(lang)}
       class="inline-flex items-center gap-1 mb-6 no-underline transition-opacity duration-300 hover:opacity-80"
-      style="color: var(--gruvbox-blue);"
+      style="color: var(--gruvbox-blue-ink);"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
@@ -155,8 +158,8 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
       {showToc && (
         <nav class="post-toc" aria-label={t('blog.toc.label')}>
           <span class="post-toc-heading">
-            <span style="color: var(--gruvbox-green);">$</span>
-            <span style="color: var(--gruvbox-yellow); margin-left: 0.5rem;">
+            <span style="color: var(--gruvbox-green-ink);">$</span>
+            <span style="color: var(--gruvbox-yellow-ink); margin-left: 0.5rem;">
               {lang === 'en' ? 'contents' : 'toc'}
             </span>
           </span>
@@ -186,7 +189,7 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
   }
 
   .post-title {
-    color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow-ink);
     font-family: "MesloLG", "Courier New", monospace;
     font-size: clamp(1.5rem, 4vw, 2.1rem);
     font-weight: 700;
@@ -207,7 +210,7 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
     flex-wrap: wrap;
     gap: 0.5rem 1.4rem;
     font-size: 0.8rem;
-    color: var(--gruvbox-gray);
+    color: var(--gruvbox-gray-ink);
     margin-bottom: 1.1rem;
   }
 
@@ -236,7 +239,7 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
     padding: 0.2rem 0.55rem;
     border-radius: 4px;
     background: var(--gruvbox-card);
-    color: var(--gruvbox-blue);
+    color: var(--gruvbox-blue-ink);
     border: 1px solid var(--gruvbox-blue);
   }
 
@@ -258,7 +261,7 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
     padding-top: 1rem;
     border-top: 1px dashed var(--gruvbox-gray);
     font-size: 0.8rem;
-    color: var(--gruvbox-gray);
+    color: var(--gruvbox-gray-ink);
   }
 
   .post-toc {
@@ -286,18 +289,18 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
   }
 
   .post-toc a {
-    color: var(--gruvbox-blue);
+    color: var(--gruvbox-blue-ink);
     text-decoration: none;
     font-size: 0.88rem;
   }
 
   .post-toc a:hover {
-    color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow-ink);
   }
 
   .post-toc a::before {
     content: '▸ ';
-    color: var(--gruvbox-green);
+    color: var(--gruvbox-green-ink);
   }
 
   /* --- prosa --- */
@@ -307,7 +310,7 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
   }
 
   .prose-styles :global(h2) {
-    color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow-ink);
     margin-top: 2rem;
     margin-bottom: 0.75rem;
     font-size: 1.5rem;
@@ -315,7 +318,7 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
   }
 
   .prose-styles :global(h3) {
-    color: var(--gruvbox-orange);
+    color: var(--gruvbox-orange-ink);
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
     font-size: 1.25rem;
@@ -339,7 +342,7 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
 
   .prose-styles :global(ul li::before) {
     content: '▸ ';
-    color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow-ink);
     font-weight: bold;
   }
 
@@ -353,7 +356,7 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
   }
 
   .prose-styles :global(strong) {
-    color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow-ink);
   }
 
   .prose-styles :global(code) {
@@ -361,7 +364,7 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
     padding: 0.15rem 0.4rem;
     border-radius: 4px;
     font-size: 0.875rem;
-    color: var(--gruvbox-green);
+    color: var(--gruvbox-green-ink);
   }
 
   .prose-styles :global(pre) {
@@ -401,7 +404,7 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
     text-align: left;
     padding: 0.5rem;
     border-bottom: 2px solid var(--gruvbox-yellow);
-    color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow-ink);
     font-weight: 700;
   }
 
@@ -411,7 +414,7 @@ const heroImage = await resolveImageUrl(post.data.image, 1200)
   }
 
   .prose-styles :global(a) {
-    color: var(--gruvbox-blue);
+    color: var(--gruvbox-blue-ink);
     text-decoration: underline;
     text-underline-offset: 2px;
   }

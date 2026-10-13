@@ -34,7 +34,7 @@ const posts = allPosts
     <a
       href={translatePath('/blog')}
       class="inline-flex items-center gap-1 mb-6 no-underline transition-all duration-300 hover:opacity-80"
-      style="color: var(--gruvbox-blue);"
+      style="color: var(--gruvbox-blue-ink);"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
@@ -43,13 +43,13 @@ const posts = allPosts
     </a>
 
     <h1 class="text-3xl font-bold mb-2" style="font-family: 'Courier New', monospace;">
-      <span style="color: var(--gruvbox-green); font-weight: bold;">$</span>
-      <span style="color: var(--gruvbox-yellow); margin-left: 0.5rem;">grep</span> -r "{tag}" posts/
+      <span style="color: var(--gruvbox-green-ink); font-weight: bold;">$</span>
+      <span style="color: var(--gruvbox-yellow-ink); margin-left: 0.5rem;">grep</span> -r "{tag}" posts/
       <span class="terminal-cursor"></span>
     </h1>
-    <p class="mb-8 opacity-75">
+    <p class="mb-8">
       {t('blog.tagged', { count: posts.length, plural: posts.length !== 1 ? 's' : '' })}
-      <span style="color: var(--gruvbox-blue);">#{tag}</span>
+      <span style="color: var(--gruvbox-blue-ink);">#{tag}</span>
     </p>
 
     {posts.length === 0 && (
@@ -73,11 +73,11 @@ const posts = allPosts
           </div>
           <div class="terminal-body">
             <div class="flex items-center gap-2 mb-4 select-none">
-              <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray);">
+              <span class="text-xs uppercase tracking-wider" style="color: var(--gruvbox-gray-ink);">
                 {formatDate(new Date(post.data.date), lang)}
               </span>
             </div>
-            <h2 class="text-xl font-bold mb-2" style="color: var(--gruvbox-yellow);">
+            <h2 class="text-xl font-bold mb-2" style="color: var(--gruvbox-yellow-ink);">
               {post.data.title}
             </h2>
             <p class="opacity-75 mb-3">{post.data.description}</p>

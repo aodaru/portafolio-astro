@@ -96,14 +96,18 @@ Contenido...
 | `updated` | no | Si está, se muestra "Última actualización" al pie |
 | `author` | no | Por defecto `Adal Michael García` |
 | `lang` | sí | `es` \| `en`; **debe coincidir con el subdirectorio** |
-| `translationKey` | no | Aceptado por el esquema, pero **no se usa**. Las traducciones se emparejan por el mismo nombre de archivo |
+| `translationKey` | no | Empareja la versión ES y la EN para el `hreflang`. Mismo valor en los dos archivos; si falta, se usa el nombre del archivo |
 
 Reglas bilingües:
 
-1. **Mismo slug** en ambos idiomas: `es/mi-post.md` ↔ `en/mi-post.md`.
+1. **`translationKey` igual** en ambos idiomas; los slugs pueden diferir
+   (`es/primer-post.md` ↔ `en/first-post.md`, ambos con
+   `translationKey: "primer-post"`). Sin `translationKey` el emparejamiento cae
+   al nombre del archivo.
 2. **`lang`** debe coincidir con la carpeta; las páginas filtran por este campo.
 3. Los tags son por idioma: `/blog/tags/<tag>` y `/en/blog/tags/<tag>` solo listan posts de su idioma.
 4. Paginación: 5 posts por página (`/blog/page/[n]`, `/en/blog/page/[n]`).
+5. Cada feed publica solo su idioma (`/rss.xml` ES, `/en/rss.xml` EN).
 
 Code fences se resaltan con Shiki (temas GruvBox claro/oscuro, vía `data-theme`).
 

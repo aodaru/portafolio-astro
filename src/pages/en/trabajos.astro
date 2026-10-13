@@ -21,12 +21,12 @@ const projects = allProjects
 >
   <div class="max-w-4xl mx-auto px-4 py-12 animate-fade-in">
     <h1 class="text-3xl font-bold mb-2" style="font-family: 'Mononoki', monospace;">
-      <span style="color: var(--gruvbox-green);">$</span>
-      <span style="color: var(--gruvbox-yellow); margin-left: 0.5rem;">ls</span> -la proyectos/
+      <span style="color: var(--gruvbox-green-ink);">$</span>
+      <span style="color: var(--gruvbox-yellow-ink); margin-left: 0.5rem;">ls</span> -la projects/
       <span class="terminal-cursor"></span>
     </h1>
-    <p class="mb-8 opacity-60" style="font-family: 'MesloLG', monospace; font-size: var(--fs-small);">
-      Cosas que he construido y deployado recientemente.
+    <p class="mb-8 opacity-80" style="font-family: 'MesloLG', monospace; font-size: var(--fs-small);">
+      {t('works.intro')}
     </p>
 
     {projects.length === 0 && (
@@ -86,7 +86,6 @@ const projects = allProjects
     flex-direction: column;
     background: var(--gruvbox-card);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--gruvbox-card);
     border-radius: 12px;
     overflow: hidden;
@@ -154,7 +153,7 @@ const projects = allProjects
     font-size: var(--fs-micro);
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--gruvbox-gray);
+    color: var(--gruvbox-gray-ink);
     margin-bottom: 0.4rem;
   }
 
@@ -162,13 +161,13 @@ const projects = allProjects
     font-family: "Mononoki", monospace;
     font-weight: 700;
     font-size: 1.2rem;
-    color: var(--gruvbox-orange);
+    color: var(--gruvbox-orange-ink);
     margin: 0 0 0.5rem;
     transition: color 0.3s ease;
   }
 
   .project-card:hover .project-card-title {
-    color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow-ink);
   }
 
   .project-card-desc {
@@ -197,7 +196,7 @@ const projects = allProjects
     border-top: 1px solid var(--gruvbox-card);
     font-family: "MesloLG", monospace;
     font-size: 0.82rem;
-    color: var(--gruvbox-yellow);
+    color: var(--gruvbox-yellow-ink);
     gap: 0.4rem;
     transition: gap 0.3s ease;
     position: relative;
