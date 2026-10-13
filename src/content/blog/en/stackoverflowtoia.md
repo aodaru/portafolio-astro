@@ -3,16 +3,11 @@ title: "From StackOverflow to AI: how can a junior learn to program when AI alre
 description: "AI speeds up programming, but learning still demands judgment, practice, and curiosity. How can a junior developer evolve?"
 date: 2026-10-12
 tags:
-  [
-    "programming",
-    "artificial intelligence",
-    "software development",
-    "learning",
-  ]
+  ["programming", "artificial intelligence", "software development", "learning"]
 image: "/img/posts/stackoverflowtoia.jpg"
 draft: false
 lang: en
-translationKey: "de-stackoverflow-a-la-ia-junior"
+translationKey: "stackoverflowtoia"
 ---
 
 For years, when we got stuck while programming, we looked for an answer on Google or Stack Overflow. We found an example in C#, Python, or Node.js, adapted it, and kept trying until it solved our problem.
