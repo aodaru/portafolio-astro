@@ -26,6 +26,7 @@ export const ui: Record<keyof typeof languages, Translations> = {
     'nav.repo': 'Repo',
     'nav.menu': 'Menú de navegación',
     'nav.theme': 'Cambiar tema',
+    'nav.lang.to': 'Cambiar idioma a',
 
     'footer.copyright': '© {year} Adal Michael García',
 
@@ -96,7 +97,7 @@ export const ui: Record<keyof typeof languages, Translations> = {
 
     'contact.title': 'Contacto — Teapartydev',
     'contact.description': 'Ponte en contacto con Adal Michael García',
-    'contact.text': 'Puedes encontrarme en las siguientes redes sociales o enviarme un correo electrónico.',
+    'contact.text': 'Puedes encontrarme en las siguientes redes sociales.',
 
     'error.404.title': '404 — Teapartydev',
     'error.404.description': 'Página no encontrada en adalgarcia.com',
@@ -123,6 +124,7 @@ export const ui: Record<keyof typeof languages, Translations> = {
     'nav.repo': 'Repo',
     'nav.menu': 'Navigation menu',
     'nav.theme': 'Toggle theme',
+    'nav.lang.to': 'Switch language to',
 
     'footer.copyright': '© {year} Adal Michael García',
 
@@ -193,7 +195,7 @@ export const ui: Record<keyof typeof languages, Translations> = {
 
     'contact.title': 'Contact — Teapartydev',
     'contact.description': 'Get in touch with Adal Michael García',
-    'contact.text': 'You can find me on the following social networks or send me an email.',
+    'contact.text': 'You can find me on the following social networks.',
 
     'error.404.title': '404 — Teapartydev',
     'error.404.description': 'Page not found on adalgarcia.com',

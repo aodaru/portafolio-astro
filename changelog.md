@@ -1,3 +1,161 @@
+# Review — Navbar: el selector de idioma pasa a un solo botón
+
+**Fecha:** 2026-10-12
+**Veredicto:** CORREGIDO (`check` 0 errores, verificado en navegador)
+
+## Contexto
+
+El selector de idioma era un par de enlaces (`ES` | `EN`) con el idioma actual
+resaltado. Ocupaba dos elementos y empujaba al resto de la barra; en móvil
+sumaba una fila más al panel desplegado.
+
+## Cambio
+
+- **`src/components/Navbar.astro`**: los dos enlaces se sustituyen por un único
+  `<a>`-pill (`.lang-switch`) que muestra el código del idioma **al que lleva**,
+  no el actual (en español se ve `EN`). El idioma vigente se sobreentiende por
+  contexto. El `aria-label` anuncia el destino («Cambiar idioma a English»): un
+  enlace cuyo nombre accesible es solo «EN» no le dice a un lector de pantalla
+  qué hace, y el nombre visible va `aria-hidden` para no duplicarse.
+- **`src/i18n/ui.ts`**: nueva clave `nav.lang.to` (ES/EN) como prefijo del
+  `aria-label`.
+- **`src/styles/components/navbar.css`**: pill con el mismo lenguaje visual que
+  `.theme-toggle` (fondo amarillo, glifo en monoespaciada).
+  - Estados `:link`, `:visited`, `:hover`, `:focus` y `:active` fijan `color`
+    de forma explícita. Sin eso el navegador aplicaba el color de enlace
+    visitado sobre el fondo amarillo y el botón «se perdía» al hacer click
+    continuo.
+  - `transition-property` acotada a `background-color` y `transform`: con `all`
+    el color se animaba también durante la navegación, lo que lo hacía parpadear.
+  - `:active` con tono más oscuro y `scale(0.96)` para que el clic se vea al
+    soltar el ratón.
+  - `:focus-visible` usa `--gruvbox-bg` como `outline`: con `--gruvbox-fg`
+    quedaba casi invisible sobre el amarillo.
+- Se retiran `.lang-switcher`, `.lang-active` y `.lang-inactive`.
+
+## Verificación
+
+- `pnpm check` → 0 errors, 0 warnings
+- A 390 px y en desktop: el pill se lee y es pulsable; el anillo de foco se ve
+  al tabular.
+
+---
+
+# Review — Fix: el icono de sol salía sin los rayos horizontales
+
+**Fecha:** 2026-10-12
+**Veredicto:** CORREGIDO (`check` 0 errores, verificado en navegador)
+
+## Contexto
+
+El toggle de tema usaba un sol con solo los cuatro rayos diagonales: le
+faltaban los horizontales y el rayo sur estaba mal escrito.
+
+## Causa raíz
+
+El `path` del `<symbol id="sun">` en `src/layouts/BaseLayout.astro` llegó
+truncado al pegarlo. Faltaban los segmentos de los rayos este y oeste, y el del
+sur quedó como `…0 0 1 0-1v-2A.5.5 0 0 1 0 13`, una secuencia de coordenadas
+que el navegador descarta en silencio (sin error en consola).
+
+## Cambio
+
+- **`src/layouts/BaseLayout.astro`**: `path` de `#sun` restituido. Es el mismo
+  glifo que el `#moon` de al lado, de Bootstrap Icons; ahora sí, el sol está
+  completo.
+
+## Verificación
+
+- `pnpm check` → 0 errors, 0 warnings
+- El sol se ve con los ocho rayos en ambos temas.
+
+---
+
+# Review — Fix: menú móvil invisible al terminar el dropdown
+
+**Fecha:** 2026-10-12
+**Veredicto:** CORREGIDO (`check` 0 errores, verificado en navegador a 390 px)
+
+## Contexto
+
+Reportado en móvil: el dropdown del menú abría con la animación de altura, pero
+al terminar el área del menú quedaba vacía — los enlaces desaparecían.
+
+## Causa raíz
+
+El script de `Navbar.astro` replicaba el patrón Bootstrap collapse y, al acabar
+`transitionend`, añadía la clase `collapse` al panel. Esa clase colisiona con la
+utilidad de Tailwind 4:
+
+```css
+.collapse { visibility: collapse; }
+```
+
+`.nav-collapse` es un flex item de `.nav-container`. En un flex item,
+`visibility: collapse` equivale a `hidden` pero conserva su hueco: el panel
+medía 228 px y los enlaces quedaban invisibles. Además del caso reportado, se
+disparaba al cruzar a desktop con el menú abierto (el handler de resize añadía
+`collapse`, y el media query de desktop no anulaba `visibility`).
+
+## Cambio
+
+Se abandona el vocabulario de Bootstrap (`collapse` / `collapsing` / `show`),
+que ahora colisiona con Tailwind, por clases que no existen en el framework:
+`is-animating` (transición de altura) e `is-open` (abierto). En reposo el panel
+usa `display: none`.
+
+- **`src/styles/components/navbar.css`**: estados `.is-animating` / `.is-open`
+  con `visibility: visible` explícito; el bloque desktop mantiene
+  `display: flex !important`; `.nav-collapse` se suma a `prefers-reduced-motion`.
+- **`src/components/Navbar.astro`**: helpers `finishOpen` / `finishClose`; el
+  cierre fija la altura en px y commitea la transición (reflow) antes de bajarla
+  a 0; `transitionend` ignora eventos de elementos hijos; con
+  `prefers-reduced-motion` se aplica el estado final sin esperar el evento (si
+  solo se anula la transición en CSS, `transitionend` no dispara y el panel se
+  quedaría a media altura).
+
+## Verificación
+
+- `pnpm check` → 0 errors, 0 warnings
+- Navegador a 390 px: al terminar la animación el panel queda en `is-open`
+  (228 px) con Blog, Trabajos, Contacto y Repo visibles; al cerrar queda en
+  `display: none` y el hueco desaparece.
+- Redimensionar a desktop con el menú abierto: la barra horizontal sigue visible.
+
+---
+
+# Review — Contacto: quitar el correo, dejar solo redes sociales
+
+**Fecha:** 2026-10-12
+**Veredicto:** CORREGIDO (`check` 0 errores, verificado en navegador)
+
+## Contexto
+
+Se pidió retirar el correo como canal de contacto y dejar únicamente los enlaces
+a redes sociales.
+
+## Cambio
+
+- **`src/pages/contacto.astro`** y **`src/pages/en/contacto.astro`**: eliminado
+  el bloque `.contact-email` (mailto `hola@teapartydev.com`) y sus estilos.
+- **`src/pages/index.astro`** y **`src/pages/en/index.astro`**: eliminado
+  `const email` y el botón `mailto:` de la card de contacto.
+- **`src/styles/pages/home.css`**: borrado `.wp-social-btn--email`, que quedaba
+  huérfano.
+- **`src/i18n/ui.ts`**: `contact.text` ES/EN ya no menciona "correo
+  electrónico" / "email".
+
+## Verificación
+
+- `grep` en `src/`: sin referencias a `mailto`, `hola@teapartydev`,
+  `contact-email` ni `const email`.
+- `pnpm check` → 0 errors, 0 warnings
+- Navegador: `/contacto`, `/en/contacto`, `/` y `/en/` dan 0 enlaces `mailto` y
+  4 redes cada uno. El JSON-LD `Person` de la home ya listaba solo las 4 redes
+  en `sameAs`.
+
+---
+
 # Review — Fase 9: Polish & Deploy
 
 **Fecha:** 2026-10-12
