@@ -42,6 +42,12 @@
   `prefers-reduced-motion` — el criterio es bloqueante, no opcional.
 - **Colores de texto**: los acentos de la paleta GruvBox no siempre llegan a
   4.5:1 (sobre todo en tema claro); para texto existe `--gruvbox-yellow-ink`.
+- **Clases del navbar móvil**: los estados son `is-animating` / `is-open`, nunca
+  `collapse` / `collapsing` / `show`. Tailwind 4 ya define `.collapse` como
+  `visibility: collapse`, que en un flex item deja el hueco pero oculta el
+  contenido: el menú abría y se veía vacío. Con `prefers-reduced-motion` hay que
+  aplicar el estado final en JS, no solo anular la transición en CSS — si no,
+  `transitionend` no dispara y el panel se queda a media altura.
 - **Deploy**: `.htaccess` de la raíz y de `/en/` (se copian desde `public/`); el
   workflow los sube aparte porque el glob de `sftp` omite los dotfiles.
 
@@ -53,7 +59,8 @@
 - `pnpm sync` — regenerar tipos
 
 ## Documentación
-- `README.md` — estructura, **guía para escribir posts y proyectos**, deploy y fuentes
+- `README.md` — estructura, guía corta para escribir posts y proyectos, deploy y fuentes
+- `docs/escribir-contenido.md` — manual de contenido: TOC, relacionados, imágenes, bilingüe
 - `specs/roadmap.md` — fases y entregables
 - `specs/<fecha>-<fase>/` — requirements, plan y validation por fase
 - `changelog.md` — bitácora de revisiones con veredicto

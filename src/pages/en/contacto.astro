@@ -66,11 +66,6 @@ const t = useTranslations(lang)
         <span class="contact-card-arrow">→</span>
       </a>
     </div>
-
-    <div class="contact-email">
-      <span class="contact-email-icon">✉</span>
-      <a href="mailto:hola@teapartydev.com">hola@teapartydev.com</a>
-    </div>
   </div>
 </BaseLayout>
 
@@ -149,35 +144,6 @@ const t = useTranslations(lang)
   .contact-card:hover .contact-card-arrow {
     opacity: 1;
     transform: translateX(0);
-  }
-
-  .contact-email {
-    margin-top: 2rem;
-    padding: 1.25rem;
-    text-align: center;
-    background: var(--gruvbox-card);
-    border: 1px solid var(--gruvbox-card);
-    border-radius: 12px;
-  }
-
-  .contact-email-icon {
-    display: block;
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .contact-email a {
-    font-family: "MesloLG", monospace;
-    font-size: var(--fs-body);
-    color: var(--gruvbox-yellow);
-    text-decoration: none;
-    border-bottom: 1px solid currentColor;
-    padding-bottom: 2px;
-    transition: color 0.2s;
-  }
-
-  .contact-email a:hover {
-    color: var(--gruvbox-orange);
   }
 
   @media (prefers-reduced-motion: reduce) {

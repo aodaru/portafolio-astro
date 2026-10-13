@@ -27,7 +27,9 @@ Usar **pnpm**. El proyecto es ESM (`"type": "module"`).
 
 - Español (default, sin prefijo): `/`, `/blog`, `/trabajos`, `/contacto`
 - Inglés (prefijo `/en`): `/en/`, `/en/blog`, `/en/trabajos`, `/en/contacto`
-- Selector ES | EN en el Navbar; `<html lang>` y `hreflang` automáticos vía `src/layouts/BaseLayout.astro`.
+- Selector de idioma en el Navbar: un botón-pill con el código del idioma
+  **al que lleva** («EN» en la versión española); el `aria-label` anuncia el
+  destino. `<html lang>` y `hreflang` automáticos vía `src/layouts/BaseLayout.astro`.
 - 404 bilingüe: `src/pages/404.astro` (ES → `dist/404.html`) y
   `src/pages/en/404.astro` (EN → `dist/en/404/`); ambas con `noindex`.
 
@@ -58,6 +60,9 @@ public/             # favicon, fuentes (subsets), imágenes, robots.txt, .htacce
 ---
 
 ## Escribir un post
+
+Guía completa (tabla de contenidos, relacionados, anterior/siguiente,
+imágenes y la versión en inglés): [`docs/escribir-contenido.md`](docs/escribir-contenido.md).
 
 Crear `src/content/blog/es/<slug>.md`. **La carpeta es el idioma**: `es/` o `en/`.
 La URL se deriva del slug, sin la carpeta: `es/docker.md` → `/blog/docker`
@@ -91,7 +96,7 @@ Contenido...
 | `updated` | no | Si está, se muestra "Última actualización" al pie |
 | `author` | no | Por defecto `Adal Michael García` |
 | `lang` | sí | `es` \| `en`; **debe coincidir con el subdirectorio** |
-| `translationKey` | no | Mismo valor en ambas versiones para relacionarlas |
+| `translationKey` | no | Aceptado por el esquema, pero **no se usa**. Las traducciones se emparejan por el mismo nombre de archivo |
 
 Reglas bilingües:
 
@@ -132,7 +137,7 @@ Descripción larga del proyecto...
 | `tags` | sí | Lista de stacks |
 | `image` | no | |
 | `url` | no | Botón **"Visitar proyecto"**. Vacío si es privado |
-| `repo` | no | Botón **"Ver código"**. Vacío si es privado |
+| `repo` | no | El esquema lo acepta, pero la ficha **no pinta** el botón. Vacío si es privado |
 | `draft` | no | |
 | `lang` | sí | `es` \| `en`; **debe coincidir con el subdirectorio** |
 

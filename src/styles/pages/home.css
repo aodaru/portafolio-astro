@@ -432,17 +432,6 @@
   flex-shrink: 0;
 }
 
-.wp-social-btn--email {
-  border-color: var(--gruvbox-orange);
-  color: var(--gruvbox-orange);
-}
-
-.wp-social-btn--email:hover {
-  background: var(--gruvbox-orange);
-  border-color: var(--gruvbox-orange);
-  color: var(--gruvbox-bg);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .wp-social-btn {
     transition: none;

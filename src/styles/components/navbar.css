@@ -136,41 +136,40 @@
   }
 }
 
-/* ── Nav collapse (mobile: vertical con animación Bootstrap, desktop: inline) ── */
+/* ── Nav collapse (mobile: vertical en el flow, desktop: inline) ──
+   Estados: reposo (sin clase), .is-animating, .is-open.
+   No usar la clase `collapse`: Tailwind la define como
+   `visibility: collapse` y, en un flex item, conserva el hueco
+   pero no pinta el contenido. */
 .nav-collapse {
-  display: block; /* el JS controla visibilidad con .collapse/.collapsing/.show */
+  display: none; /* cerrado en reposo, también en la primera carga */
   flex-basis: 100%;
   order: 3;
-  height: 0;
   overflow: hidden;
-  transition: height 0.35s ease;
+  visibility: visible;
 }
 
-/* Bootstrap-style collapse: oculto por defecto */
-.nav-collapse.collapse:not(.show) {
-  display: none;
-}
-
-/* Estado de transición: altura animada, overflow hidden */
-.nav-collapse.collapsing {
+/* Altura animada. El JS fija height inline; aquí solo el estado. */
+.nav-collapse.is-animating {
   display: block;
   height: 0;
   overflow: hidden;
+  visibility: visible;
   transition: height 0.35s ease;
 }
 
-/* Estado abierto: visible, altura auto */
-.nav-collapse.collapse.show {
+/* Abierto: altura auto, contenido visible */
+.nav-collapse.is-open {
   display: block;
   height: auto;
   overflow: visible;
+  visibility: visible;
 }
 
 @media (min-width: 992px) {
   .nav-collapse,
-  .nav-collapse.collapse,
-  .nav-collapse.collapsing,
-  .nav-collapse.collapse.show {
+  .nav-collapse.is-animating,
+  .nav-collapse.is-open {
     display: flex !important;
     flex-basis: auto;
     align-items: center;
@@ -178,6 +177,7 @@
     order: 2;
     height: auto;
     overflow: visible;
+    visibility: visible;
     transition: none;
   }
 }
@@ -287,11 +287,83 @@
   }
 }
 
+/* ── Language switch (botón-pill único, glifo del idioma alterno) ──
+ * Mismo lenguaje visual que .theme-toggle: fondo amarillo, glifo en
+ * monoespaciada. Ahorra ~60-70px respecto al doble-link anterior.
+ * aria-label anuncia el destino ("Cambiar idioma a English"), no el
+ * estado actual (cumple WCAG 2.5.3 — el nombre anticipa el efecto).
+ *
+ * Estados explícitos (bug previo: sin :active / :visited el botón se
+ * "perdía" al hacer click continuo — el navegador aplicaba color de
+ * link visitado y la transición `all` animaba el color de forma
+ * confusa). Se acota `transition-property` y se fija `color` en cada
+ * estado para que el pill no parpadee. */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  padding: 4px 8px;
+  background: var(--gruvbox-yellow);
+  color: var(--gruvbox-bg);
+  border-radius: 6px;
+  font-family: "Mononoki", monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  line-height: 1;
+  /* Solo animamos background y transform — `all` propagaba cambios de
+   * color y borde durante la navegación, haciendo que el botón "se
+   * perdiera" al volver o al hacer click continuo. */
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  flex-shrink: 0;
+  order: 2; /* mobile: aparece después del theme-toggle */
+  margin-left: 0.5rem;
+}
+
+/* Forzar color en cada estado para que el navegador no aplique el
+ * morado/marrón de :visited por defecto sobre el fondo amarillo. */
+.lang-switch:visited,
+.lang-switch:link,
+.lang-switch:hover,
+.lang-switch:focus,
+.lang-switch:active {
+  color: var(--gruvbox-bg);
+}
+
+.lang-switch:hover {
+  background: var(--gruvbox-orange);
+}
+
+.lang-switch:active {
+  /* Feedback inmediato al click: tono más oscuro + ligero inset.
+   * Sin esto, el botón "se perdía" porque el :hover desaparecía al
+   * soltar el mouse y la transición `all` tardaba en recolorear. */
+  background: var(--gruvbox-red);
+  transform: scale(0.96);
+}
+
+.lang-switch:focus-visible {
+  /* Outline con contraste alto sobre el pill amarillo.
+   * Antes usaba --gruvbox-fg (texto claro) → casi invisible. */
+  outline: 2px solid var(--gruvbox-bg);
+  outline-offset: 3px;
+}
+
+@media (min-width: 992px) {
+  .lang-switch {
+    order: 2; /* desktop: entre .nav-list y .theme-toggle */
+    margin-left: 0;
+  }
+}
+
 /* ── Reduced motion ───────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .nav-toggler-icon span,
   .theme-toggle,
-  .nav-link {
+  .lang-switch,
+  .nav-link,
+  .nav-collapse {
     transition: none !important;
   }
 }

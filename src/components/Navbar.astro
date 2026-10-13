@@ -7,6 +7,15 @@ const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)
 const currentPath = Astro.url.pathname
 
+// Switcher de idioma: un solo botón-pill que muestra el código del idioma
+// ALTERN (al que lleva), no el actual. aria-label dinámico: "Cambiar idioma
+// a English" / "Switch language to Español". El idioma actual se sobreentiende
+// por contexto y por el href del brand y los nav-links.
+const targetLang = lang === 'en' ? 'es' : 'en'
+const pathWithoutLang = currentPath.replace(/^\/(es|en)(?=\/|$)/, '') || '/'
+const langHref = translatePath(pathWithoutLang, targetLang)
+const langName = languages[targetLang]
+
 // Sin "Inicio": vive como brand en el markup (icono nf-md-tea).
 const links = [
   { href: translatePath('/blog'), label: t('nav.blog'), key: 'blog' },
@@ -72,28 +81,16 @@ function isActive(href: string): boolean {
         </li>
       </ul>
 
-      <!-- Selector de idioma (ES | EN) -->
-      <div class="lang-switcher">
-        {Object.entries(languages).map(([code, name]) => {
-          const pathWithoutLang = currentPath.replace(/^\/(es|en)(?=\/|$)/, '') || '/'
-          const targetLang = code as keyof typeof languages
-          const href = translatePath(pathWithoutLang, targetLang)
-          return (
-            <a
-              href={href}
-              hreflang={code}
-              class={`nav-link text-xs ${lang === code ? 'lang-active' : 'lang-inactive'}`}
-              aria-current={lang === code ? 'true' : undefined}
-            >
-              {/* El código visible (ES/EN) se oculta al lector: el nombre
-               * accesible es el nombre completo, y así no choca con la regla
-               * de "el nombre accesible incluye el texto visible". */}
-              <span aria-hidden="true">{code.toUpperCase()}</span>
-              <span class="sr-only">{name}</span>
-            </a>
-          )
-        })}
-      </div>
+      <!-- Selector de idioma: botón-pill único con el código del idioma
+           alterno (al que lleva el clic). aria-label explica el destino. -->
+      <a
+        href={langHref}
+        hreflang={targetLang}
+        class="lang-switch"
+        aria-label={`${t('nav.lang.to')} ${langName}`}
+      >
+        <span aria-hidden="true">{targetLang.toUpperCase()}</span>
+      </a>
 
       <!-- Theme toggle (se mantiene como estaba) -->
       <button class="theme-toggle" aria-label={t('nav.theme')} type="button">
@@ -116,6 +113,7 @@ function isActive(href: string): boolean {
    */
   const root = document.documentElement
   const DESKTOP_MQL = '(min-width: 992px)'
+  const REDUCE_MOTION_MQL = '(prefers-reduced-motion: reduce)'
 
   function getNav() {
     const toggler = document.querySelector<HTMLElement>('.nav-toggler')
@@ -123,46 +121,68 @@ function isActive(href: string): boolean {
     return toggler && collapse ? { toggler, collapse } : null
   }
 
+  function prefersReducedMotion(): boolean {
+    return window.matchMedia(REDUCE_MOTION_MQL).matches
+  }
+
+  function finishOpen(collapse: HTMLElement) {
+    collapse.classList.remove('is-animating')
+    collapse.classList.add('is-open')
+    collapse.style.height = ''
+    collapse.style.overflow = ''
+  }
+
+  function finishClose(collapse: HTMLElement) {
+    collapse.classList.remove('is-animating', 'is-open')
+    collapse.style.height = ''
+    collapse.style.overflow = ''
+  }
+
   /**
-   * Anima la altura del collapse (estilo Bootstrap collapse).
-   * Antes de abrir: `collapsing` con altura actual (0) + overflow hidden
-   * Después de abrir: `collapsing` con scrollHeight + transition height 0.35s
-   * Al terminar: clase `show`, altura auto, overflow visible
+   * Anima la altura del panel en móvil.
+   * Abrir: is-animating (display:block) + height 0 → scrollHeight.
+   * Cerrar: height actual → 0. Al terminar, reposo (display:none).
+   * `prefers-reduced-motion` aplica el estado final sin esperar
+   * transitionend: si solo se anula la transición en CSS, el evento
+   * no dispara y el panel se queda a media altura.
    */
   function toggleCollapse(collapse: HTMLElement) {
-    const isOpen = collapse.classList.contains('show')
+    const isOpen = collapse.classList.contains('is-open')
 
     if (isOpen) {
-      // Cerrar: altura actual → 0
+      if (prefersReducedMotion()) {
+        finishClose(collapse)
+        return
+      }
+      // Partir de una altura en px: `auto` → `0` no interpola.
+      // La transición vive en `.is-animating`, así que hay que
+      // commitearla (reflow) antes de bajar la altura a 0.
       collapse.style.height = `${collapse.scrollHeight}px`
-      // Force reflow
+      collapse.style.overflow = 'hidden'
+      collapse.classList.remove('is-open')
+      collapse.classList.add('is-animating')
       void collapse.offsetHeight
       collapse.style.height = '0px'
-      collapse.style.overflow = 'hidden'
-      collapse.classList.remove('show')
-      collapse.classList.add('collapsing')
     } else {
-      // Abrir: 0 → scrollHeight
+      if (prefersReducedMotion()) {
+        finishOpen(collapse)
+        return
+      }
+      // is-animating antes de medir: en reposo el panel es display:none
+      // y scrollHeight sería 0.
+      collapse.classList.add('is-animating')
       collapse.style.height = '0px'
       collapse.style.overflow = 'hidden'
-      collapse.classList.remove('collapse')
-      collapse.classList.add('collapsing')
-      // Force reflow
       void collapse.offsetHeight
       collapse.style.height = `${collapse.scrollHeight}px`
     }
   }
 
   function onTransitionEnd(this: HTMLElement, e: TransitionEvent) {
-    if (e.propertyName !== 'height') return
+    if (e.target !== this || e.propertyName !== 'height') return
     const isOpening = this.style.height !== '0px' && this.style.height !== ''
-
-    this.classList.remove('collapsing')
-    this.classList.add('collapse')
-    this.classList.remove('show')
-    this.style.height = ''
-    this.style.overflow = ''
-    if (isOpening) this.classList.add('show')
+    if (isOpening) finishOpen(this)
+    else finishClose(this)
   }
 
   // Listeners persistentes: una sola vez por sesión del documento.
@@ -175,7 +195,7 @@ function isActive(href: string): boolean {
       if (!nav) return
       const target = e.target as Node
       if (
-        nav.collapse.classList.contains('show') &&
+        nav.collapse.classList.contains('is-open') &&
         !nav.collapse.contains(target) &&
         !nav.toggler.contains(target)
       ) {
@@ -184,16 +204,15 @@ function isActive(href: string): boolean {
       }
     })
 
-    // Cerrar menú al cambiar tamaño a desktop
+    // Al cruzar el breakpoint, el CSS de desktop muestra el panel.
+    // Limpiar estado móvil (también a mitad de animación) para no
+    // dejar height inline ni aria-expanded colgado.
     window.matchMedia(DESKTOP_MQL).addEventListener('change', () => {
       const nav = getNav()
       if (!nav) return
-      if (nav.collapse.classList.contains('show')) {
-        nav.collapse.classList.remove('show', 'collapsing')
-        nav.collapse.classList.add('collapse')
-        nav.collapse.style.height = ''
-        nav.collapse.style.overflow = ''
-      }
+      nav.collapse.classList.remove('is-open', 'is-animating')
+      nav.collapse.style.height = ''
+      nav.collapse.style.overflow = ''
       nav.toggler.setAttribute('aria-expanded', 'false')
     })
   }
