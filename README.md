@@ -237,34 +237,104 @@ El sitio es estático: el workflow `.github/workflows/deploy.yml` construye con
 push a `main` o a mano (`workflow_dispatch`, con un input `target_dir` para
 probar otra carpeta sin tocar secretos).
 
+Está publicado y verificado en `https://adalgarcia.com` (ES) y
+`https://adalgarcia.com/en/` (EN), servido desde la raíz de
+`domains/adalgarcia.com/public_html/`.
+
 ### Requisitos en el hosting
 
-1. Una clave SSH de deploy (ed25519) cuya **pública** esté en
-   `~/.ssh/authorized_keys` del usuario de hosting.
-2. La carpeta destino debe **existir**: se sube con `sftp_only: true`, que no crea
-   directorios. Ej.: `public_html/astro-staging/`.
+1. Una clave SSH de deploy cuya **pública** esté en `~/.ssh/authorized_keys` del
+   usuario de hosting. **Debe ser RSA en PEM** (`-----BEGIN RSA PRIVATE KEY-----`),
+   ver "Formato de la clave" más abajo.
+2. El dominio debe existir en hPanel → Dominios. Hostinger crea
+   `domains/<dominio>/public_html/`; sin eso no hay vhost y el dominio responde 403.
+3. La carpeta destino debe **existir**: se sube con `sftp_only: true`, que no crea
+   directorios.
+
+### Formato de la clave
+
+`ssh-keygen` genera las claves ed25519 en el formato OpenSSH moderno
+(`-----BEGIN OPENSSH PRIVATE KEY-----`). SSH las acepta, pero la imagen de
+`wlixcc/SFTP-Deploy-Action` las procesa con libcrypto y falla con:
+
+```
+Load key "../private_key.pem": error in libcrypto
+Permission denied (publickey,password).
+```
+
+Hay que usar **RSA en PEM**:
+
+```bash
+ssh-keygen -t rsa -b 4096 -m PEM -C "github-actions-deploy@portafolio-astro" -N "" -f deploy_hostinger_rsa
+```
+
+`cat deploy_hostinger_rsa.pub | ssh -p <SFTP_PORT> user@127.0.0.1 'cat >> ~/.ssh/authorized_keys'`
+
+Ojo: `ssh-keygen -p -m PEM` no sirve para *convertir* una ed25519 existente, y
+`-m PEM` rechaza ed25519 al generar (OpenSSH 10.5). Hay que generar RSA en PEM
+directamente.
 
 ### Secretos del repositorio
 
 | Secreto | Obligatorio | Contenido |
 |---|---|---|
-| `SFTP_HOST` | sí | Host o IP del hosting |
-| `SFTP_USERNAME` | sí | Usuario SSH |
-| `SFTP_SSH_KEY` | sí | Clave privada completa, **con el salto de línea final** |
-| `SFTP_TARGET_DIR` | sí | Ruta remota destino (staging primero) |
-| `SFTP_PORT` | no | Puerto SSH (por defecto 22) |
+| `SFTP_HOST` | sí | IP del hosting (`127.0.0.1`) |
+| `SFTP_PORT` | no | Puerto SSH (aquí `<SFTP_PORT>`, no el 22) |
+| `SFTP_USERNAME` | sí | Usuario SSH (`user`) |
+| `SFTP_SSH_KEY` | sí | Clave privada RSA en PEM, **con el salto de línea final** |
+| `SFTP_TARGET_DIR` | sí | `/home/user/domains/adalgarcia.com/public_html/` |
 
 Ninguno se imprime en los logs: el workflow comprueba que existan antes de subir.
 
-### Pasar de staging a producción
+### Dónde vive el sitio
 
-1. Deploy manual a una subcarpeta (`workflow_dispatch` con `target_dir`) y
-   verificar que el sitio carga y que las rutas inexistentes devuelven la 404.
-2. Cambiar el secreto `SFTP_TARGET_DIR` a `public_html/` **después de hacer
-   backup del WordPress actual** y confirmar el cambio de DNS.
+El sitio se sirve desde la **raíz de `adalgarcia.com/public_html/`**, sin
+subcarpeta. Conviene no confundir con los otros sitios del mismo hosting:
+
+| Ruta | Qué sirve |
+|---|---|
+| `domains/adalgarcia.com/public_html/` | **Este proyecto** |
+| `domains/astro.adalgarcia.com/public_html/adalgarciaweb/` | Astro v5 anterior (respaldo) |
+| `domains/ssr.adalgarcia.com/public_html/` | Angular SSR |
+| `domains/olive-wildcat-182436.hostingersite.com/public_html/` | WordPress |
+
+Los `*.hostingersite.com` son placeholders de Hostinger, **no** son destinos de
+deploy: sirven un `default.php` de "sitio en construcción".
+
+> Ojo con el `.htaccess` de `astro.adalgarcia.com/public_html/`: reescribe todo
+> hacia `/adalgarciaweb/`. Si se despliega en la raíz de ese dominio en vez de en
+> la subcarpeta, el sitio queda inalcanzable. En `adalgarcia.com` no aplica.
+
+### DNS y SSL
+
+Cloudflare proxied + sin certificado emitido = **525**. El orden que funciona:
+
+1. hPanel → Dominios → añadir el dominio (crea la carpeta).
+2. hPanel → Seguridad → SSL → activar para ese dominio.
+3. Cloudflare: registro **A** del apex a `127.0.0.1`, **CNAME** de `www` a
+   `adalgarcia.com`, con el proxy en **gris** hasta tener el SSL.
+4. Verificar con `curl -I https://el-dominio/`.
+
+### Publicar contenido
+
+1. Editar el Markdown en `src/content/{blog,projects}/{es,en}/`.
+2. `pnpm build` en local para verificar.
+3. Commit + push a `main`; el workflow construye y sube. Sin subida manual.
+
+### Desplegar a mano
+
+```bash
+gh workflow run deploy.yml --ref main
+```
+
+Un workflow nuevo **no se ejecuta hasta llegar a la rama por defecto**: hasta
+que el primer merge no lleve `deploy.yml` a `main`, `gh workflow run` responde
+`workflow deploy.yml not found on the default branch`. Se dispara solo con el
+push de ese merge.
 
 > ⚠️ El workflow no borra archivos remotos (`delete_remote_files: false`): nunca
-> elimina lo que no sube. Un borrado se hace a mano y con backup.
+> elimina lo que no sube. Un borrado se hace a mano y con backup. El
+> `default.php` de Hostinger queda debajo de `index.html` y es inofensivo.
 
 ### Publicar contenido
 
