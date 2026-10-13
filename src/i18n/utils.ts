@@ -37,10 +37,14 @@ export function useTranslatedPath(lang: Lang) {
 
 export function formatDate(date: Date, lang: Lang): string {
   const locale = lang === 'es' ? 'es-ES' : 'en-US'
+  // `timeZone: 'UTC'` es obligatorio: las fechas del frontmatter (`date: 2026-01-01`)
+  // son medianoche UTC, así que sin fijar la zona se renderizan como el día
+  // anterior en cualquier locale al oeste de UTC.
   return date.toLocaleDateString(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC',
   })
 }
 

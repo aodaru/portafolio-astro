@@ -97,10 +97,7 @@ Con tres `##` o más aparece la tabla de contenidos.
 | `image` | no | Imagen hero, tarjeta del listado, miniatura de relacionados y `og:image`. |
 | `draft` | no | `true` lo saca del build, del listado, del RSS, del sitemap, de relacionados y de anterior/siguiente. Úsalo mientras escribes. |
 | `lang` | sí | `es` o `en`. Tiene que coincidir con la carpeta. |
-
-`translationKey` está aceptado por el esquema, pero **el sitio no lo lee**.
-No sirve para emparejar la versión en inglés. Lo que empareja es el nombre
-del archivo.
+| `translationKey` | no | Empareja la versión ES y la EN para el `hreflang`. El mismo valor en los dos archivos; si falta, se usa el nombre del archivo. Los slugs **pueden** diferir (`primer-post` ↔ `first-post`). |
 
 ### Cómo se ve la página, de arriba a abajo
 
@@ -339,7 +336,8 @@ en la ficha, no hay hero; en redes, el avatar por defecto.
 
 ## Versión en inglés
 
-1. Mismo nombre de archivo en `en/`.
+1. El archivo en `en/` con el **mismo `translationKey`** (el nombre del archivo
+   puede ser distinto: `es/primer-post.md` ↔ `en/first-post.md`).
 2. `lang: en`.
 3. Traduce `title`, `description` y el cuerpo. La fecha puede ser la misma.
 4. Traduce también los tags si el término cambia (`portafolio` → `portfolio`).
@@ -348,9 +346,9 @@ en la ficha, no hay hero; en redes, el avatar por defecto.
 5. La `image` puede ser la misma ruta (el registro en `images.ts` es único).
 
 Si el otro idioma no existe, no inventes el archivo. En el blog, el
-`hreflang` solo anuncia idiomas que de verdad tienen ese slug. El botón de
-idioma de la barra, en cambio, siempre apunta a la misma ruta con el otro
-prefijo: si falta el archivo, ese botón da 404. Por eso, o están los dos,
+`hreflang` solo anuncia idiomas que de verdad tienen ese `translationKey`. El
+botón de idioma de la barra, en cambio, siempre apunta a la misma ruta con el
+otro prefijo: si falta el archivo, ese botón da 404. Por eso, o están los dos,
 o aceptas que el cambio de idioma en esa ficha no tenga destino.
 
 ---
@@ -401,7 +399,7 @@ no será un encabezado.
 
 **Blog**
 
-- [ ] Archivo en `src/content/blog/es/<slug>.md` (y `en/<slug>.md` si hay traducción, mismo nombre).
+- [ ] Archivo en `src/content/blog/es/<slug>.md` (y `en/<otro-slug>.md` si hay traducción, con el mismo `translationKey`).
 - [ ] `lang` igual a la carpeta.
 - [ ] `title`, `description`, `date` sin comillas.
 - [ ] Cuerpo sin `#`. Secciones con `##`.
@@ -433,7 +431,7 @@ no será un encabezado.
 | La imagen del hero (o de relacionados) da 404 | El jpg/png no está en `assetsMap`, o la ruta del frontmatter no coincide carácter a carácter con la clave. |
 | El GIF no se anima | Entró en `assetsMap` y se convirtió a WebP. Sácalo del mapa y déjalo en `public/`. |
 | Una imagen del cuerpo da 404 | El Markdown no usa `images.ts`. El archivo tiene que estar en `public/`. |
-| El botón de idioma da 404 | Falta el archivo del otro idioma con el mismo nombre. |
-| Puse `translationKey` y no se enlazan | Ese campo no se usa. El enlace es el nombre del archivo. |
+| El botón de idioma da 404 | Falta la versión del otro idioma. |
+| El `hreflang` no anuncia el otro idioma | El `translationKey` no coincide en los dos archivos (o falta en uno). |
 | Puse `repo` y no hay botón «Ver código» | El campo se guarda, pero la ficha no lo pinta. |
 | El icono del trabajo no es el que esperaba | El tag tiene que ser exactamente `web`, `intranet` o `astro`, en minúsculas. |

@@ -2,53 +2,104 @@
 
 ## Estado de la fase
 
-**⬜ PENDIENTE**
+**🟨 PARCIAL** — Grupos 1–5, 8 (local) y 9 hechos y verificados localmente.
+Grupo 6 **pendiente del deploy** (mide el estado publicado, que aún es `main`).
+Grupo 7 **bloqueado por el dueño** (falta el inventario de URLs del WordPress).
 
 ## Criterios de éxito
 
 ### 1. Documentación sincronizada
 
-- [ ] `changelog.md` incluye la entrada del primer deploy a producción
-- [ ] `specs/tech-stack.md` describe el hosting y el deploy reales (host, puerto, clave RSA en PEM)
-- [ ] `specs/roadmap.md`: "Dominio personalizado y HTTPS" marcado como hecho
-- [ ] `specs/roadmap.md`: la Fase 10 figura como **standby**, no como pendiente activa
-- [ ] `docs/fase-9-deploy-real` borrada (local y remota) sin pérdida de contenido
-- [ ] No quedan "pendientes del dueño" de la Fase 9 que ya estén resueltos
+- [x] `changelog.md` incluye la entrada del primer deploy a producción
+- [x] `specs/tech-stack.md` describe el hosting y el deploy reales (host, puerto, clave RSA en PEM)
+- [x] `specs/roadmap.md`: "Dominio personalizado y HTTPS" marcado como hecho
+- [x] `specs/roadmap.md`: la Fase 10 figura como **standby**, no como pendiente activa
+- [x] `docs/fase-9-deploy-real` borrada (local y remota) sin pérdida de contenido
+- [x] No quedan "pendientes del dueño" de la Fase 9 que ya estén resueltos
 
 ### 2. Fechas correctas
 
-- [ ] Un post con `date: 2026-01-01` se muestra como 1 de enero, no como 31 de diciembre
-- [ ] El listado del blog, el post individual y el RSS coinciden en la fecha
-- [ ] Ocurre igual en ES y en EN
+- [x] Un post con `date: 2026-01-01` se muestra como 1 de enero, no como 31 de diciembre
+- [x] El listado del blog, el post individual y el RSS coinciden en la fecha
+- [x] Ocurre igual en ES y en EN
+
+> Verificado en un build con `TZ=America/Bogota`: `dist/blog/omarchy/index.html`
+> → `1 de enero de 2026`; `dist/en/blog/omarchy/index.html` → `January 1, 2026`;
+> listado `/blog` → `1 de enero de 2026`; `dist/rss.xml` →
+> `Thu, 01 Jan 2026 00:00:00 GMT`. Antes del fix el navegador en UTC-5 mostraba
+> 31 de diciembre (el `Date` del frontmatter es medianoche UTC).
 
 ### 3. Glass del navbar
 
-- [ ] El CSS de `dist/` contiene `backdrop-filter` **sin** prefijo, además del `-webkit-`
-- [ ] El mismo arreglo alcanza footer, `.terminal-card` y `.blog-card`
-- [ ] El navbar tiene fondo semitransparente (no `transparent`) tomado de un token
-- [ ] El efecto se percibe al desplazar contenido por debajo del navbar, en ambos temas
-- [ ] El contraste de texto del navbar sigue cumpliendo en ambos temas
+- [x] El CSS de `dist/` contiene `backdrop-filter` **sin** prefijo, además del `-webkit-`
+- [x] El mismo arreglo alcanza footer, `.terminal-card` y `.blog-card`
+- [x] El navbar tiene fondo semitransparente (no `transparent`) tomado de un token
+- [x] El efecto se percibe al desplazar contenido por debajo del navbar, en ambos temas
+- [x] El contraste de texto del navbar sigue cumpliendo en ambos temas
+
+> `grep` sobre `dist/_astro/*.css`: `backdrop-filter` aparece en las 4 medidas
+> (8/10/12/20 px) y `-webkit-backdrop-filter` en las mismas 4 (antes: solo el
+> prefijo). Causa raíz: Lightning CSS deduplicaba las dos declaraciones porque el
+> `-webkit-` ya venía en el fuente y el minificador corría sin targets;
+> el fix son los `cssTarget` en `astro.config.ts` + dejar de escribir el prefijo
+> a mano. Capturas con contenido desplazado bajo el navbar en claro
+> (`/blog`) y oscuro (`/trabajos`). Pills del navbar (`.lang-switch`,
+> `.theme-toggle`) y brand: 5.78:1 en claro, 8.69:1 y 6.84:1 en oscuro.
 
 ### 4. Contraste en tema claro
 
-- [ ] Títulos, fechas y tags con ≥ 4.5:1 en tema claro en `/blog`, `/blog/[slug]`, `/blog/tags`, `/blog/tags/[tag]` y `/trabajos`
-- [ ] Lo mismo en los pares `/en/`
-- [ ] El tema oscuro no se degrada con los tokens nuevos
+- [x] Títulos, fechas y tags con ≥ 4.5:1 en tema claro en `/blog`, `/blog/[slug]`, `/blog/tags`, `/blog/tags/[tag]` y `/trabajos`
+- [x] Lo mismo en los pares `/en/`
+- [x] El tema oscuro no se degrada con los tokens nuevos
+
+> Auditoría con **axe-core 4.10** (`color-contrast`) sobre `pnpm preview`, en 18
+> rutas × 2 temas (incluidas las 404 de ambos idiomas): **0 violaciones**.
+> Tokens nuevos en `src/styles/global.css` (claro / oscuro):
+> `--gruvbox-yellow-ink` `#7d5600` / `#fabd2f`, `--gruvbox-gray-ink`
+> `#665c54` / `#bdae93`, `--gruvbox-blue-ink` `#046172` / `#a3c9c4`,
+> `--gruvbox-green-ink` `#3d7050` / `#8ec07c`, `--gruvbox-orange-ink`
+> `#af3a03` / `#fe8019`, `--gruvbox-red-ink` `#b0180f` / `#ff6f65`.
+> En oscuro solo cambian los que no llegaban (gray y blue); el resto se queda
+> igual o mejora, así que no hay regresión.
+> Casos que la medición destapó y se corrigieron: chips `.post-tag` (4.46 → 9 ó
+> 4.86), CTA "Visitar proyecto" (crema sobre amarillo, 2.18:1 → 5.78:1),
+> `.post-toc-heading` / `.post-nav-title` (4.3 → 4.83), párrafo del tag con
+> `opacity-75` sobre un span de color (3.55 → 5.82), `.err-output-code` de la 404
+> (3.76 / 3.99 → 4.84 / 5.04).
 
 ### 5. Contenido en inglés
 
-- [ ] `/en/blog` lista 4 posts
-- [ ] Cada par ES/EN declara el mismo `translationKey`
-- [ ] El `hreflang` de cada post apunta solo a los idiomas que existen
-- [ ] `sitemap-0.xml` incluye `/en/blog/docker/`, `/en/blog/omarchy/`, `/en/blog/terminal/` (o los slugs elegidos)
-- [ ] `/en/rss.xml` publica los 4 posts
-- [ ] Sin texto en español ni enlaces a rutas ES dentro de las páginas EN
+- [x] `/en/blog` lista 4 posts
+- [x] Cada par ES/EN declara el mismo `translationKey`
+- [x] El `hreflang` de cada post apunta solo a los idiomas que existen
+- [x] `sitemap-0.xml` incluye `/en/blog/docker/`, `/en/blog/omarchy/`, `/en/blog/terminal/` (o los slugs elegidos)
+- [x] `/en/rss.xml` publica los 4 posts
+- [x] Sin texto en español ni enlaces a rutas ES dentro de las páginas EN
+
+> Los slugs en inglés coinciden con el español (`docker`, `omarchy`, `terminal`)
+> y el par existente sigue con slugs distintos (`primer-post` ↔ `first-post`).
+> `hreflang`: ES+EN+x-default en los 4 pares, con la ruta de cada idioma
+> (`/en/blog/first-post` para `primer-post`). El feed es por idioma: antes
+> `/en/rss.xml` publicaba los 8 posts (los 4 en español incluidos) → ahora 4 y 4.
+> Texto en español que había en páginas EN y se corrigió: intro de `/en/blog`,
+> intro y `ls -la proyectos/` de `/en/trabajos`, `~/proyectos/` del terminal de
+> `/en/trabajos/[slug]` (claves `blog.intro` y `works.intro` nuevas en `ui.ts`).
+> Los únicos enlaces sin `/en` que quedan en páginas EN son el selector de idioma
+> (`hreflang="es"`, a propósito).
 
 ### 6. Lighthouse en la URL pública
 
 - [ ] Medición mobile y desktop sobre `/` y `/en/`
 - [ ] Resultados registrados en la tabla de abajo
 - [ ] Las 4 categorías en 90+ (o el desvío documentado con su causa)
+
+> **Pendiente de que los cambios estén en producción.** Referencia local de este
+> cierre (`pnpm preview`, Lighthouse del navegador MCP, modo snapshot, ambos
+> temas): A11y 100, Best Practices 100 y SEO 100 en `/`, `/en/`, `/blog`,
+> `/en/blog`, `/blog/tags`, `/en/blog/tags`, `/blog/tags/Docker`,
+> `/blog/omarchy`, `/trabajos`, `/en/trabajos`, `/trabajos/portafolio`,
+> `/contacto` y `/en/contacto`. Performance no se mide local (decisión D8 de
+> `requirements.md`); en la Fase 9 fue 100 desktop / 97 mobile.
 
 | Página | Dispositivo | Performance | A11y | Best Practices | SEO |
 | ------ | ----------- | ----------- | ---- | -------------- | --- |
@@ -64,14 +115,29 @@
 - [ ] Reglas implementadas en `public/.htaccess`
 - [ ] Cada URL vieja responde 301 con `Location` a una ruta que devuelve 200
 - [ ] Sin bucles ni cadenas de más de un salto
-- [ ] Las rutas nuevas (`/blog/*`, `/trabajos/*`, `/en/*`) siguen respondiendo 200
-- [ ] La 404 propia sigue funcionando en ambos idiomas
+- [x] Las rutas nuevas (`/blog/*`, `/trabajos/*`, `/en/*`) siguen respondiendo 200
+- [x] La 404 propia sigue funcionando en ambos idiomas
+
+> **Bloqueado**: el inventario solo lo tiene el dueño (no hay `sitemap.xml` del
+> WordPress ni backup de la base en el repo; `themeWp/` es la plantilla del tema,
+> sus enlaces son `index.html`/`blog.html`). No se inventan reglas. Queda en
+> `public/.htaccess` el bloque comentado con el formato y las advertencias, y el
+> pendiente anotado en `specs/tech-stack.md`.
 
 ### 8. Limpieza
 
-- [ ] Las 7 ramas locales mergeadas están borradas
-- [ ] Sus equivalentes remotos también
-- [ ] Queda registrado el pendiente de hosting (`default.php`, ed25519 en `authorized_keys`)
+- [x] Las 7 ramas locales mergeadas están borradas
+- [x] Sus equivalentes remotos también
+- [x] Queda registrado el pendiente de hosting (`default.php`, ed25519 en `authorized_keys`)
+
+> Locales borradas: `feat/fase-9-polish-deploy`, `feat/fase-8-port-i18n`,
+> `backup/fase-8-rediseno-home-20261012`, `feat/fase-8-rediseno-home`,
+> `feat/internacionalizacion`, `feat/seo-performance`,
+> `feat/fase-5b-exploracion-disenos-home`. Remotas: `docs/fase-9-deploy-real` y
+> las 4 anteriores que existían en `origin`. `docs/deploy-changelog` (local y
+> remota) se conserva hasta que el PR entre a `main`.
+> Quedan en `origin`, ya mergeadas y sin tocar, `fase-1-scaffolding` y
+> `feat/contenido-pendiente` (fuera de la lista del plan).
 
 ## Cómo verificar
 
@@ -96,7 +162,8 @@ git branch --merged main
 # Grupo 7: redirecciones en producción (sustituir por las URLs reales)
 curl -sI https://adalgarcia.com/<url-vieja> | grep -iE 'HTTP/|location'
 
-# Grupo 6: servir el build y medir
+# Grupo 2 y 4: fechas y contraste, con la zona del dueño y axe en el navegador
+TZ=America/Bogota pnpm build && grep -o '1 de enero de 2026' dist/blog/omarchy/index.html
 pnpm preview
 # DevTools → Lighthouse (mobile + desktop) sobre https://adalgarcia.com/ y /en/
 ```
@@ -104,20 +171,20 @@ pnpm preview
 ## Criterio de merge a main
 
 - [ ] Todos los criterios marcados (los de producción, verificados tras el deploy)
-- [ ] `pnpm check` y `pnpm build` en verde
-- [ ] PR abierto
-- [ ] Validación manual ejecutada (build, navegador, Lighthouse)
+- [x] `pnpm check` y `pnpm build` en verde
+- [x] PR abierto
+- [x] Validación manual ejecutada (build, navegador, axe/Lighthouse)
 
 ## Anti-criterios (lo que NO debe pasar)
 
-- ❌ Tocar la Fase 10: se queda en standby, sin implementar ni borrar del roadmap
-- ❌ Traducciones que dejen `hreflang` o RSS anunciando un idioma inexistente
-- ❌ Reglas 301 que capturen rutas nuevas o rompan la 404 bilingüe
-- ❌ Introducir dependencias nuevas de runtime
-- ❌ Cero `npm`/`npx` en scripts y comandos
-- ❌ Borrar la rama `docs/deploy-changelog` sin antes traer su contenido
-- ❌ Degradar el contraste del tema oscuro al introducir los tokens `*-ink`
-- ❌ Escribir reglas de `.htaccess` a mano en hPanel (se pierden en el próximo deploy)
+- ✅ No se tocó la Fase 10: queda en standby, sin implementar ni borrar del roadmap
+- ✅ Los `hreflang` y los feeds no anuncian un idioma inexistente
+- ✅ No hay reglas 301 (no se inventaron; el bloque va comentado)
+- ✅ Sin dependencias nuevas de runtime
+- ✅ Cero `npm`/`npx` en scripts y comandos
+- ✅ `docs/deploy-changelog` se conserva (su contenido ya está en esta rama)
+- ✅ El contraste del tema oscuro no se degrada (solo sube: gray 2.95 → 4.97, blue 4.02 → 4.86)
+- ✅ Ninguna regla de `.htaccess` escrita a mano en hPanel
 
 ## Bloqueos externos
 

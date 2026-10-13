@@ -14,8 +14,8 @@
 }
 
 .social-btn:hover {
-  background: var(--gruvbox-yellow);
-  border-color: var(--gruvbox-yellow);
+  background: var(--gruvbox-yellow-ink);
+  border-color: var(--gruvbox-yellow-ink);
   color: var(--gruvbox-bg);
   transform: translateX(5px);
 }

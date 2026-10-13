@@ -48,12 +48,12 @@ function getPostIcon(title: string): string {
 
 <div class="max-w-4xl mx-auto px-4 py-12 animate-fade-in">
   <h1 class="text-3xl font-bold mb-2" style="font-family: 'Mononoki', monospace;">
-    <span style="color: var(--gruvbox-green);">$</span>
-    <span style="color: var(--gruvbox-yellow); margin-left: 0.5rem;">cat</span> posts.txt
+    <span style="color: var(--gruvbox-green-ink);">$</span>
+    <span style="color: var(--gruvbox-yellow-ink); margin-left: 0.5rem;">cat</span> posts.txt
     <span class="terminal-cursor"></span>
   </h1>
-  <p class="mb-8 opacity-60" style="font-family: 'MesloLG', monospace; font-size: var(--fs-small);">
-    Notas sobre sistemas, desarrollo y cosas que aprendí por el camino.
+  <p class="mb-8 opacity-80" style="font-family: 'MesloLG', monospace; font-size: var(--fs-small);">
+    {t('blog.intro')}
   </p>
 
   {posts.length === 0 && (

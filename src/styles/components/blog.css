@@ -14,7 +14,6 @@
 .blog-card {
   background: rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--gruvbox-card);
   border-radius: 12px;
   overflow: hidden;
@@ -95,7 +94,7 @@
   font-family: "Mononoki", monospace;
   font-size: 3rem;
   font-weight: 700;
-  color: var(--gruvbox-gray);
+  color: var(--gruvbox-gray-ink);
   opacity: 0.4;
 }
 
@@ -114,7 +113,7 @@
   font-size: var(--fs-micro);
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--gruvbox-gray);
+  color: var(--gruvbox-gray-ink);
   margin-bottom: 0.5rem;
 }
 
@@ -122,14 +121,14 @@
   font-family: "Mononoki", monospace;
   font-weight: 700;
   font-size: 1.2rem;
-  color: var(--gruvbox-blue);
+  color: var(--gruvbox-blue-ink);
   margin: 0 0 0.5rem;
   line-height: 1.3;
   transition: color 0.3s ease;
 }
 
 .blog-card:hover .blog-card-title {
-  color: var(--gruvbox-yellow);
+  color: var(--gruvbox-yellow-ink);
 }
 
 .blog-card-desc {
@@ -158,7 +157,7 @@
   background: rgba(215, 153, 33, 0.12);
   border: 1px solid rgba(215, 153, 33, 0.25);
   border-radius: 20px;
-  color: var(--gruvbox-yellow);
+  color: var(--gruvbox-yellow-ink);
   font-family: "MesloLG", monospace;
   font-size: 0.72rem;
   font-weight: 500;

@@ -21,7 +21,7 @@
   font-size: clamp(4rem, 18vw, 8rem);
   line-height: 1;
   text-align: center;
-  color: var(--gruvbox-orange);
+  color: var(--gruvbox-orange-ink);
   margin: 0 0 0.5rem;
   letter-spacing: 0.05em;
   text-shadow: 0 4px 24px rgba(214, 93, 14, 0.25);
@@ -71,7 +71,7 @@
   font-family: "MesloLG", monospace;
   font-size: var(--fs-small);
   line-height: 1.6;
-  color: var(--gruvbox-red);
+  color: var(--gruvbox-red-ink);
   white-space: nowrap;
   margin: 0;
 }
@@ -131,11 +131,11 @@
 .err-link:focus-visible {
   transform: translateY(-3px);
   border-color: var(--gruvbox-yellow);
-  color: var(--gruvbox-yellow);
+  color: var(--gruvbox-yellow-ink);
 }
 
 .err-link-arrow {
-  color: var(--gruvbox-yellow);
+  color: var(--gruvbox-yellow-ink);
 }
 
 /* Enlace al otro idioma */
@@ -146,7 +146,7 @@
   margin-top: 2rem;
   font-family: "MesloLG", monospace;
   font-size: var(--fs-small);
-  color: var(--gruvbox-blue);
+  color: var(--gruvbox-blue-ink);
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: color 0.2s ease, border-color 0.2s ease;
@@ -154,7 +154,7 @@
 
 .err-lang:hover,
 .err-lang:focus-visible {
-  color: var(--gruvbox-orange);
+  color: var(--gruvbox-orange-ink);
   border-bottom-color: currentColor;
 }
 

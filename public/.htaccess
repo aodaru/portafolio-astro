@@ -11,6 +11,23 @@
 # Las rutas en /en/ usan su propio ErrorDocument (ver public/en/.htaccess).
 ErrorDocument 404 /404.html
 
+# ── Redirecciones 301 del WordPress anterior ──────────
+# PENDIENTE: falta el inventario de URLs indexadas (Search Console / backup de la
+# base). Las reglas se escriben aquí, versionadas, y no a mano en hPanel: cada
+# deploy sobrescribe el `.htaccess` del hosting.
+#
+# Formato (una línea por URL vieja → ruta de Astro), sin tocar `ErrorDocument`:
+#
+#   <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteRule ^blog/viejo-slug/?$ /blog/nuevo-slug [R=301,L]
+#     RewriteRule ^2024/01/otro-post/?$ /blog/otro-post [R=301,L]
+#   </IfModule>
+#
+# Las reglas deben ir antes del bloque `mod_dir` y nunca capturar `/blog/*`,
+# `/trabajos/*` ni `/en/*` (romperían la 404 bilingüe y las rutas nuevas).
+# Ver `specs/2026-10-12-post-lanzamiento-pendientes/` (Grupo 7).
+
 # ── Compresión ────────────────────────────────────────
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml

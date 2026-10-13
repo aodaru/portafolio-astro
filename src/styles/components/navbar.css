@@ -5,10 +5,14 @@
    Desktop: flex inline con brand izq + links/toggle der
    ═══════════════════════════════════════════════════════ */
 
+/* NOTA: no escribir `-webkit-backdrop-filter` a mano. El build pasa el CSS
+ * por Lightning CSS (targets de Tailwind v4: Safari 16.4 necesita el prefijo)
+ * y, si el prefijo ya está en el fuente, deduplica ambas declaraciones y deja
+ * solo la de webkit: el efecto desaparece en Chrome/Firefox. Se declara la
+ * versión estándar y el prefijo lo añade el minificador. */
 .main-nav {
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background-color: transparent;
+  background-color: var(--gruvbox-navbar-bg);
   border-bottom: 2px solid var(--gruvbox-yellow);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -52,7 +56,7 @@
 }
 
 .nav-brand:hover {
-  color: var(--gruvbox-orange);
+  color: var(--gruvbox-orange-ink);
   transform: scale(1.05);
 }
 
@@ -219,12 +223,12 @@
 
 .nav-link:hover,
 .nav-link:focus {
-  color: var(--gruvbox-yellow);
+  color: var(--gruvbox-yellow-ink);
   opacity: 1;
 }
 
 .nav-link.active {
-  color: var(--gruvbox-yellow);
+  color: var(--gruvbox-yellow-ink);
   opacity: 1;
 }
 
@@ -255,7 +259,9 @@
 
 /* ── Theme toggle (estilo WP rectangular) ────────── */
 .theme-toggle {
-  background: var(--gruvbox-yellow);
+  /* Fondo ámbar oscuro (`-ink`) y glifo en el color del fondo: el pill amarillo
+   * original dejaba el texto claro sobre #d79921 (2.2:1) en tema claro. */
+  background: var(--gruvbox-yellow-ink);
   color: var(--gruvbox-bg);
   border: none;
   border-radius: 8px;
@@ -272,7 +278,7 @@
 }
 
 .theme-toggle:hover {
-  background: var(--gruvbox-orange);
+  background: var(--gruvbox-orange-ink);
 }
 
 .theme-toggle:focus-visible {
@@ -304,7 +310,7 @@
   justify-content: center;
   min-width: 32px;
   padding: 4px 8px;
-  background: var(--gruvbox-yellow);
+  background: var(--gruvbox-yellow-ink);
   color: var(--gruvbox-bg);
   border-radius: 6px;
   font-family: "Mononoki", monospace;
@@ -332,7 +338,7 @@
 }
 
 .lang-switch:hover {
-  background: var(--gruvbox-orange);
+  background: var(--gruvbox-orange-ink);
 }
 
 .lang-switch:active {

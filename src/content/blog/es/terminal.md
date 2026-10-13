@@ -6,6 +6,7 @@ tags: ["Linux", "macos", "windows"]
 image: "/img/posts/terminal.gif"
 draft: false
 lang: es
+translationKey: "terminal"
 ---
 
 La línea de comandos fue el primer GUI que se utilizó en la computación. En todos estos años en los que he estado interactuando con las computadoras he podido tener la suerte de experimentar con muchas plataformas.

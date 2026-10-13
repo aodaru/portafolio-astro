@@ -6,6 +6,7 @@ tags: ["Angular", "portafolio", "proyectos"]
 image: "/img/posts/primer-post.jpg"
 draft: false
 lang: es
+translationKey: "primer-post"
 ---
 
 Al fin. Logré terminar de armar el blog, que a su vez es mi portafolio de desarrollo. Me ha tomado mucho tiempo, he aprendido mucho y aún me faltan muchas cosas por aprender.

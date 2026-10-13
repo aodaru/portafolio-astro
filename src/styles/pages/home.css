@@ -54,7 +54,6 @@
 .wp-intro {
   background: var(--gruvbox-card);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border: 2px solid var(--gruvbox-yellow);
   border-radius: 16px;
   padding: 2rem;
@@ -221,7 +220,6 @@
   overflow: hidden;
   background: var(--gruvbox-card);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   opacity: 0;
   transform: translateY(20px);
 }
@@ -375,7 +373,7 @@
   content: "▸";
   position: absolute;
   left: 0;
-  color: var(--gruvbox-blue);
+  color: var(--gruvbox-blue-ink);
   font-weight: bold;
 }
 
@@ -397,7 +395,7 @@
 
 .wp-bio-year {
   font-weight: 700;
-  color: var(--gruvbox-yellow);
+  color: var(--gruvbox-yellow-ink);
   margin-right: 1em;
 }
 

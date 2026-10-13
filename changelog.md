@@ -1,3 +1,100 @@
+# Review — Cierre de pendientes post-lanzamiento (fechas, glass, contraste, i18n)
+
+**Fecha:** 2026-10-13
+**Veredicto:** CORREGIDO (`check` 0 errores, build 54 páginas, 0 violaciones de
+contraste en 18 rutas × 2 temas, verificado en navegador)
+
+Spec: `specs/2026-10-12-post-lanzamiento-pendientes/`. Cierra casi todo lo que
+quedó abierto tras el lanzamiento; quedan fuera el Lighthouse sobre la URL
+pública (necesita el deploy) y las 301 del WordPress (necesitan el inventario
+de URLs, que solo tiene el dueño).
+
+## 1. Fechas: se formatean en UTC
+
+`date: 2026-01-01` en el frontmatter es medianoche UTC, así que
+`toLocaleDateString` sin zona lo renderizaba como **31 de diciembre** en
+cualquier locale al oeste de UTC. `formatDate()` fija `timeZone: 'UTC'`.
+
+Verificado con `TZ=America/Bogota`: post, listado y RSS coinciden (1 de enero de
+2026 / `Thu, 01 Jan 2026 00:00:00 GMT`) en ES y EN.
+
+## 2. Glass del navbar: el prefijo lo pone el minificador
+
+Dos causas, no una:
+
+- **El build recortaba las parejas de prefijos.** Vite minifica el CSS con
+  Lightning CSS y toma los targets de `vite.build.cssTarget`, que no estaba
+  configurado. Sin targets, Lightning CSS no sabe qué navegadores siguen
+  necesitando el prefijo y colapsa `backdrop-filter` + `-webkit-backdrop-filter`
+  a una sola declaración, y como en el fuente el `-webkit-` iba después, dejaba
+  **solo** el prefijo (efecto invisible en Chrome/Firefox). Fix: `cssTarget:
+  ['chrome111', 'firefox128', 'safari16.4']` en `astro.config.ts` y **no escribir
+  el prefijo a mano** en el CSS (9 archivos).
+- **El navbar tenía `background-color: transparent`**, así que el blur no se
+  percibía sobre el fondo plano. Se añade el token `--gruvbox-navbar-bg`
+  (`rgba(235,219,178,0.5)` en claro, `rgba(60,56,54,0.5)` en oscuro), la réplica
+  del `rgba(var(--bs-secondary-bg-rgb), 0.5)` del WordPress.
+
+Verificado en `dist/`: `backdrop-filter` y `-webkit-backdrop-filter` en las 4
+medidas (8/10/12/20 px), y capturas con contenido desplazado bajo el navbar en
+ambos temas.
+
+## 3. Contraste: tokens `*-ink` en todo el sitio
+
+Los acentos GruvBox no llegan a 4.5:1 como texto en tema claro. Se extiende el
+patrón de `--gruvbox-yellow-ink` con `gray-ink`, `blue-ink`, `green-ink`,
+`orange-ink` y `red-ink` (claro/oscuro), y se sustituyen **127 usos de `color:`
+como texto** en blog, tags, trabajos, contacto, home, error y los componentes
+compartidos. Los colores base, los bordes y los fondos no cambian.
+
+- En oscuro solo se corrigen los que no llegaban (gray 2.95 → 4.97, blue
+  4.02 → 4.86); el resto queda igual: sin regresión.
+- La medición con axe destapó casos que el cálculo sobre el fondo del `body` no
+  veía: chips `.post-tag` (4.46 → 4.80+ sobre el fondo del terminal), CTA
+  "Visitar proyecto" en `/trabajos/[slug]` (crema sobre amarillo, **2.18:1** →
+  5.78:1, ahora `--gruvbox-yellow-ink` de fondo), `.post-toc-heading` y
+  `.post-nav-title` (4.3 → 4.83), el párrafo del tag con `opacity-75` sobre un
+  span de color (3.55 → 5.82) y el `.err-output-code` de la 404 (3.76/3.99).
+- `opacity-60` → `opacity-80` en los párrafos introductorios (3.9:1 → 7.1:1).
+
+## 4. Contenido en inglés
+
+- Traducidos `docker`, `omarchy` y `terminal` a `src/content/blog/en/`.
+- **`translationKey` en los 4 pares ES/EN** (incluido `primer-post` ↔
+  `first-post`). `postAlternates()` emparejaba por **slug** y recibía solo los
+  posts del idioma actual: nunca encontraba la otra versión y el `x-default` de
+  `first-post` apuntaba a `/blog/first-post`, que no existe. Ahora empareja por
+  `translationKey` (con el slug de respaldo) y recibe las dos listas.
+- **Feeds por idioma**: `/en/rss.xml` publicaba los 8 posts (los 4 en español
+  incluidos) con la descripción en español. Ahora filtra por `lang`, y título y
+  descripción van en inglés.
+- Texto en español que quedaba en páginas EN: la intro de `/en/blog` y la de
+  `/en/trabajos` (claves `blog.intro` y `works.intro` nuevas), `ls -la proyectos/`
+  y `~/proyectos/` del terminal.
+
+## 5. Redirecciones 301 y limpieza
+
+- **Bloqueadas**: no hay copia de las URLs indexadas del WordPress en el repo
+  (`themeWp/` es la plantilla del tema, no el sitio). No se inventan reglas. En
+  `public/.htaccess` queda el bloque comentado con el formato y las advertencias;
+  el pendiente se anota en `specs/tech-stack.md`.
+- Borradas las 7 ramas locales mergeadas y sus 5 equivalentes en `origin`
+  (incluida `docs/fase-9-deploy-real`).
+- Documentada la limpieza de hosting que no se hace desde el repo: `default.php`
+  bajo `index.html` y la ed25519 antigua en `authorized_keys`.
+
+## Verificación
+
+- `pnpm check` → 0 errors, 0 warnings · `pnpm build` → 54 páginas
+- axe-core 4.10 (`color-contrast`) en 18 rutas × 2 temas (con las 404 de ambos
+  idiomas): 0 violaciones; pills del navbar 5.78:1 (claro) / 8.69:1 (oscuro)
+- Lighthouse del navegador (snapshot, ambos temas): A11y/BP/SEO 100 en `/`,
+  `/en/`, `/blog`, `/trabajos`, `/contacto` y sus pares y detalles
+- `/en/blog` lista 4 posts; `hreflang` correcto en los 4 pares; sitemap con las
+  rutas nuevas; `/en/rss.xml` con 4 items
+
+---
+
 # Review — Navbar: el selector de idioma pasa a un solo botón
 
 **Fecha:** 2026-10-12
