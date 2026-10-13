@@ -1,0 +1,216 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { blogPath, formatDate, type Lang } from '../i18n/content'
+import { useTranslations } from '../i18n/utils'
+import { resolveImageUrl } from '../utils/images'
+
+export interface Props {
+  /** Post actual, para excluirlo de los relacionados. */
+  current: CollectionEntry<'blog'>
+  /** Todos los posts publicados del idioma, ordenados por fecha desc. */
+  siblings: CollectionEntry<'blog'>[]
+  lang: Lang
+  /** Etiqueta traducida para la sección de relacionados. */
+  relatedLabel: string
+}
+
+const { current, siblings, lang, relatedLabel } = Astro.props
+
+const slug = (p: CollectionEntry<'blog'>) => p.id.split('/').pop()!
+
+const index = siblings.findIndex((p) => p.id === current.id)
+
+// siblings viene ordenado del más nuevo al más antiguo.
+const newer = index > 0 ? siblings[index - 1] : undefined
+const older = index >= 0 && index < siblings.length - 1 ? siblings[index + 1] : undefined
+
+const related = siblings
+  .filter((p) => p.id !== current.id && p.data.tags.some((t) => current.data.tags.includes(t)))
+  .slice(0, 3)
+
+const relatedFallback = related.length > 0
+  ? related
+  : siblings.filter((p) => p.id !== current.id).slice(0, 3)
+
+const link = (p: CollectionEntry<'blog'>) => blogPath(lang, slug(p))
+
+const t = useTranslations(lang)
+
+// Cada tarjeta necesita su URL resuelta (src/assets/ → WebP, GIF → public/).
+const relatedImages = await Promise.all(
+  relatedFallback.map((p) => resolveImageUrl(p.data.image, 400))
+)
+---
+
+{
+  (newer || older) && (
+    <nav class="post-nav" aria-label={t('blog.nav.label')}>
+      {older ? (
+        <a href={link(older)} class="post-nav-link post-nav-link--prev">
+          <span class="post-nav-dir">{t('blog.prev')}</span>
+          <span class="post-nav-title">{older.data.title}</span>
+        </a>
+      ) : (
+        <span />
+      )}
+      {newer && (
+        <a href={link(newer)} class="post-nav-link post-nav-link--next">
+          <span class="post-nav-dir">{t('blog.next')}</span>
+          <span class="post-nav-title">{newer.data.title}</span>
+        </a>
+      )}
+    </nav>
+  )
+}
+
+{
+  relatedFallback.length > 0 && (
+    <section class="post-related">
+      <h2 class="post-related-heading">
+        <span style="color: var(--gruvbox-green);">$</span>
+        <span style="color: var(--gruvbox-yellow); margin-left: 0.5rem;">grep</span>
+        <span class="opacity-60">&nbsp;{relatedLabel}</span>
+        <span class="terminal-cursor" />
+      </h2>
+      <div class="post-related-grid">
+        {relatedFallback.map((p, i) => (
+          <a href={link(p)} class="post-related-card">
+            {relatedImages[i] ? (
+              <img
+                class="post-related-img"
+                src={relatedImages[i]}
+                alt=""
+                width="400"
+                height="225"
+                loading="lazy"
+              />
+            ) : null}
+            <div class="post-related-body">
+              <span class="post-related-date">{formatDate(p.data.date, lang)}</span>
+              <span class="post-related-title">{p.data.title}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .post-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  .post-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.9rem 1.1rem;
+    border: 2px solid var(--gruvbox-gray);
+    border-radius: 8px;
+    text-decoration: none;
+    background: var(--gruvbox-card);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .post-nav-link:hover {
+    border-color: var(--gruvbox-yellow);
+    transform: translateY(-2px);
+  }
+
+  .post-nav-link--next {
+    text-align: right;
+    grid-column: 2;
+  }
+
+  .post-nav-dir {
+    font-family: "MesloLG", "Courier New", monospace;
+    font-size: var(--fs-small, 0.8rem);
+    color: var(--gruvbox-blue);
+  }
+
+  .post-nav-title {
+    font-family: "MesloLG", "Courier New", monospace;
+    font-size: 0.95rem;
+    color: var(--gruvbox-yellow);
+    line-height: 1.35;
+  }
+
+  .post-related {
+    margin-top: 3.5rem;
+  }
+
+  .post-related-heading {
+    font-family: "MesloLG", "Courier New", monospace;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .post-related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1rem;
+  }
+
+  .post-related-card {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--gruvbox-gray);
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    background: var(--gruvbox-card);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .post-related-card:hover {
+    border-color: var(--gruvbox-blue);
+    transform: translateY(-3px);
+  }
+
+  .post-related-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    border-bottom: 2px solid var(--gruvbox-gray);
+  }
+
+  .post-related-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .post-related-date {
+    font-family: "MesloLG", "Courier New", monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gruvbox-gray);
+  }
+
+  .post-related-title {
+    font-family: "MesloLG", "Courier New", monospace;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--gruvbox-fg);
+  }
+
+  @media (max-width: 640px) {
+    .post-nav {
+      grid-template-columns: 1fr;
+    }
+
+    .post-nav-link--next {
+      text-align: left;
+      grid-column: 1;
+    }
+  }
+</style>
