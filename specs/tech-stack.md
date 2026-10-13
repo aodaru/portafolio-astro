@@ -53,11 +53,14 @@ Esquemas en `src/content.config.ts`; guía de frontmatter en el README.
 ## Despliegue
 | Proveedor | Notas |
 |---|---|
-| **Hostinger** (elegido) | Plan existente del dueño con SFTP/SSH. Deploy automático desde GitHub Actions (`wlixcc/SFTP-Deploy-Action`) con clave SSH; solo `main` o `workflow_dispatch` |
+| **Hostinger** (elegido) | Plan existente del dueño con SFTP/SSH. Deploy automático desde GitHub Actions (`wlixcc/SFTP-Deploy-Action`) con clave SSH; solo `main` o `workflow_dispatch`. **En producción desde 2026-10-13** |
 | Cloudflare Pages (descartado) | Se descartó por añadir un proveedor nuevo cuando el hosting actual ya cubría la necesidad |
 
-Dominio definitivo: `adalgarcia.com`. DNS y HTTPS los gestiona el dueño al
-migrar. Detalle de secretos y flujo en el README → Deploy.
+Producción: `https://adalgarcia.com` (ES) y `/en/` (EN), servido desde la raíz de
+`domains/adalgarcia.com/public_html/` en `89.116.192.41:65002`. La clave de deploy
+es **RSA en PEM** (el action usa libcrypto y rechaza el formato OpenSSH de
+ed25519). Detalle de secretos, formato de clave y secuencia DNS en el README →
+Deploy.
 
 ## Abierto (no bloquea el MVP)
 1. **Testing** — sin suite: ni unit (Vitest) ni e2e (Playwright). La validación
