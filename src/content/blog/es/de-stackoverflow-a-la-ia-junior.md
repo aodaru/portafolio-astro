@@ -12,7 +12,7 @@ tags:
 image: "/img/posts/stackoverflowtoia.jpg"
 draft: false
 lang: es
-translationKey: "stackoverflowtoia"
+translationKey: "de-stackoverflow-a-la-ia-junior"
 ---
 
 Durante años, cuando nos estancabamos programando, buscábamos una respuesta en Google o en Stack Overflow. Encontrábamos un ejemplo en C#, Python o Node.js, lo adaptábamos y probábamos hasta que resolvía nuestro problema.

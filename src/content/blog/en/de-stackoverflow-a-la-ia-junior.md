@@ -7,7 +7,7 @@ tags:
 image: "/img/posts/stackoverflowtoia.jpg"
 draft: false
 lang: en
-translationKey: "stackoverflowtoia"
+translationKey: "de-stackoverflow-a-la-ia-junior"
 ---
 
 For years, when we got stuck while programming, we looked for an answer on Google or Stack Overflow. We found an example in C#, Python, or Node.js, adapted it, and kept trying until it solved our problem.
