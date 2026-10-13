@@ -1,0 +1,76 @@
+/* ═══════════════════════════════════════════════════════
+   Motion — utilidades compartidas de animación (Fase 9)
+   Todas respetan `prefers-reduced-motion: reduce`.
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Entrada escalonada ───────────────────────────────
+   Uso: `class="stagger-in" style="--reveal-delay: .18s"`
+   Reemplaza los `nth-child` duplicados de blog.css y las animations inline
+   de las páginas de tags (que no se podían desactivar con reduced motion). */
+.stagger-in {
+  animation: fadeInUp 0.55s ease-out both;
+  animation-delay: var(--reveal-delay, 0s);
+}
+
+/* ── Reveal al hacer scroll ─────────────────────────────
+   Uso: `class="reveal"`. El observer vive en `BaseLayout.astro`
+   (`initReveals`), que añade `is-visible`. Con reduced motion el JS
+   marca todo visible de inmediato y el bloque de abajo lo neutraliza. */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── View Transitions (ClientRouter) ──────────────────
+   Astro hace un cross-fade del root por defecto; aquí solo se ajusta la
+   duración para que se sienta ágil sin marear. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 220ms;
+    animation-timing-function: ease-out;
+  }
+}
+
+/* ── Foco visible y consistente por teclado ───────────
+   Antes cada componente definía su propio hover; el foco de teclado se
+   apoyaba en el outline del navegador, invisible sobre cards oscuros. */
+:focus-visible {
+  outline: 2px solid var(--gruvbox-yellow);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Reduced motion: todo lo anterior se apaga ──────── */
+@media (prefers-reduced-motion: reduce) {
+  .stagger-in,
+  .animate-fade-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+
+  /* El cursor parpadeante de las cabeceras tipo terminal también cuenta. */
+  .terminal-cursor {
+    animation: none !important;
+  }
+}

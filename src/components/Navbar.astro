@@ -1,42 +1,99 @@
 ---
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils'
+import { languages } from '../i18n/ui'
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
 const currentPath = Astro.url.pathname
 
+// Switcher de idioma: un solo botón-pill que muestra el código del idioma
+// ALTERN (al que lleva), no el actual. aria-label dinámico: "Cambiar idioma
+// a English" / "Switch language to Español". El idioma actual se sobreentiende
+// por contexto y por el href del brand y los nav-links.
+const targetLang = lang === 'en' ? 'es' : 'en'
+const pathWithoutLang = currentPath.replace(/^\/(es|en)(?=\/|$)/, '') || '/'
+const langHref = translatePath(pathWithoutLang, targetLang)
+const langName = languages[targetLang]
+
+// Sin "Inicio": vive como brand en el markup (icono nf-md-tea).
 const links = [
-  { href: '/', label: 'Inicio' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/trabajos', label: 'Trabajos' },
-  { href: '/contacto', label: 'Contacto' },
+  { href: translatePath('/blog'), label: t('nav.blog'), key: 'blog' },
+  { href: translatePath('/trabajos'), label: t('nav.works'), key: 'works' },
+  { href: translatePath('/contacto'), label: t('nav.contact'), key: 'contact' },
 ]
+
+function isActive(href: string): boolean {
+  const hrefPath = href.split('?')[0]
+  if (hrefPath === '/') {
+    return currentPath === '/' || currentPath === ''
+  }
+  return currentPath.startsWith(hrefPath)
+}
 ---
 
-<header class="gruvbox-nav fixed top-0 inset-x-0 z-50">
-  <nav class="mx-auto px-4 h-16 flex items-center justify-center">
-    <button class="mobile-toggle md:hidden p-2 text-[var(--gruvbox-fg)] hover:text-[var(--gruvbox-yellow)] transition-colors" aria-label="Menú de navegación" type="button">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="6" x2="21" y2="6"/>
-        <line x1="3" y1="12" x2="21" y2="12"/>
-        <line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
+<header class="main-nav fixed top-0 inset-x-0 z-50">
+  <nav class="nav-container">
+    <!-- Brand (estilo WP navbar-brand con icono nf-md-tea).
+         Sin `aria-label`: el nombre accesible debe coincidir con el texto
+         visible (WCAG 2.5.3, auditoría Lighthouse), y el icono ya es decorativo. -->
+    <a href={translatePath('/')} class="nav-brand">
+      <span class="nf nf-md-tea nav-brand-icon" aria-hidden="true"></span>
+      <span class="nav-brand-name">Adal Michael García</span>
+    </a>
+
+    <!-- Mobile toggle (estilo WP Bootstrap navbar-toggler) -->
+    <button
+      class="nav-toggler"
+      type="button"
+      aria-label={t('nav.menu')}
+      aria-expanded="false"
+      aria-controls="nav-collapse"
+    >
+      <span class="nav-toggler-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
     </button>
 
-    <div class="nav-menu hidden md:flex items-center gap-1">
-      {links.map(({ href, label }) => (
-        <a href={href} class={`nav-link ${currentPath === href ? 'active' : ''}`}>
-          {label === 'Inicio' ? <span class="nf nf-md-tea text-xl" aria-hidden="true"></span> : label}
-        </a>
-      ))}
+    <!-- Nav collapse (estilo WP navbar-collapse) -->
+    <div class="nav-collapse" id="nav-collapse">
+      <ul class="nav-list">
+        {links.map(({ href, label, key }) => (
+          <li class="nav-item">
+            <a href={href} class={`nav-link ${isActive(href) ? 'active' : ''}`} aria-label={key === 'home' ? label : undefined}>
+              {label}
+            </a>
+          </li>
+        ))}
+        <li class="nav-item">
+          <a
+            href="https://github.com/aodaru"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="nav-link"
+            aria-label="GitHub repo"
+          >
+            <span class="nf nf-fa-github" aria-hidden="true"></span>
+            <span class="nav-link-text">{t('nav.repo')}</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Selector de idioma: botón-pill único con el código del idioma
+           alterno (al que lleva el clic). aria-label explica el destino. -->
       <a
-        href="https://github.com/aodaru"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="nav-link inline-flex items-center gap-1"
-        aria-label="GitHub"
+        href={langHref}
+        hreflang={targetLang}
+        class="lang-switch"
+        aria-label={`${t('nav.lang.to')} ${langName}`}
       >
-        <span class="nf nf-fa-github"></span>
-        <span class="hidden sm:inline">Repo</span>
+        <span aria-hidden="true">{targetLang.toUpperCase()}</span>
       </a>
 
-      <button class="theme-toggle ml-2" aria-label="Cambiar tema" type="button">
+      <!-- Theme toggle (se mantiene como estaba) -->
+      <button class="theme-toggle" aria-label={t('nav.theme')} type="button">
         <svg class="bi" width="24" height="24" fill="currentColor">
           <use href="#sun" id="themeIcon"/>
         </svg>
@@ -46,20 +103,133 @@ const links = [
 </header>
 
 <script>
-  const toggle = document.querySelector('.mobile-toggle')
-  const menu = document.querySelector('.nav-menu')
+  /**
+   * Fase 9 — View Transitions: con `ClientRouter` el navbar se reconstruye en
+   * cada navegación, así que los listeners se vuelven a enlazar en
+   * `astro:page-load`. Los listeners que viven en objetos persistentes
+   * (`document`, `matchMedia`) se registran una sola vez vía flags en `<html>`,
+   * y consultan el DOM en el momento del evento para no quedar apuntando a
+   * nodos desmontados.
+   */
+  const root = document.documentElement
+  const DESKTOP_MQL = '(min-width: 992px)'
+  const REDUCE_MOTION_MQL = '(prefers-reduced-motion: reduce)'
 
-  toggle?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden')
-    menu?.classList.toggle('flex')
-    menu?.classList.toggle('flex-col')
-    menu?.classList.toggle('absolute')
-    menu?.classList.toggle('top-16')
-    menu?.classList.toggle('inset-x-4')
-    menu?.classList.toggle('p-4')
-    menu?.classList.toggle('rounded-lg')
-    menu?.classList.toggle('border')
-    menu?.classList.toggle('border-[var(--gruvbox-yellow)]')
-    menu?.classList.toggle('shadow-lg')
-  })
+  function getNav() {
+    const toggler = document.querySelector<HTMLElement>('.nav-toggler')
+    const collapse = document.querySelector<HTMLElement>('.nav-collapse')
+    return toggler && collapse ? { toggler, collapse } : null
+  }
+
+  function prefersReducedMotion(): boolean {
+    return window.matchMedia(REDUCE_MOTION_MQL).matches
+  }
+
+  function finishOpen(collapse: HTMLElement) {
+    collapse.classList.remove('is-animating')
+    collapse.classList.add('is-open')
+    collapse.style.height = ''
+    collapse.style.overflow = ''
+  }
+
+  function finishClose(collapse: HTMLElement) {
+    collapse.classList.remove('is-animating', 'is-open')
+    collapse.style.height = ''
+    collapse.style.overflow = ''
+  }
+
+  /**
+   * Anima la altura del panel en móvil.
+   * Abrir: is-animating (display:block) + height 0 → scrollHeight.
+   * Cerrar: height actual → 0. Al terminar, reposo (display:none).
+   * `prefers-reduced-motion` aplica el estado final sin esperar
+   * transitionend: si solo se anula la transición en CSS, el evento
+   * no dispara y el panel se queda a media altura.
+   */
+  function toggleCollapse(collapse: HTMLElement) {
+    const isOpen = collapse.classList.contains('is-open')
+
+    if (isOpen) {
+      if (prefersReducedMotion()) {
+        finishClose(collapse)
+        return
+      }
+      // Partir de una altura en px: `auto` → `0` no interpola.
+      // La transición vive en `.is-animating`, así que hay que
+      // commitearla (reflow) antes de bajar la altura a 0.
+      collapse.style.height = `${collapse.scrollHeight}px`
+      collapse.style.overflow = 'hidden'
+      collapse.classList.remove('is-open')
+      collapse.classList.add('is-animating')
+      void collapse.offsetHeight
+      collapse.style.height = '0px'
+    } else {
+      if (prefersReducedMotion()) {
+        finishOpen(collapse)
+        return
+      }
+      // is-animating antes de medir: en reposo el panel es display:none
+      // y scrollHeight sería 0.
+      collapse.classList.add('is-animating')
+      collapse.style.height = '0px'
+      collapse.style.overflow = 'hidden'
+      void collapse.offsetHeight
+      collapse.style.height = `${collapse.scrollHeight}px`
+    }
+  }
+
+  function onTransitionEnd(this: HTMLElement, e: TransitionEvent) {
+    if (e.target !== this || e.propertyName !== 'height') return
+    const isOpening = this.style.height !== '0px' && this.style.height !== ''
+    if (isOpening) finishOpen(this)
+    else finishClose(this)
+  }
+
+  // Listeners persistentes: una sola vez por sesión del documento.
+  if (root.dataset.navDocInit !== 'true') {
+    root.dataset.navDocInit = 'true'
+
+    // Cerrar menú al hacer click fuera
+    document.addEventListener('click', (e) => {
+      const nav = getNav()
+      if (!nav) return
+      const target = e.target as Node
+      if (
+        nav.collapse.classList.contains('is-open') &&
+        !nav.collapse.contains(target) &&
+        !nav.toggler.contains(target)
+      ) {
+        nav.toggler.setAttribute('aria-expanded', 'false')
+        toggleCollapse(nav.collapse)
+      }
+    })
+
+    // Al cruzar el breakpoint, el CSS de desktop muestra el panel.
+    // Limpiar estado móvil (también a mitad de animación) para no
+    // dejar height inline ni aria-expanded colgado.
+    window.matchMedia(DESKTOP_MQL).addEventListener('change', () => {
+      const nav = getNav()
+      if (!nav) return
+      nav.collapse.classList.remove('is-open', 'is-animating')
+      nav.collapse.style.height = ''
+      nav.collapse.style.overflow = ''
+      nav.toggler.setAttribute('aria-expanded', 'false')
+    })
+  }
+
+  function initNav() {
+    const nav = getNav()
+    if (!nav || nav.toggler.dataset.astroInit === 'true') return
+    nav.toggler.dataset.astroInit = 'true'
+
+    nav.collapse.addEventListener('transitionend', onTransitionEnd)
+    nav.toggler.addEventListener('click', () => {
+      const expanded = nav.toggler.getAttribute('aria-expanded') === 'true'
+      nav.toggler.setAttribute('aria-expanded', String(!expanded))
+      toggleCollapse(nav.collapse)
+    })
+  }
+
+  initNav()
+  document.addEventListener('astro:page-load', initNav)
 </script>

@@ -1,0 +1,15 @@
+{
+  "role": "Computer Engineer",
+  "summary": "System administration expert with over 12 years of experience. Throughout my career, I've developed a wide range of computer solutions, including:",
+  "highlights": [
+    "Sales reporting that optimizes analysis and decision-making",
+    "Data query tools that facilitate access and manipulation of information",
+    "Blogs that share my knowledge and experience with the community"
+  ],
+  "timeline": [
+    { "year": "1983", "description": "Born in David, Chiriquí Province, Panama" },
+    { "year": "2011", "description": "Completed my degree in Computer Systems Engineering at Universidad Latina de Panamá" },
+    { "year": "2012-2025", "description": "Started working at Almacén Franklin Jurado" }
+  ],
+  "hobbies": ["Electronics", "IoT", "Video Games", "Music"]
+}

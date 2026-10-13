@@ -1,0 +1,178 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
+import {
+  blogIndexPath,
+  blogPath,
+  formatDate,
+  getLangFromId,
+  getSlugFromId,
+  tagPath,
+} from '../../../i18n/content'
+import { getLangFromUrl, useTranslations } from '../../../i18n/utils'
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft && getLangFromId(p.id) === lang)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+
+const counts = new Map<string, number>()
+for (const post of posts) {
+  for (const tag of post.data.tags) {
+    counts.set(tag, (counts.get(tag) ?? 0) + 1)
+  }
+}
+
+const tags = [...counts.entries()].sort(
+  (a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'es')
+)
+---
+
+<BaseLayout
+  title={t('blog.tags.title')}
+  description={t('blog.tags.description')}
+  lang={lang}
+  path="/blog/tags"
+>
+  <div class="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
+    <a
+      href={blogIndexPath(lang)}
+      class="inline-flex items-center gap-1 mb-6 no-underline transition-opacity duration-300 hover:opacity-80"
+      style="color: var(--gruvbox-blue);"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+      </svg>
+      {t('blog.back')}
+    </a>
+
+    <h1 class="text-3xl font-bold mb-2" style="font-family: 'Courier New', monospace;">
+      <span style="color: var(--gruvbox-green);">$</span>
+      <span style="color: var(--gruvbox-yellow); margin-left: 0.5rem;">ls</span> tags/
+      <span class="terminal-cursor"></span>
+    </h1>
+    <p class="mb-8 opacity-60" style="font-family: 'MesloLG', monospace; font-size: var(--fs-small);">
+      {t('blog.tags.count', {
+        tags: tags.length,
+        posts: posts.length,
+        tagPlural: tags.length !== 1 ? 's' : '',
+        postPlural: posts.length !== 1 ? 's' : '',
+      })}
+    </p>
+
+    {tags.length === 0 && (
+      <p class="opacity-75">{t('blog.tags.empty')}</p>
+    )}
+
+    <ul class="tags-cloud">
+      {tags.map(([tag, count], i) => (
+        <li class="stagger-in" style={`--reveal-delay: ${i * 0.04}s`}>
+          <a href={tagPath(lang, tag)} class="tags-cloud-item">
+            <span class="tags-cloud-hash">#</span>
+            <span class="tags-cloud-name">{tag}</span>
+            <span class="tags-cloud-count">{count}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-10">
+      <h2 class="font-bold mb-3" style="font-family: 'Courier New', monospace; color: var(--gruvbox-yellow); font-size: 1.1rem;">
+        {t('blog.tags.recent')}
+      </h2>
+      <ul class="tags-recent">
+        {posts.slice(0, 5).map((post) => (
+          <li>
+            <a href={blogPath(lang, getSlugFromId(post.id))} class="tags-recent-item">
+              <span class="tags-recent-date">{formatDate(post.data.date, lang)}</span>
+              <span class="tags-recent-title">{post.data.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .tags-cloud {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .tags-cloud-item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.4rem 0.85rem;
+    border: 2px solid var(--gruvbox-gray);
+    border-radius: 8px;
+    text-decoration: none;
+    background: var(--gruvbox-card);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .tags-cloud-item:hover {
+    border-color: var(--gruvbox-blue);
+    transform: translateY(-2px);
+  }
+
+  .tags-cloud-hash {
+    color: var(--gruvbox-green);
+    font-family: "MesloLG", monospace;
+  }
+
+  .tags-cloud-name {
+    color: var(--gruvbox-blue);
+    font-family: "MesloLG", monospace;
+    font-size: 0.9rem;
+  }
+
+  .tags-cloud-count {
+    color: var(--gruvbox-gray);
+    font-family: "MesloLG", monospace;
+    font-size: 0.72rem;
+  }
+
+  .tags-recent {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .tags-recent-item {
+    display: flex;
+    gap: 0.9rem;
+    align-items: baseline;
+    padding: 0.45rem 0.7rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .tags-recent-item:hover {
+    background: var(--gruvbox-card);
+  }
+
+  .tags-recent-date {
+    color: var(--gruvbox-gray);
+    font-family: "MesloLG", monospace;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  .tags-recent-title {
+    color: var(--gruvbox-fg);
+    font-family: "MesloLG", monospace;
+    font-size: 0.9rem;
+  }
+</style>

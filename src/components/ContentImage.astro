@@ -1,0 +1,52 @@
+---
+/**
+ * ContentImage.astro
+ * Imagen destacada de posts/proyectos.
+ * - Estáticos (jpg/png en `src/assets/`) → `<Image>` de `astro:assets` con
+ *   salida WebP + `widths` responsivos (requiere `sharp` como devDependency).
+ * - GIF animados → `<img>` clásico desde `public/` (conserva animación).
+ * - Sin imagen → no renderiza nada.
+ */
+import { Image } from 'astro:assets'
+import { resolveContentImage } from '../utils/images'
+
+export interface Props {
+  image?: string
+  alt: string
+}
+
+const { image, alt } = Astro.props
+const asset = resolveContentImage(image)
+---
+
+{asset && (
+  <figure class="content-image">
+    <Image
+      src={asset}
+      format="webp"
+      widths={[480, 800, 1200]}
+      sizes="(max-width: 800px) 100vw, 800px"
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+    />
+  </figure>
+)}
+{image && !asset && (
+  <figure class="content-image">
+    <img src={image} alt={alt} loading="lazy" decoding="async" />
+  </figure>
+)}
+
+<style>
+  .content-image {
+    margin: 0 0 2rem;
+  }
+  .content-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 2px solid var(--gruvbox-gray);
+    display: block;
+  }
+</style>
