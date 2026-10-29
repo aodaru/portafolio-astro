@@ -19,7 +19,7 @@ Durante años, cuando nos estancabamos programando, buscábamos una respuesta en
 
 La herramienta cambió. Ahora podemos describir lo que queremos y pedirle a una IA que genere el código. En algunos casos, también puede explicar cómo funciona, detectar errores y proponer alternativas. El ciclo que antes podía tomar horas ahora puede ocurrir en minutos.
 
-Pero hay una pregunta que no desaparece con la velocidad: **¿quién está desarrollando realmente el programa?**
+Pero hay una pregunta que no desaparece con la velocida: **¿quién está desarrollando realmente el programa?**
 
 ## De buscar respuestas a pedir explicaciones
 

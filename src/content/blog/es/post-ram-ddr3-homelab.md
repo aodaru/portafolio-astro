@@ -4,7 +4,7 @@ description: "Un servidor con hardware de 2011, 32 servicios y 24 GB de DDR3. Lo
 date: 2026-10-21
 tags:
   ["homelab", "truenas", "ddr3", "hardware", "ram", "docker", "autohospedaje"]
-image: "/img/posts/post-ram.jpg"
+image: "/img/posts/postram.jpg"
 draft: false
 lang: es
 translationKey: "post-ram-ddr3-home"
@@ -12,7 +12,7 @@ translationKey: "post-ram-ddr3-home"
 
 # Mi homelab corre con 24 GB de DDR3 y la RAM nunca fue el problema
 
-Un kit de 32 GB de DDR5 costaba unos 70 euros hace un año. Hoy, el mismo kit, cuesta 500. No es una oferta puntual ni una tienda aprovechada: es el precio de mercado, y viene de que la DRAM que antes iba a nuestras computadoras ahora se va a memoria HBM para centros de datos de inteligencia artificial. La memoria de consumo es lo último que se fabrica, con lo que sobra.
+Un kit de 32 GB de DDR5 costaba unos 70 dolares hace un año. Hoy, el mismo kit, cuesta 500. No es una oferta puntual ni una tienda aprovechada: es el precio de mercado, y viene de que la DRAM que antes iba a nuestras computadoras ahora se va a memoria HBM para centros de datos de inteligencia artificial. La memoria de consumo es lo último que se fabrica, con lo que sobra.
 
 Mientras tanto, mi servidor de casa —el que sostiene mi trabajo, mis backups y las aplicaciones que uso todos los días— corre con 24 GB de DDR3 en una placa de 2012 y un procesador de 2011.
 
@@ -28,7 +28,7 @@ Lo armé con lo que había. Es literalmente eso: piezas que sobraban de otros eq
 - **Discos:** dos SSD Kingston de 240 GB y dos Seagate de 4 TB.
 - **Sistema:** TrueNAS Scale, con las aplicaciones en contenedores.
 
-Sobre eso corren treinta y dos servicios. n8n para las automatizaciones, Immich para las fotos, Nextcloud, Supabase, Jellyfin, AdGuard, el servidor de memoria(RAG), el proxy, los backups.
+Sobre eso corren treinta y dos(32) servicios. n8n para las automatizaciones, Immich para las fotos, Nextcloud, Supabase, Jellyfin, AdGuard, el servidor de memoria(RAG), el proxy, los backups.
 
 ![gabinete](../../../assets/posts/caseNAS.jpg)
 
@@ -61,7 +61,7 @@ Lo importante: **no hay swap**. Cero. Nunca llegué a un punto donde el sistema 
 
 ## Dónde sí se queda corto
 
-Acá es donde este post se vuelve útil y no una fantasía.
+**Sorpresa**
 
 El cuello de botella de mi servidor **no es la memoria. Es el procesador.** Un i3 de dos núcleos de 2011 se queda corto cuando Immich indexa una biblioteca nueva, cuando Jellyfin transcodifica sin aceleración por hardware, o cuando tres workflows de n8n procesan al mismo tiempo.
 
@@ -98,4 +98,4 @@ No escribo esto para convencer a nadie de que arme su homelab con piezas de 2011
 
 El servidor no estaba corto de RAM. Estaba corto de núcleos.
 
-Antes de comprar memoria este año, abrí una terminal y mirá dos números: cuánta memoria tienes disponible de verdad, y cuánto está trabajando tu procesador. La respuesta suele estar en el segundo.
+Antes de comprar memoria este año, ve y mira la terminal, mirá dos números: cuánta memoria tienes disponible de verdad, y cuánto está trabajando tu procesador. La respuesta suele estar en el segundo.
